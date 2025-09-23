@@ -1,17 +1,15 @@
 import { enableSignless } from '@lens-protocol/client/actions'
 import {
-  EnableSignlessResult,
-  usePublicClient,
+  type EnableSignlessResult,
+  type ResultAsync,
+  type UnauthenticatedError,
   UnexpectedError,
-  ResultAsync,
-  UnauthenticatedError
+  usePublicClient
 } from '@lens-protocol/react'
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface UseEnableSignlessReturn {
-  execute: () => Promise<
-    ResultAsync<EnableSignlessResult, UnexpectedError | UnauthenticatedError>
-  >
+  execute: () => Promise<ResultAsync<EnableSignlessResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   error: UnexpectedError | UnauthenticatedError | null
   result: EnableSignlessResult | null
@@ -21,9 +19,7 @@ interface UseEnableSignlessReturn {
 const useEnableSignless = (): UseEnableSignlessReturn => {
   const publicClient = usePublicClient()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<
-    UnexpectedError | UnauthenticatedError | null
-  >(null)
+  const [error, setError] = useState<UnexpectedError | UnauthenticatedError | null>(null)
   const [result, setResult] = useState<EnableSignlessResult | null>(null)
 
   // Reference to track if component is mounted
@@ -57,7 +53,7 @@ const useEnableSignless = (): UseEnableSignlessReturn => {
     setError(null)
 
     try {
-      // @ts-ignore
+      // @ts-expect-error
       const response = await enableSignless(publicClient.currentSession)
 
       // Only update state if component is still mounted
@@ -74,11 +70,7 @@ const useEnableSignless = (): UseEnableSignlessReturn => {
     } catch (err) {
       // Only update state if component is still mounted
       if (isMountedRef.current) {
-        setError(
-          err instanceof UnexpectedError
-            ? err
-            : new UnexpectedError(String(err))
-        )
+        setError(err instanceof UnexpectedError ? err : new UnexpectedError(String(err)))
         setLoading(false)
       }
       return Promise.reject(err)

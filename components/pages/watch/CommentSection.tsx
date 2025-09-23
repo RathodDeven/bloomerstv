@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import CommentRow from './CommentRow'
-import CreateCommentRow from './CreateCommentRow'
-import clsx from 'clsx'
 import {
-  Account,
-  AnyPost,
-  Post,
+  type Account,
+  type AnyPost,
+  type Post,
   PostReferenceType,
   usePostReferences
 } from '@lens-protocol/react'
+import clsx from 'clsx'
+import React, { useState } from 'react'
+import CommentRow from './CommentRow'
+import CreateCommentRow from './CreateCommentRow'
 
 export interface NewComment {
   author: Account
@@ -37,7 +37,7 @@ const CommentSection = ({
     <div className={clsx('h-full w-full', className)}>
       <CreateCommentRow
         commentOn={post?.id}
-        onCommentCreated={(comment) => {
+        onCommentCreated={comment => {
           setNewComments([comment, ...newCommments])
         }}
         className={clsx(level === 0 && 'pl-0')}
@@ -53,7 +53,7 @@ const CommentSection = ({
           />
         )
       })}
-      {data?.items.map((comment) => {
+      {data?.items.map(comment => {
         return (
           <CommentRow
             comment={comment as Post}

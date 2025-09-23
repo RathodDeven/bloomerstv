@@ -1,15 +1,15 @@
 'use client'
-import React from 'react'
-import UILayout from './UILayout'
-import ThemeProvider from './TailwindThemeProvider'
-import MuiThemeWrapper from './MuiThemeWrapper'
-import ApolloWrapper from './ApolloWrapper'
-import ShowLoadingWrapper from './ShowLoadingWrapper'
-import ToastWrapper from './ToastWrapper'
-import WaitForMount from './WaitForMount'
+import type React from 'react'
 import { ModalProvider } from '../common/ModalContext'
+import ApolloWrapper from './ApolloWrapper'
 import { AuthProvider } from './AuthContext'
+import MuiThemeWrapper from './MuiThemeWrapper'
+import ShowLoadingWrapper from './ShowLoadingWrapper'
+import ThemeProvider from './TailwindThemeProvider'
+import ToastWrapper from './ToastWrapper'
+import UILayout from './UILayout'
 import WagmiWrapper from './WagmiWrapper'
+import WaitForMount from './WaitForMount'
 
 const MasterWrappers = ({ children }: { children: React.ReactNode }) => {
   return (

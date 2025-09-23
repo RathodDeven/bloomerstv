@@ -35,9 +35,7 @@ const JWKS = createRemoteJWKSet(new URL(LENS_JWKS_URL))
  * - tag:lens.dev,2024:role: Role of the authenticated session (ACCOUNT_OWNER, ACCOUNT_MANAGER,
  *                          ONBOARDING_USER, or BUILDER)
  */
-export async function lensJWTVerifyIDToken(
-  token: string
-): Promise<DecodedLensIDToken> {
+export async function lensJWTVerifyIDToken(token: string): Promise<DecodedLensIDToken> {
   const { payload } = await jwtVerify(token, JWKS)
 
   return payload as DecodedLensIDToken

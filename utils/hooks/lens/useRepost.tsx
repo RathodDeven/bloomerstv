@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { repost } from '@lens-protocol/client/actions'
 import {
-  CreateRepostRequest,
-  PostResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type CreateRepostRequest,
+  type PostResult,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { repost } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseRepostReturn {
   execute: (
@@ -24,12 +24,10 @@ const useRepost = (): UseRepostReturn => {
 
   const execute = async (
     request: CreateRepostRequest
-  ): Promise<
-    ResultAsync<PostResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<PostResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await repost(sessionClient, request)
 
     setData(result?.isOk() ? result.value : null)

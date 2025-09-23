@@ -1,20 +1,17 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Button, TextField, InputAdornment } from '@mui/material'
+import { Button, InputAdornment, TextField } from '@mui/material'
+import { type TradeParameters, tradeCoin } from '@zoralabs/coins-sdk'
 import { ConnectKitButton } from 'connectkit'
+import { motion } from 'framer-motion'
+import type React from 'react'
 import { toast } from 'react-hot-toast'
-import { parseEther, Address } from 'viem'
-import { useWalletClient, usePublicClient } from 'wagmi'
 import { v4 as uuid } from 'uuid'
+import { type Address, parseEther } from 'viem'
 import { base } from 'viem/chains'
-import { tradeCoin, TradeParameters } from '@zoralabs/coins-sdk'
-import {
-  ContentType,
-  SendMessageTradeType
-} from '@/components/common/LiveChat/LiveChatType'
+import { usePublicClient, useWalletClient } from 'wagmi'
+import { ContentType, type SendMessageTradeType } from '@/components/common/LiveChat/LiveChatType'
 import { useChatInteractions } from '@/components/store/useChatInteractions'
 import useHandleWrongNetwork from '@/utils/hooks/useHandleWrongNetwork'
-import { ZoraCoin } from './types'
+import type { ZoraCoin } from './types'
 import { calculateTokenPrice, formatBalance } from './utils'
 
 interface SellModeProps {
@@ -46,9 +43,7 @@ const SellMode: React.FC<SellModeProps> = ({
   const publicClient = usePublicClient()
   const handleWrongNetwork = useHandleWrongNetwork(base.id)
 
-  const sendMessagePayload = useChatInteractions(
-    (state) => state.sendMessagePayload
-  )
+  const sendMessagePayload = useChatInteractions(state => state.sendMessagePayload)
 
   // Use max balance
   const useMaxBalance = () => {
@@ -95,7 +90,7 @@ const SellMode: React.FC<SellModeProps> = ({
         tradeParameters,
         walletClient,
         // Properly structure the publicClient with account
-        // @ts-ignore
+        // @ts-expect-error
         publicClient,
         account: address as Address
       })
@@ -107,10 +102,7 @@ const SellMode: React.FC<SellModeProps> = ({
       } else if (result && typeof result === 'object') {
         // Extract hash from various possible response formats
         txHash =
-          result.hash ||
-          result.transactionHash ||
-          (result.response && result.response.hash) ||
-          ''
+          result.hash || result.transactionHash || (result.response && result.response.hash) || ''
       }
 
       if (!txHash) {
@@ -127,10 +119,7 @@ const SellMode: React.FC<SellModeProps> = ({
       const tokenPrice = marketCapValue / totalSupplyValue
       const estimatedEthReceived = parseFloat(sellAmount) * tokenPrice
 
-      const formatterCurrentPrice = calculateTokenPrice(
-        coin.marketCap,
-        coin.totalSupply
-      )
+      const formatterCurrentPrice = calculateTokenPrice(coin.marketCap, coin.totalSupply)
 
       const messagePayload: SendMessageTradeType = {
         id: uuid(),
@@ -178,11 +167,7 @@ const SellMode: React.FC<SellModeProps> = ({
           }}
           size="small"
         />
-        <Button
-          size="small"
-          onClick={useMaxBalance}
-          sx={{ ml: 1, minWidth: 'auto' }}
-        >
+        <Button size="small" onClick={useMaxBalance} sx={{ ml: 1, minWidth: 'auto' }}>
           Max
         </Button>
       </div>
@@ -193,16 +178,12 @@ const SellMode: React.FC<SellModeProps> = ({
       </div>
 
       <div className="flex space-x-2 mt-4">
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1"
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
           <Button
             variant="outlined"
             size="small"
             fullWidth
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               onCancel()
             }}
@@ -216,21 +197,15 @@ const SellMode: React.FC<SellModeProps> = ({
           </Button>
         </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1"
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
           <ConnectKitButton.Custom>
             {({ show, isConnected }) => (
               <Button
                 variant="contained"
                 size="small"
                 fullWidth
-                disabled={
-                  isPending || !sellAmount || parseFloat(sellAmount) <= 0
-                }
-                onClick={async (e) => {
+                disabled={isPending || !sellAmount || parseFloat(sellAmount) <= 0}
+                onClick={async e => {
                   e.stopPropagation()
                   if (!isConnected) {
                     show?.()
@@ -248,11 +223,7 @@ const SellMode: React.FC<SellModeProps> = ({
                   }
                 }}
               >
-                {isPending
-                  ? 'Processing...'
-                  : isConnected
-                    ? 'Sell'
-                    : 'Connect Wallet'}
+                {isPending ? 'Processing...' : isConnected ? 'Sell' : 'Connect Wallet'}
               </Button>
             )}
           </ConnectKitButton.Custom>

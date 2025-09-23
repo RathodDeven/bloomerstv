@@ -1,34 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react'
-
-import HomeVideoCard from '../../common/HomeVideoCard'
-import LoadingVideoCard from '../../ui/LoadingVideoCard'
-import { Button, IconButton } from '@mui/material'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import useInnerWidth from '../../../utils/hooks/useInnerWidth'
-import { useIsVerifiedQuery } from '../../../graphql/generated'
-import { APP_ADDRESS, hideAccountAddresses } from '../../../utils/config'
-import { CATEGORIES } from '../../../utils/categories'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import clsx from 'clsx'
-import StreamCard from './StreamCard'
-import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
-import { usePostsStore } from '../../store/usePosts'
 import {
   MainContentFocus,
   PageSize,
-  Post,
-  PostId,
+  type Post,
+  type PostId,
   PostType,
   usePosts
 } from '@lens-protocol/react'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { Button, IconButton } from '@mui/material'
+import clsx from 'clsx'
+import React, { useEffect, useRef, useState } from 'react'
+import { useIsVerifiedQuery } from '../../../graphql/generated'
+import { CATEGORIES } from '../../../utils/categories'
+import { APP_ADDRESS, hideAccountAddresses } from '../../../utils/config'
+import useInnerWidth from '../../../utils/hooks/useInnerWidth'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import HomeVideoCard from '../../common/HomeVideoCard'
+import { usePostsStore } from '../../store/usePosts'
+import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
+import LoadingVideoCard from '../../ui/LoadingVideoCard'
 import CoinsRow from './CoinsRow'
+import StreamCard from './StreamCard'
 
 export const HomePageVideoFeed = () => {
   const [showShowMoreButton, setShowShowMoreButton] = useState(true)
   const [showAll, setShowAll] = React.useState(false)
-  const { posts, streamReplayPosts } = usePostsStore((state) => ({
+  const { posts, streamReplayPosts } = usePostsStore(state => ({
     posts: state.posts,
     streamReplayPosts: state.streamReplayPosts
   }))
@@ -39,7 +38,7 @@ export const HomePageVideoFeed = () => {
     accounts,
     loading: accountsLoading,
     streamersWithAccounts
-  } = useStreamersWithAccounts((state) => {
+  } = useStreamersWithAccounts(state => {
     return {
       accounts: state.accountsFromPublicReplays,
       loading: state.loading,
@@ -47,35 +46,32 @@ export const HomePageVideoFeed = () => {
     }
   })
 
-  const accountsMap = new Map(accounts?.map((a) => [a?.address, a]))
+  const accountsMap = new Map(accounts?.map(a => [a?.address, a]))
 
   const isMobile = useIsMobile()
 
-  const postsMap = new Map(posts?.map((p) => [p?.id, p]))
+  const postsMap = new Map(posts?.map(p => [p?.id, p]))
 
-  const filteredPosts =
-    streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.filter((p) => {
-      const post = p?.postId
-        ? // @ts-ignore
-          postsMap.get(p?.postId)
-        : null
+  const filteredPosts = streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.filter(p => {
+    const post = p?.postId
+      ? // @ts-ignore
+        postsMap.get(p?.postId)
+      : null
 
-      if (p?.postId && !post) return false
+    if (p?.postId && !post) return false
 
-      if (selectedCategory?.tags?.length > 0) {
-        return (
-          post?.__typename === 'Post' &&
-          // @ts-ignore
-          post?.metadata?.tags &&
-          // @ts-ignore
-          post?.metadata?.tags?.some((tag) =>
-            selectedCategory?.tags?.includes(tag)
-          )
-        )
-      }
+    if (selectedCategory?.tags?.length > 0) {
+      return (
+        post?.__typename === 'Post' &&
+        // @ts-expect-error
+        post?.metadata?.tags &&
+        // @ts-expect-error
+        post?.metadata?.tags?.some(tag => selectedCategory?.tags?.includes(tag))
+      )
+    }
 
-      return true
-    })
+    return true
+  })
 
   // for clips
   const { data, loading } = usePosts({
@@ -97,27 +93,23 @@ export const HomePageVideoFeed = () => {
 
   const filteredPostsClips =
     data?.items?.filter(
-      (p) =>
-        p.__typename === 'Post' && p.metadata?.__typename === 'VideoMetadata'
+      p => p.__typename === 'Post' && p.metadata?.__typename === 'VideoMetadata'
     ) || []
 
   const { data: isVerified } = useIsVerifiedQuery({
     variables: {
-      accountAddresses: filteredPostsClips?.map((p) => p.author?.address)
+      accountAddresses: filteredPostsClips?.map(p => p.author?.address)
     }
   })
 
   const verifiedMap = new Map(
-    isVerified?.isVerified?.map((v) => [
-      v?.accountAddress,
-      v?.isVerified ?? false
-    ])
+    isVerified?.isVerified?.map(v => [v?.accountAddress, v?.isVerified ?? false])
   )
 
   // add type streamClips to data
   const streamClips = React.useMemo(() => {
     return (
-      filteredPostsClips?.map((post) => {
+      filteredPostsClips?.map(post => {
         return {
           ...post,
           type: 'streamClips'
@@ -128,7 +120,7 @@ export const HomePageVideoFeed = () => {
 
   const streamReplays = React.useMemo(() => {
     return (
-      filteredPosts?.map((post) => {
+      filteredPosts?.map(post => {
         return {
           ...post,
           timestamp: post?.createdAt,
@@ -144,9 +136,7 @@ export const HomePageVideoFeed = () => {
     }
 
     return [...streamReplays, ...streamClips].sort(
-      (a, b) =>
-        new Date(b?.timestamp || 0).getTime() -
-        new Date(a?.timestamp || 0).getTime()
+      (a, b) => new Date(b?.timestamp || 0).getTime() - new Date(a?.timestamp || 0).getTime()
     )
   }, [streamReplays, streamClips])
 
@@ -223,10 +213,10 @@ export const HomePageVideoFeed = () => {
           }}
           onScroll={checkOverflow}
         >
-          {CATEGORIES.map((category) => (
+          {CATEGORIES.map(category => (
             <button
               key={category?.name}
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault() // Ensure this is not preventing navigation
                 setSelectedCategory(category)
               }}
@@ -258,76 +248,70 @@ export const HomePageVideoFeed = () => {
 
         {/* live streams */}
         {selectedCategory?.name === 'None' &&
-          streamersWithAccounts?.map((streamer) => {
+          streamersWithAccounts?.map(streamer => {
             if (hideAccountAddresses.includes(streamer.accountAddress)) {
               return null
             }
-            return (
-              <StreamCard key={streamer?.accountAddress} streamer={streamer} />
-            )
+            return <StreamCard key={streamer?.accountAddress} streamer={streamer} />
           })}
 
         {/* live streams replay, clips and videos */}
 
         {!loading &&
           !accountsLoading &&
-          combinedData
-            ?.slice(0, showAll ? combinedData?.length : lengthToShow)
-            ?.map((post) => {
-              if (!post) return null
+          combinedData?.slice(0, showAll ? combinedData?.length : lengthToShow)?.map(post => {
+            if (!post) return null
 
-              if (post?.type === 'streamClips' && post?.__typename === 'Post') {
-                if (hideAccountAddresses.includes(post?.author?.address)) {
-                  return null
-                }
-                return (
-                  <HomeVideoCard
-                    premium={verifiedMap.get(post?.author?.address)}
-                    key={post?.id}
-                    post={post as Post}
-                  />
-                )
-              }
-
-              const streamReplayPost =
-                post?.__typename === 'StreamReplayPost'
-                  ? postsMap.get(post?.postId as PostId)
-                  : null
-              if (
-                post?.__typename === 'Post' &&
-                post?.author?.address &&
-                hideAccountAddresses.includes(post?.author?.address)
-              ) {
+            if (post?.type === 'streamClips' && post?.__typename === 'Post') {
+              if (hideAccountAddresses.includes(post?.author?.address)) {
                 return null
               }
               return (
                 <HomeVideoCard
-                  // @ts-ignore
-                  cover={post?.thumbnail}
-                  // @ts-ignore
-                  duration={post?.sourceSegmentsDuration}
-                  // @ts-ignore
-                  premium={!!post?.premium}
-                  // @ts-ignore
-                  key={post?.id ?? post?.sessionId}
-                  post={streamReplayPost as Post}
-                  // @ts-ignore
-                  session={
-                    streamReplayPost
-                      ? undefined
-                      : {
-                          createdAt: post?.timestamp!,
-                          // @ts-ignore
-                          sessionId: post?.sessionId!,
-                          account: accountsMap.get(
-                            // @ts-ignore
-                            post?.accountAddress
-                          )
-                        }
-                  }
+                  premium={verifiedMap.get(post?.author?.address)}
+                  key={post?.id}
+                  post={post as Post}
                 />
               )
-            })}
+            }
+
+            const streamReplayPost =
+              post?.__typename === 'StreamReplayPost' ? postsMap.get(post?.postId as PostId) : null
+            if (
+              post?.__typename === 'Post' &&
+              post?.author?.address &&
+              hideAccountAddresses.includes(post?.author?.address)
+            ) {
+              return null
+            }
+            return (
+              <HomeVideoCard
+                // @ts-expect-error
+                cover={post?.thumbnail}
+                // @ts-expect-error
+                duration={post?.sourceSegmentsDuration}
+                // @ts-expect-error
+                premium={!!post?.premium}
+                // @ts-expect-error
+                key={post?.id ?? post?.sessionId}
+                post={streamReplayPost as Post}
+                // @ts-expect-error
+                session={
+                  streamReplayPost
+                    ? undefined
+                    : {
+                        createdAt: post?.timestamp!,
+                        // @ts-expect-error
+                        sessionId: post?.sessionId!,
+                        account: accountsMap.get(
+                          // @ts-expect-error
+                          post?.accountAddress
+                        )
+                      }
+                }
+              />
+            )
+          })}
 
         {(loading || accountsLoading) && <>{renderLoadingCards()}</>}
 

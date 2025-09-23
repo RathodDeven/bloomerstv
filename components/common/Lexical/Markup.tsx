@@ -1,5 +1,7 @@
 import { Interweave } from 'interweave'
+import type React from 'react'
 import type { FC, MouseEvent } from 'react'
+import { MentionMatcher } from './matchers/MentionMatcher'
 // import { MDBoldMatcher } from './matchers/markdown/MDBoldMatcher'
 import { MDCodeMatcher } from './matchers/markdown/MDCodeMatcher'
 import { MDItalicMatcher } from './matchers/markdown/MDItalicMatcher'
@@ -7,9 +9,8 @@ import { MDLinkMatcher } from './matchers/markdown/MDLinkMatcher'
 import { MDQuoteMatcher } from './matchers/markdown/MDQuoteMatcher'
 import { MDStrikeMatcher } from './matchers/markdown/MDStrikeMatcher'
 import { UrlMatcher } from './matchers/UrlMatcher'
-import React from 'react'
 import trimify from './trimify'
-import { MentionMatcher } from './matchers/MentionMatcher'
+
 // import { HashtagMatcher } from './matchers/HashtagMatcher'
 
 interface Props {
@@ -19,12 +20,7 @@ interface Props {
   matchOnlyUrl?: boolean
 }
 
-const Markup: FC<Props> = ({
-  children,
-  style,
-  className = '',
-  matchOnlyUrl
-}) => {
+const Markup: FC<Props> = ({ children, style, className = '', matchOnlyUrl }) => {
   const defaultMatchers = [
     new MDCodeMatcher('mdCode'),
     new MentionMatcher('mention'),

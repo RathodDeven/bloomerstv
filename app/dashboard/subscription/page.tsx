@@ -1,6 +1,6 @@
 'use client'
-import React from 'react'
 import DoneIcon from '@mui/icons-material/Done'
+import React from 'react'
 import GoSuperButton from '../../../components/pages/dashboard/go-live/GoSuperButton'
 import useSession from '../../../utils/hooks/useSession'
 
@@ -39,14 +39,11 @@ const page = () => {
           </div>
 
           {/* description */}
-          <div>
-            For anyone who wants to try out the platform and just stream
-            casually.
-          </div>
+          <div>For anyone who wants to try out the platform and just stream casually.</div>
 
           {/* points */}
           <div className="space-y-1">
-            {freePlansPoints.map((point) => (
+            {freePlansPoints.map(point => (
               <div key={point} className="flex flex-row gap-x-2">
                 <DoneIcon fontSize="small" />
                 <div>{point}</div>
@@ -67,7 +64,7 @@ const page = () => {
 
           {/* points */}
           <div className="space-y-1">
-            {superPlansPoints.map((point) => (
+            {superPlansPoints.map(point => (
               <div key={point} className="flex flex-row gap-x-2">
                 <DoneIcon fontSize="small" />
                 <div>{point}</div>

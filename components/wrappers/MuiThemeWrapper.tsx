@@ -1,15 +1,12 @@
-import * as React from 'react'
-// import Checkbox from '@mui/material/Checkbox'
-import {
-  createTheme,
-  ThemeProvider,
-  StyledEngineProvider
-} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { useTheme } from './TailwindThemeProvider'
+// import Checkbox from '@mui/material/Checkbox'
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 // import { orange } from '@mui/material/colors'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import type * as React from 'react'
+import { useTheme } from './TailwindThemeProvider'
+
 declare module '@mui/material/styles' {
   interface Theme {
     status: {
@@ -77,19 +74,13 @@ const lightTheme = createTheme({
   }
 })
 
-export default function MuiThemeWrapper({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function MuiThemeWrapper({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
   return (
     <StyledEngineProvider injectFirst={false}>
       <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          {children}
-        </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>{children}</LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   )

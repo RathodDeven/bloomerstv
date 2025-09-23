@@ -1,19 +1,19 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Tooltip } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import TrendingDownIcon from '@mui/icons-material/TrendingDown'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import { Tooltip } from '@mui/material'
+import { motion } from 'framer-motion'
+import type React from 'react'
 import { formatNumber } from '@/utils/formatters'
-import { ZoraCoin } from './types'
+import { stringToLength } from '../../../../utils/stringToLength'
+import type { ZoraCoin } from './types'
 import {
   calculateMarketCapPercentageChange,
+  calculateTokenPrice,
   formatPercentage,
-  isPriceChangePositive,
-  calculateTokenPrice
+  isPriceChangePositive
 } from './utils'
-import { stringToLength } from '../../../../utils/stringToLength'
 
 interface CoinHeaderProps {
   coin: ZoraCoin
@@ -23,13 +23,7 @@ interface CoinHeaderProps {
   sellMode: boolean
 }
 
-const CoinHeader: React.FC<CoinHeaderProps> = ({
-  coin,
-  expanded,
-  onToggle,
-  buyMode,
-  sellMode
-}) => {
+const CoinHeader: React.FC<CoinHeaderProps> = ({ coin, expanded, onToggle, buyMode, sellMode }) => {
   const marketCapPercentageChange = calculateMarketCapPercentageChange(
     coin.marketCap,
     coin.marketCapDelta24h
@@ -60,16 +54,12 @@ const CoinHeader: React.FC<CoinHeaderProps> = ({
               className="w-full h-full rounded-full object-cover"
             />
           ) : (
-            <span className="font-bold text-indigo-600">
-              {coin.symbol.substring(0, 2)}
-            </span>
+            <span className="font-bold text-indigo-600">{coin.symbol.substring(0, 2)}</span>
           )}
         </motion.div>
         <div>
           <div className="flex items-center">
-            <span className="font-bold text-p-text">
-              {stringToLength(coin.symbol, 10)}
-            </span>
+            <span className="font-bold text-p-text">{stringToLength(coin.symbol, 10)}</span>
             <Tooltip title="Featured Zora coin">
               <InfoOutlinedIcon
                 sx={{

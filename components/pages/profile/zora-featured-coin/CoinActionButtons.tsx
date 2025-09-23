@@ -1,9 +1,9 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Button, Box } from '@mui/material'
-import { ConnectKitButton } from 'connectkit'
-import { ShoppingCartIcon, WalletIcon } from 'lucide-react'
 import { ShoppingBag } from '@mui/icons-material'
+import { Box, Button } from '@mui/material'
+import { ConnectKitButton } from 'connectkit'
+import { motion } from 'framer-motion'
+import { ShoppingCartIcon, WalletIcon } from 'lucide-react'
+import type React from 'react'
 import { toast } from 'react-hot-toast'
 import { base } from 'viem/chains'
 import useHandleWrongNetwork from '@/utils/hooks/useHandleWrongNetwork'
@@ -30,16 +30,12 @@ const CoinActionButtons: React.FC<CoinActionButtonsProps> = ({
       {address && chainId === base.id ? (
         <Box sx={{ display: 'flex', gap: 1, width: '100%' }}>
           {/* Buy Tokens */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full"
-          >
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
             <Button
               variant="contained"
               size="small"
               fullWidth
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 onEnterBuyMode()
               }}
@@ -61,17 +57,13 @@ const CoinActionButtons: React.FC<CoinActionButtonsProps> = ({
 
           {/* Sell Tokens - Only shown if user has balance */}
           {hasBalance && (
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full"
-            >
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
               <Button
                 variant="contained"
                 size="small"
                 fullWidth
                 color="secondary"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   onEnterSellMode()
                 }}
@@ -93,18 +85,14 @@ const CoinActionButtons: React.FC<CoinActionButtonsProps> = ({
         </Box>
       ) : (
         /* Connect Wallet Button - Show when user is not connected */
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full"
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
           <ConnectKitButton.Custom>
             {({ show, isConnected }) => (
               <Button
                 variant="contained"
                 size="small"
                 fullWidth
-                onClick={async (e) => {
+                onClick={async e => {
                   e.stopPropagation()
                   if (!isConnected) {
                     show?.()

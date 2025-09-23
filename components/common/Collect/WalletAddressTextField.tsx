@@ -1,9 +1,9 @@
+import { type Account, PageSize, useAccounts } from '@lens-protocol/react'
 import { Button, TextField } from '@mui/material'
 import React from 'react'
 import formatHandle from '../../../utils/lib/formatHandle'
 import getAvatar from '../../../utils/lib/getAvatar'
-import { SettingRecipientType } from './CollectSettingPopUp'
-import { Account, PageSize, useAccounts } from '@lens-protocol/react'
+import type { SettingRecipientType } from './CollectSettingPopUp'
 
 const WalletAddressTextField = ({
   value,
@@ -64,12 +64,7 @@ const WalletAddressTextField = ({
                   newRecipients[index].recipient = account?.owner
                   setSettingRecipients(newRecipients)
                 }}
-                startIcon={
-                  <img
-                    src={getAvatar(account)}
-                    className="w-8 h-8 rounded-full"
-                  />
-                }
+                startIcon={<img src={getAvatar(account)} className="w-8 h-8 rounded-full" />}
               >
                 {formatHandle(account)}
               </Button>
@@ -96,7 +91,7 @@ const WalletAddressTextField = ({
           label="Recipient"
           placeholder="kontak or 0x..."
           value={value}
-          onChange={(e) => {
+          onChange={e => {
             const newRecipients = [...settingRecipients]
             newRecipients[index].recipient = e.target.value
             setSettingRecipients(newRecipients)

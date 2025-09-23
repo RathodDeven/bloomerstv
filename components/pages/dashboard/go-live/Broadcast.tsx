@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   DisableAudioIcon,
   DisableVideoIcon,
@@ -12,6 +11,7 @@ import {
 import * as Broadcast from '@livepeer/react/broadcast'
 import { getIngest } from '@livepeer/react/external'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
+import React from 'react'
 
 export const BroadcastLive = ({
   streamKey,
@@ -32,10 +32,7 @@ export const BroadcastLive = ({
           }}
         />
 
-        <Broadcast.Controls
-          autoHide={0}
-          className="centered-row gap-3 mt-[8vw]"
-        >
+        <Broadcast.Controls autoHide={0} className="centered-row gap-3 mt-[8vw]">
           <Broadcast.EnabledTrigger className="w-10 h-10 hover:scale-110 transition-all ease-in-out duration-300 transform flex-shrink-0 border-none outline-none bg-black/30 backdrop-blur-sm rounded-full text-white p-1 cursor-pointer">
             <Broadcast.EnabledIndicator asChild matcher={false}>
               <PlayIcon className="w-full h-full" />
@@ -87,26 +84,17 @@ export const BroadcastLive = ({
 
         <Broadcast.LoadingIndicator asChild matcher={false}>
           <div className="absolute text-white overflow-hidden py-1 px-2 rounded-full top-2 left-2 bg-black/40 backdrop-blur-sm flex items-center">
-            <Broadcast.StatusIndicator
-              matcher="live"
-              className="flex gap-2 items-center"
-            >
+            <Broadcast.StatusIndicator matcher="live" className="flex gap-2 items-center">
               <div className="bg-brand animate-pulse h-1.5 w-1.5 rounded-full" />
               <span className="text-xs text-brand select-none">LIVE</span>
             </Broadcast.StatusIndicator>
 
-            <Broadcast.StatusIndicator
-              className="flex gap-2 items-center"
-              matcher="pending"
-            >
+            <Broadcast.StatusIndicator className="flex gap-2 items-center" matcher="pending">
               <div className="bg-white h-1.5 w-1.5 rounded-full animate-pulse" />
               <span className="text-xs select-none">LOADING</span>
             </Broadcast.StatusIndicator>
 
-            <Broadcast.StatusIndicator
-              className="flex gap-2 items-center"
-              matcher="idle"
-            >
+            <Broadcast.StatusIndicator className="flex gap-2 items-center" matcher="idle">
               <div className="bg-white h-1.5 w-1.5 rounded-full animate-pulse" />
               <span className="text-xs select-none">IDLE</span>
             </Broadcast.StatusIndicator>
@@ -122,10 +110,7 @@ const ContextComponent = ({
   onStreamStatusChange,
   __scopeBroadcast
 }: Broadcast.BroadcastScopedProps<any>) => {
-  const context = Broadcast.useBroadcastContext(
-    'CurrentSource',
-    __scopeBroadcast
-  )
+  const context = Broadcast.useBroadcastContext('CurrentSource', __scopeBroadcast)
 
   const { status } = Broadcast.useStore(context.store, ({ status }) => ({
     status
@@ -146,7 +131,7 @@ const SourceSelectComposed = React.forwardRef(
     ref: React.Ref<HTMLButtonElement> | undefined
   ) => (
     <Broadcast.SourceSelect name={name} type={type}>
-      {(devices) =>
+      {devices =>
         devices ? (
           <>
             <Broadcast.SelectTrigger
@@ -156,9 +141,7 @@ const SourceSelectComposed = React.forwardRef(
             >
               <Broadcast.SelectValue
                 placeholder={
-                  type === 'audioinput'
-                    ? 'Select an audio input'
-                    : 'Select a video input'
+                  type === 'audioinput' ? 'Select an audio input' : 'Select a video input'
                 }
               />
               <Broadcast.SelectIcon>
@@ -169,7 +152,7 @@ const SourceSelectComposed = React.forwardRef(
               <Broadcast.SelectContent className="overflow-hidden bg-black/70 backdrop-blur-sm  text-white rounded-xl">
                 <Broadcast.SelectViewport className="p-1 rounded-lg">
                   <Broadcast.SelectGroup>
-                    {devices?.map((device) => (
+                    {devices?.map(device => (
                       <SourceSelectItem
                         key={device.deviceId}
                         value={device.deviceId}
@@ -191,41 +174,40 @@ const SourceSelectComposed = React.forwardRef(
   )
 )
 
-const SourceSelectItem = React.forwardRef<
-  HTMLDivElement,
-  Broadcast.SelectItemProps
->(({ children, ...props }, forwardedRef) => {
-  return (
-    <Broadcast.SelectItem
-      style={{
-        fontSize: 12,
-        borderRadius: 5,
-        display: 'flex',
-        alignItems: 'center',
-        paddingRight: 35,
-        paddingLeft: 25,
-        position: 'relative',
-        userSelect: 'none',
-        height: 30
-      }}
-      {...props}
-      ref={forwardedRef}
-    >
-      <Broadcast.SelectItemText>{children}</Broadcast.SelectItemText>
-      <Broadcast.SelectItemIndicator
+const SourceSelectItem = React.forwardRef<HTMLDivElement, Broadcast.SelectItemProps>(
+  ({ children, ...props }, forwardedRef) => {
+    return (
+      <Broadcast.SelectItem
         style={{
-          position: 'absolute',
-          left: 0,
-          width: 25,
+          fontSize: 12,
+          borderRadius: 5,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          paddingRight: 35,
+          paddingLeft: 25,
+          position: 'relative',
+          userSelect: 'none',
+          height: 30
         }}
+        {...props}
+        ref={forwardedRef}
       >
-        <CheckIcon style={{ width: 14, height: 14 }} />
-      </Broadcast.SelectItemIndicator>
-    </Broadcast.SelectItem>
-  )
-})
+        <Broadcast.SelectItemText>{children}</Broadcast.SelectItemText>
+        <Broadcast.SelectItemIndicator
+          style={{
+            position: 'absolute',
+            left: 0,
+            width: 25,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <CheckIcon style={{ width: 14, height: 14 }} />
+        </Broadcast.SelectItemIndicator>
+      </Broadcast.SelectItem>
+    )
+  }
+)
 
 export default Broadcast

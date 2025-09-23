@@ -1,7 +1,8 @@
-import React from 'react'
-import { GITCOIN_ROUND_LINK } from '../../../utils/config'
 import { motion } from 'framer-motion'
+import React from 'react'
 import Countdown from 'react-countdown'
+import { GITCOIN_ROUND_LINK } from '../../../utils/config'
+
 const ContributeDiv = () => {
   return (
     <div
@@ -65,9 +66,8 @@ const ContributeDiv = () => {
               Support BloomersTV on Gitcion Grants Round 22
             </div>
             <div className="text-xs font-normal">
-              Your contribution of even just $1 will be matched, helping to
-              create a greater impact in the development of this open-source
-              project.
+              Your contribution of even just $1 will be matched, helping to create a greater impact
+              in the development of this open-source project.
             </div>
           </div>
 

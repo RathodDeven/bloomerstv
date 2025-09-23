@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
-import LiveStreamEditor from './LiveStreamEditor'
-import LiveChat from '../../../common/LiveChat/LiveChat'
 import useSession from '../../../../utils/hooks/useSession'
+import LiveChat from '../../../common/LiveChat/LiveChat'
+import LiveStreamEditor from './LiveStreamEditor'
 
 const GoLivePage = () => {
   const { account } = useSession()
@@ -15,11 +15,7 @@ const GoLivePage = () => {
       <div className="w-[280px] 2xl:w-[350px] flex-none h-full shrink-0">
         {/* {createdPublicationId ? ( */}
         {account?.address && (
-          <LiveChat
-            accountAddress={account?.address}
-            showPopOutChat
-            showLiveCount
-          />
+          <LiveChat accountAddress={account?.address} showPopOutChat showLiveCount />
         )}
         {/* // ) : (
         //   <div className="flex bg-s-bg flex-col gap-y-8 items-center justify-center h-full">

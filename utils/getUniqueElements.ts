@@ -16,12 +16,9 @@ export function getUniqueElements<T>(array: T[]): T[] {
  * @param getKey - A function that extracts the comparison key from each element
  * @returns A new array with duplicates removed
  */
-export function getUniqueElementsByKey<T>(
-  array: T[],
-  getKey: (item: T) => any
-): T[] {
+export function getUniqueElementsByKey<T>(array: T[], getKey: (item: T) => any): T[] {
   const seen = new Set()
-  return array.filter((item) => {
+  return array.filter(item => {
     const key = getKey(item)
     if (seen.has(key)) return false
     seen.add(key)
@@ -40,7 +37,7 @@ export function getUniqueElementsByKey<T>(
 export function getUniqueStringsIgnoreCase(strings?: string[]): string[] {
   if (!strings) return []
   const seen = new Set<string>()
-  return strings.filter((str) => {
+  return strings.filter(str => {
     const lowerStr = str.toLowerCase()
     if (seen.has(lowerStr)) return false
     seen.add(lowerStr)

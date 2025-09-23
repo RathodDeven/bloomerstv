@@ -1,33 +1,23 @@
-import React, { useState } from 'react'
+import { AddPhotoAlternate, EditNote, MonetizationOn } from '@mui/icons-material'
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material'
 import {
-  TextField,
-  Box,
-  Typography,
-  Button,
-  CircularProgress
-} from '@mui/material'
-import {
-  EditNote,
-  AddPhotoAlternate,
-  MonetizationOn
-} from '@mui/icons-material'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
-import uploadToIPFS from '../../../../utils/uploadToIPFS'
-
-import {
-  CreateCoinArgs,
+  type CreateCoinArgs,
   createCoinCall,
-  ValidMetadataURI
+  getCoinCreateFromLogs,
+  type ValidMetadataURI
 } from '@zoralabs/coins-sdk'
-import { useAccount, useSendTransaction } from 'wagmi'
-import { Address } from 'viem'
-import { base } from 'viem/chains'
+import type React from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
-import useHandleWrongNetwork from '../../../../utils/hooks/useHandleWrongNetwork'
+import type { Address } from 'viem'
+import { base } from 'viem/chains'
+import { useAccount, useSendTransaction } from 'wagmi'
 import { PROJECT_ADDRESS } from '../../../../utils/config'
-import { getCoinCreateFromLogs } from '@zoralabs/coins-sdk'
+import useHandleWrongNetwork from '../../../../utils/hooks/useHandleWrongNetwork'
 import { acl, storageClient } from '../../../../utils/lib/lens/storageClient'
 import { viemPublicClientBase } from '../../../../utils/lib/viemPublicClient'
+import uploadToIPFS from '../../../../utils/uploadToIPFS'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 
 interface CreateCoinModalProps {
   open: boolean
@@ -35,11 +25,7 @@ interface CreateCoinModalProps {
   onCoinCreated?: () => void
 }
 
-export default function CreateCoinModal({
-  open,
-  onClose,
-  onCoinCreated
-}: CreateCoinModalProps) {
+export default function CreateCoinModal({ open, onClose, onCoinCreated }: CreateCoinModalProps) {
   const { address } = useAccount()
   const handleWrongNetwork = useHandleWrongNetwork(base.id)
 
@@ -94,7 +80,7 @@ export default function CreateCoinModal({
       setCurrentStatus('Uploading image...')
 
       // Upload image to IPFS
-      const imageUploadResult = await uploadToIPFS(imageFile, (progress) => {
+      const imageUploadResult = await uploadToIPFS(imageFile, progress => {
         setUploadProgress(progress / 2)
       })
 
@@ -244,7 +230,7 @@ export default function CreateCoinModal({
           variant="outlined"
           fullWidth
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.target.value)}
           placeholder="e.g. My Awesome Coin"
           disabled={status === 'pending' || isUploading}
           required
@@ -257,7 +243,7 @@ export default function CreateCoinModal({
           variant="outlined"
           fullWidth
           value={symbol}
-          onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+          onChange={e => setSymbol(e.target.value.toUpperCase())}
           placeholder="e.g. MAC"
           inputProps={{ maxLength: 10 }}
           helperText="Max 10 characters"
@@ -272,7 +258,7 @@ export default function CreateCoinModal({
           multiline
           rows={3}
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
           placeholder="Enter a description for your coin"
           disabled={status === 'pending' || isUploading}
           required
@@ -307,10 +293,7 @@ export default function CreateCoinModal({
               disabled={status === 'pending' || isUploading}
             />
 
-            <label
-              htmlFor="coin-image-upload"
-              style={{ width: '100%', height: '100%' }}
-            >
+            <label htmlFor="coin-image-upload" style={{ width: '100%', height: '100%' }}>
               {imagePreview ? (
                 <Box
                   sx={{
@@ -361,11 +344,7 @@ export default function CreateCoinModal({
               )}
             </label>
           </Box>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ mt: 0.5, display: 'block' }}
-          >
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
             JPG or PNG format Recommended: Square image, JPG or PNG format
           </Typography>
         </Box>

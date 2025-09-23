@@ -54,10 +54,7 @@ interface AccountTradeMessage extends AccountMessageBase {
   image: string
 }
 
-export type AccountMessage =
-  | AccountCommentMessage
-  | AccountClipMessage
-  | AccountTradeMessage
+export type AccountMessage = AccountCommentMessage | AccountClipMessage | AccountTradeMessage
 
 export type Message = SystemMessage | AccountMessage
 
@@ -87,7 +84,4 @@ export interface SendMessageTradeType extends SendMessageBaseType {
   currencySymbol: string
 }
 
-export type SendMessageType =
-  | SendMessageCommentType
-  | SendMessageClipType
-  | SendMessageTradeType
+export type SendMessageType = SendMessageCommentType | SendMessageClipType | SendMessageTradeType

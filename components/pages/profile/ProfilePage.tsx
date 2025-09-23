@@ -1,43 +1,37 @@
 'use client'
 
+import { useAccount } from '@lens-protocol/react'
+import type { Src } from '@livepeer/react'
 import React, { memo } from 'react'
-import LiveChat from '../../common/LiveChat/LiveChat'
+import toast from 'react-hot-toast'
 import {
   useCreateClipMutation,
-  useStreamReplayRecordingQuery,
-  useStreamerQuery
+  useStreamerQuery,
+  useStreamReplayRecordingQuery
 } from '../../../graphql/generated'
-import ProfileInfoWithStream from './ProfileInfoWithStream'
-import StreamerOffline from './StreamerOffline'
-import { getLiveStreamUrlWebRTC } from '../../../utils/lib/getLiveStreamUrl'
+import { timeAgo } from '../../../utils/helpers'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
+import useSession from '../../../utils/hooks/useSession'
+import formatHandle from '../../../utils/lib/formatHandle'
+import { getLiveStreamUrl, getLiveStreamUrlWebRTC } from '../../../utils/lib/getLiveStreamUrl'
+import Markup from '../../common/Lexical/Markup'
+import LiveChat from '../../common/LiveChat/LiveChat'
+import Player from '../../common/Player/Player'
+import { PlayerStreamingMode, useMyPreferences } from '../../store/useMyPreferences'
+import HorizontalNavigation from '../../ui/HorizontalNavigation'
+import ClipsFeed from '../home/ClipsFeed'
 import StartLoadingPage from '../loading/StartLoadingPage'
 import AboutProfile from './AboutProfile'
-import formatHandle from '../../../utils/lib/formatHandle'
-import PostClipOnLens from './PostClipOnLens'
-import ClipsFeed from '../home/ClipsFeed'
-import toast from 'react-hot-toast'
-import { timeAgo } from '../../../utils/helpers'
-import Markup from '../../common/Lexical/Markup'
-import Player from '../../common/Player/Player'
-import { getLiveStreamUrl } from '../../../utils/lib/getLiveStreamUrl'
-import {
-  PlayerStreamingMode,
-  useMyPreferences
-} from '../../store/useMyPreferences'
-import { Src } from '@livepeer/react'
-import HorizontalNavigation from '../../ui/HorizontalNavigation'
-import ZoraFeaturedCoin from './zora-featured-coin'
-import { useAccount } from '@lens-protocol/react'
-import useSession from '../../../utils/hooks/useSession'
 import { AccountsStreamsFeed } from './AccountsStreamsFeed'
+import PostClipOnLens from './PostClipOnLens'
+import ProfileInfoWithStream from './ProfileInfoWithStream'
+import StreamerOffline from './StreamerOffline'
+import ZoraFeaturedCoin from './zora-featured-coin'
 
 const ProfilePage = ({ handle }: { handle: string }) => {
   const [clipUrl, setClipUrl] = React.useState<string | null>(null)
   const [open, setOpen] = React.useState(false)
-  const playerStreamingMode = useMyPreferences(
-    (state) => state.playerStreamingMode
-  )
+  const playerStreamingMode = useMyPreferences(state => state.playerStreamingMode)
 
   const isMobile = useIsMobile()
 
@@ -78,11 +72,7 @@ const ProfilePage = ({ handle }: { handle: string }) => {
     toast.error(error)
   }
 
-  const handleClipClicked = async (
-    playbackId: string,
-    startTime: number,
-    endTime: number
-  ) => {
+  const handleClipClicked = async (playbackId: string, startTime: number, endTime: number) => {
     try {
       // Use `playbackOffsetMsRef.current` instead of `playbackOffsetMs`
       // const offsetMs = playbackOffsetMsRef.current
@@ -132,7 +122,7 @@ const ProfilePage = ({ handle }: { handle: string }) => {
 
     return (
       <Player
-        onStreamStatusChange={async (isLive) => {
+        onStreamStatusChange={async isLive => {
           if (isLive !== streamer?.streamer?.isActive) {
             await refetch()
           }
@@ -143,7 +133,7 @@ const ProfilePage = ({ handle }: { handle: string }) => {
           <StreamerOffline
             streamReplayRecording={replayRecording?.streamReplayRecording!}
             account={account!}
-            // @ts-ignore
+            // @ts-expect-error
             streamer={streamer?.streamer}
           />
         }
@@ -234,7 +224,7 @@ const ProfilePage = ({ handle }: { handle: string }) => {
             <StreamerOffline
               streamReplayRecording={replayRecording?.streamReplayRecording!}
               account={account!}
-              // @ts-ignore
+              // @ts-expect-error
               streamer={streamer?.streamer!}
             />
           </div>
@@ -242,30 +232,23 @@ const ProfilePage = ({ handle }: { handle: string }) => {
 
         <ProfileInfoWithStream
           account={account}
-          // @ts-ignore
+          // @ts-expect-error
           streamer={streamer?.streamer}
         />
 
         {isMobile && streamer?.streamer?.featuredCoin?.coinAddress && (
           <div className="m-2">
             {' '}
-            <ZoraFeaturedCoin
-              coinAddress={streamer?.streamer?.featuredCoin?.coinAddress}
-            />{' '}
+            <ZoraFeaturedCoin coinAddress={streamer?.streamer?.featuredCoin?.coinAddress} />{' '}
           </div>
         )}
 
-        {(streamer?.streamer?.latestSessionCreatedAt ||
-          streamer?.streamer?.streamDescription) && (
+        {(streamer?.streamer?.latestSessionCreatedAt || streamer?.streamer?.streamDescription) && (
           <div className="sm:mx-8 sm:mt-6 sm:mb-0 text-p-text font-semibold sm:text-base text-sm sm:p-6 m-2 p-3 gap-y-1 start-col  rounded-xl shadow-sm bg-p-hover lg:bg-s-bg">
             {/* // todo add total views count here */}
             {streamer?.streamer?.latestSessionCreatedAt && (
               <div className="">
-                {`${
-                  streamer?.streamer?.isActive
-                    ? 'Started streaming '
-                    : 'Streamed '
-                } ${
+                {`${streamer?.streamer?.isActive ? 'Started streaming ' : 'Streamed '} ${
                   streamer?.streamer?.isActive
                     ? timeAgo(streamer?.streamer?.latestSessionCreatedAt)
                     : timeAgo(streamer?.streamer?.lastSeen)
@@ -274,19 +257,14 @@ const ProfilePage = ({ handle }: { handle: string }) => {
             )}
 
             {streamer?.streamer?.streamDescription && (
-              <Markup className="">
-                {String(streamer?.streamer?.streamDescription)}
-              </Markup>
+              <Markup className="">{String(streamer?.streamer?.streamDescription)}</Markup>
             )}
             {/* links */}
           </div>
         )}
 
         <div className="sm:mx-8 sm:my-6">
-          <HorizontalNavigation
-            navClassName="mx-2 sm:mx-0"
-            navItems={navItems}
-          />
+          <HorizontalNavigation navClassName="mx-2 sm:mx-0" navItems={navItems} />
         </div>
       </div>
 
@@ -294,9 +272,7 @@ const ProfilePage = ({ handle }: { handle: string }) => {
         <div className="w-[310px] relative 2xl:w-[350px] flex-none h-full">
           {streamer?.streamer?.featuredCoin?.coinAddress && (
             <div className="absolute w-[310px] 2xl:w-[350px] top-14 p-2 left-0 to-transparent z-50">
-              <ZoraFeaturedCoin
-                coinAddress={streamer?.streamer?.featuredCoin?.coinAddress}
-              />
+              <ZoraFeaturedCoin coinAddress={streamer?.streamer?.featuredCoin?.coinAddress} />
             </div>
           )}
           <LiveChat accountAddress={account?.address} />

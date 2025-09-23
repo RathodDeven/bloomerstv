@@ -1,4 +1,4 @@
-import { Account } from '@lens-protocol/react'
+import type { Account } from '@lens-protocol/react'
 import { stringToLength } from '../stringToLength'
 
 const formatHandle = (account?: Account | null, keepSuffix = false): string => {

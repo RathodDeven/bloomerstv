@@ -1,45 +1,34 @@
 'use client'
-import React from 'react'
-import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
-import { useOfflineStreamersQuery } from '../../../graphql/generated'
-
-import SingleHorizontalStreamerDiv from './SingleHorizontalStreamerDiv'
-import useSession from '../../../utils/hooks/useSession'
 import { useAccountsBulk } from '@lens-protocol/react'
+import React from 'react'
+import { useOfflineStreamersQuery } from '../../../graphql/generated'
+import useSession from '../../../utils/hooks/useSession'
+import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
+import SingleHorizontalStreamerDiv from './SingleHorizontalStreamerDiv'
 
 const StreamerHorizontalDiv = () => {
   const { isAuthenticated, authenticatedUser } = useSession()
 
-  const { streamersWithAccounts, loading: streamersLoading } =
-    useStreamersWithAccounts((state) => ({
-      streamersWithAccounts: state.streamersWithAccounts,
-      loading: state.loading
-    }))
-  const { data: offlineStreamers, loading: offlineStreamersLoading } =
-    useOfflineStreamersQuery()
+  const { streamersWithAccounts, loading: streamersLoading } = useStreamersWithAccounts(state => ({
+    streamersWithAccounts: state.streamersWithAccounts,
+    loading: state.loading
+  }))
+  const { data: offlineStreamers, loading: offlineStreamersLoading } = useOfflineStreamersQuery()
   const sortedOfflineStreamers = offlineStreamers?.offlineStreamers
     ? // eslint-disable-next-line no-unsafe-optional-chaining
-      [...offlineStreamers?.offlineStreamers]?.sort(
-        (a, b) => b?.lastSeen - a?.lastSeen
-      )
+      [...offlineStreamers?.offlineStreamers]?.sort((a, b) => b?.lastSeen - a?.lastSeen)
     : []
 
-  const { data: offlineAccounts, loading: offlineAccountsLoading } =
-    useAccountsBulk({
-      addresses:
-        sortedOfflineStreamers
-          ?.map((streamer) => streamer?.accountAddress)
-          ?.slice(0, 50) ?? []
-    })
+  const { data: offlineAccounts, loading: offlineAccountsLoading } = useAccountsBulk({
+    addresses: sortedOfflineStreamers?.map(streamer => streamer?.accountAddress)?.slice(0, 50) ?? []
+  })
 
   const getOfflineVerified = (accountAddress: string) => {
-    return sortedOfflineStreamers?.find(
-      (streamer) => streamer?.accountAddress === accountAddress
-    )?.premium
+    return sortedOfflineStreamers?.find(streamer => streamer?.accountAddress === accountAddress)
+      ?.premium
   }
 
-  const loading =
-    streamersLoading || offlineStreamersLoading || offlineAccountsLoading
+  const loading = streamersLoading || offlineStreamersLoading || offlineAccountsLoading
 
   return (
     <div className="w-full p-4 no-scrollbar overflow-y-auto flex flex-row items-center gap-x-3">
@@ -54,7 +43,7 @@ const StreamerHorizontalDiv = () => {
             </div>
           ))}
 
-      {streamersWithAccounts?.map((streamer) => {
+      {streamersWithAccounts?.map(streamer => {
         return (
           <SingleHorizontalStreamerDiv
             key={streamer?.accountAddress}
@@ -65,9 +54,8 @@ const StreamerHorizontalDiv = () => {
         )
       })}
 
-      {offlineAccounts?.map((account) => {
-        if (isAuthenticated && account?.address === authenticatedUser?.address)
-          return null
+      {offlineAccounts?.map(account => {
+        if (isAuthenticated && account?.address === authenticatedUser?.address) return null
         return (
           <SingleHorizontalStreamerDiv
             key={account?.address}

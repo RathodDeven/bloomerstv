@@ -1,20 +1,14 @@
 'use client'
+import { type Post, usePost } from '@lens-protocol/react'
+import clsx from 'clsx'
 import React from 'react'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
-import VideoPage from './VideoPage'
-import StartLoadingPage from '../loading/StartLoadingPage'
-import clsx from 'clsx'
 import TextAndImagePostPage from '../home/TextAndImagePostPage'
+import StartLoadingPage from '../loading/StartLoadingPage'
 import OtherVideosRecommendations from './OtherVideosRecommendations'
-import { Post, usePost } from '@lens-protocol/react'
+import VideoPage from './VideoPage'
 
-const MasterWatchPage = ({
-  postId,
-  sessionId
-}: {
-  postId?: string
-  sessionId?: string
-}) => {
+const MasterWatchPage = ({ postId, sessionId }: { postId?: string; sessionId?: string }) => {
   const isMobile = useIsMobile()
 
   const { data, loading } = usePost({
@@ -82,11 +76,7 @@ const MasterWatchPage = ({
     )
   }
 
-  return (
-    <div className="centered">
-      This doesn't seem to be a video or stream post
-    </div>
-  )
+  return <div className="centered">This doesn't seem to be a video or stream post</div>
 }
 
 export default MasterWatchPage

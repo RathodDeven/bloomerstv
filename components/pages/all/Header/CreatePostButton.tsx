@@ -1,6 +1,6 @@
+import EditNoteIcon from '@mui/icons-material/EditNote'
 import { IconButton, Tooltip } from '@mui/material'
 import React from 'react'
-import EditNoteIcon from '@mui/icons-material/EditNote'
 import CreatePostPopUp from './CreatePostPopUp'
 
 const CreatePostButton = () => {

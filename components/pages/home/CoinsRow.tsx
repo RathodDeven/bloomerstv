@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { IconButton } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import CoinsRowItem from './CoinsRowItem'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
+import { IconButton } from '@mui/material'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGetFeaturedCoins } from '../../../utils/hooks/useGetFeaturedCoins'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import CoinsRowItem from './CoinsRowItem'
 
 const CoinsRow = () => {
   const { featuredCoins, loading, error } = useGetFeaturedCoins()

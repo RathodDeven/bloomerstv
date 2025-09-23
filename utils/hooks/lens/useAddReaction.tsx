@@ -1,20 +1,18 @@
-import { useState } from 'react'
+import { addReaction } from '@lens-protocol/client/actions'
 import {
-  AddReactionRequest,
-  AddReactionResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type AddReactionRequest,
+  type AddReactionResult,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { addReaction } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseAddReactionReturn {
   execute: (
     request: AddReactionRequest
-  ) => Promise<
-    ResultAsync<AddReactionResult, UnexpectedError | UnauthenticatedError>
-  >
+  ) => Promise<ResultAsync<AddReactionResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   data: AddReactionResult | null
 }
@@ -26,12 +24,10 @@ const useAddReaction = (): UseAddReactionReturn => {
 
   const execute = async (
     request: AddReactionRequest
-  ): Promise<
-    ResultAsync<AddReactionResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<AddReactionResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await addReaction(sessionClient, request)
 
     setData(result?.isOk() ? result.value : null)

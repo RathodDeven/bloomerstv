@@ -14,7 +14,7 @@ export const getFileFromDataURL = async (
       canvas.height = img.height
       ctx?.drawImage(img, 0, 0, img.width, img.height)
 
-      canvas.toBlob((blob) => {
+      canvas.toBlob(blob => {
         if (blob) {
           const file = new File([blob], fileName, { type: blob.type })
           resolve(file)

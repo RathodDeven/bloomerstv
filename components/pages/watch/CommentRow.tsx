@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import getAvatar from '../../../utils/lib/getAvatar'
-import formatHandle from '../../../utils/lib/formatHandle'
-import Markup from '../../common/Lexical/Markup'
-import CommentSection from './CommentSection'
-import { Button, Tooltip } from '@mui/material'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import { type Post, PostReactionType } from '@lens-protocol/react'
 import CommentIcon from '@mui/icons-material/Comment'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import { Button, Tooltip } from '@mui/material'
 import clsx from 'clsx'
+import React, { useEffect, useState } from 'react'
 import { humanReadableDateTime, timeAgo } from '../../../utils/helpers'
-import useSession from '../../../utils/hooks/useSession'
-import { Post, PostReactionType } from '@lens-protocol/react'
 import useAddReaction from '../../../utils/hooks/lens/useAddReaction'
 import useUndoReaction from '../../../utils/hooks/lens/useUndoReaction'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import useSession from '../../../utils/hooks/useSession'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
+import Markup from '../../common/Lexical/Markup'
+import CommentSection from './CommentSection'
 
 const CommentRow = ({
   comment,
@@ -26,7 +26,7 @@ const CommentRow = ({
 }) => {
   const { isAuthenticated } = useSession()
   const [showComments, setShowComments] = useState(false)
-  const [liked, setLiked] = useState<Boolean>(false)
+  const [liked, setLiked] = useState<boolean>(false)
   const [likesCount, setLikeCount] = useState<number>(comment?.stats?.upvotes)
   const isMobile = useIsMobile()
 
@@ -34,7 +34,7 @@ const CommentRow = ({
     setLiked(comment?.operations?.hasUpvoted ?? false)
     setLikeCount(comment?.stats?.upvotes)
   }, [comment?.stats?.upvotes, comment?.operations?.hasUpvoted])
-  // @ts-ignore
+  // @ts-expect-error
   const content = comment?.metadata?.content
 
   const { execute: addReaction } = useAddReaction()
@@ -75,24 +75,18 @@ const CommentRow = ({
   }
 
   return (
-    <div
-      className={clsx('flex flex-row pl-2.5 py-3 gap-x-3 w-full', className)}
-    >
+    <div className={clsx('flex flex-row pl-2.5 py-3 gap-x-3 w-full', className)}>
       <img src={getAvatar(comment?.author)} className="w-8 h-8 rounded-full" />
       <div className="flex flex-col w-full">
         <div className="start-center-row gap-x-2">
-          <div className="text-sm sm:text-base font-semibold">
-            {formatHandle(comment?.author)}
-          </div>
+          <div className="text-sm sm:text-base font-semibold">{formatHandle(comment?.author)}</div>
           <Tooltip title={humanReadableDateTime(comment?.timestamp)} arrow>
             <div className="text-sm sm:text-base font-semibold text-s-text cursor-pointer">
               {timeAgo(comment?.timestamp)}
             </div>
           </Tooltip>
         </div>
-        <Markup className="text-sm sm:text-base font-semibold text-s-text">
-          {content!}
-        </Markup>
+        <Markup className="text-sm sm:text-base font-semibold text-s-text">{content!}</Markup>
 
         {comment?.id && (
           <div className="start-center-row pt-1 gap-x-3 ml-[-10px]">
@@ -133,13 +127,7 @@ const CommentRow = ({
           </div>
         )}
 
-        {showComments && (
-          <CommentSection
-            post={comment}
-            className="ml-[-10px]"
-            level={level + 1}
-          />
-        )}
+        {showComments && <CommentSection post={comment} className="ml-[-10px]" level={level + 1} />}
       </div>
     </div>
   )

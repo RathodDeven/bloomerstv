@@ -1,14 +1,11 @@
+import InfoIcon from '@mui/icons-material/Info'
+import VideocamIcon from '@mui/icons-material/Videocam'
 import { Button, CircularProgress } from '@mui/material'
 import React, { memo, useState } from 'react'
 import ModalWrapper from '../../../ui/Modal/ModalWrapper'
-import InfoIcon from '@mui/icons-material/Info'
-import VideocamIcon from '@mui/icons-material/Videocam'
 import OBSSetupGuide from './OBSSetupGuide'
-const ConnectStream = ({
-  handleGoLiveFromBrowser
-}: {
-  handleGoLiveFromBrowser: () => void
-}) => {
+
+const ConnectStream = ({ handleGoLiveFromBrowser }: { handleGoLiveFromBrowser: () => void }) => {
   const [open, setOpen] = useState(false)
   return (
     <div className="font-bold flex flex-col items-center justify-center">
@@ -19,9 +16,7 @@ const ConnectStream = ({
         className="w-fit"
       />
 
-      <div className="text-sm mt-4 text-[#7a7a81]">
-        Connect streaming software to go live
-      </div>
+      <div className="text-sm mt-4 text-[#7a7a81]">Connect streaming software to go live</div>
       <Button
         variant="text"
         onClick={() => {

@@ -1,18 +1,18 @@
 'use client'
 import clsx from 'clsx'
-import React from 'react'
 import { Inter } from 'next/font/google'
+import { usePathname } from 'next/navigation'
+import type React from 'react'
 import TopHeader from '@/components/pages/all/Header/TopHeader'
 import useIsMobile from '../../utils/hooks/useIsMobile'
-import MobileBottomNavbar from '../pages/all/MobileBottom/MobileBottomNavbar'
-import LoginPage from '../pages/home/LoginPage'
-import StreamerSidebar from '../common/StreamerSidebar'
-import { usePathname } from 'next/navigation'
-import DashboardSidebar from '../pages/dashboard/DashboardSidebar'
 import useLiveStreamerProfiles from '../../utils/hooks/useLiveStreamerProfiles'
 import useNotifictionSubscriptions from '../../utils/hooks/useNotifictionSubscriptions'
-import { ModalRoot } from '../common/ModalRoot'
 import { useStreamReplayPosts } from '../../utils/hooks/useStreamReplayPosts'
+import { ModalRoot } from '../common/ModalRoot'
+import StreamerSidebar from '../common/StreamerSidebar'
+import MobileBottomNavbar from '../pages/all/MobileBottom/MobileBottomNavbar'
+import DashboardSidebar from '../pages/dashboard/DashboardSidebar'
+import LoginPage from '../pages/home/LoginPage'
 
 interface Props {
   // Define any props that the component will accept
@@ -28,12 +28,7 @@ const UILayoutPage = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {isMobile ? (
-        <div
-          className={clsx(
-            inter.className,
-            'bg-s-bg text-p-text flex flex-col h-dvh w-screen'
-          )}
-        >
+        <div className={clsx(inter.className, 'bg-s-bg text-p-text flex flex-col h-dvh w-screen')}>
           <LoginPage />
           <div className="flex-grow overflow-auto no-scrollbar">{children}</div>
           <div className="shrink-0 w-full">
@@ -69,7 +64,7 @@ const GlobalHooks = () => {
   return <></>
 }
 
-const UILayout: React.FC<Props> = (props) => {
+const UILayout: React.FC<Props> = props => {
   return (
     <>
       <ModalRoot />

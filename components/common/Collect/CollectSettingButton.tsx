@@ -1,13 +1,13 @@
-import React from 'react'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
-import CollectSettingPopUp from './CollectSettingPopUp'
-import clsx from 'clsx'
-import { useCollectPreferences } from '../../store/useCollectPreferences'
-import { IconButton } from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
 import LayersIcon from '@mui/icons-material/Layers'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { IconButton } from '@mui/material'
+import clsx from 'clsx'
+import React from 'react'
+import { useCollectPreferences } from '../../store/useCollectPreferences'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
+import CollectSettingPopUp from './CollectSettingPopUp'
 
 const CollectSettingButton = ({
   className,
@@ -20,8 +20,9 @@ const CollectSettingButton = ({
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { amount, disableCollect, collectLimit, referalFee, numberOfDays } =
-    useCollectPreferences((state) => state)
+  const { amount, disableCollect, collectLimit, referalFee, numberOfDays } = useCollectPreferences(
+    state => state
+  )
 
   return (
     <>
@@ -57,13 +58,11 @@ const CollectSettingButton = ({
               <div className="start-center-row space-x-2">
                 {/* @ts-ignore */}
                 {amount?.value && amount?.asset?.symbol && (
-                  // @ts-ignore
+                  // @ts-expect-error
                   <span>{`${amount?.value} ${amount.asset.symbol}`}</span>
                 )}
 
-                {collectLimit && (
-                  <span>{`${collectLimit}/${collectLimit} left`}</span>
-                )}
+                {collectLimit && <span>{`${collectLimit}/${collectLimit} left`}</span>}
 
                 {referalFee && amount && (
                   <span className="centered-row gap-x-0.5">

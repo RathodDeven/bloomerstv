@@ -24,20 +24,17 @@ export const LENS_JWKS_URL = isMainnet
 
 export const AVATAR = 'tr:w-120,h-120'
 
-export const NODE_API_MODE =
-  process.env.NEXT_PUBLIC_NODE_API_MODE ?? 'production'
+export const NODE_API_MODE = process.env.NEXT_PUBLIC_NODE_API_MODE ?? 'production'
 
 export const LOCAL_NODE_API_URL =
   process.env.NEXT_PUBLIC_LOCAL_NODE_API_URL ?? 'http://localhost:8000'
 export const PRODUCTION_NODE_API_URL = 'https://api.bloomers.tv'
 // export const PRODUCTION_NODE_API_URL = 'https://bloomerstv-api.onrender.com'
-export const DEVELOPMENT_NODE_API_URL =
-  'https://bloomerstv-api-dev.onrender.com'
+export const DEVELOPMENT_NODE_API_URL = 'https://bloomerstv-api-dev.onrender.com'
 
 export const LOCAL_WIDGETS_URL = 'http://localhost:3001'
 export const PRODUCTION_WIDGETS_URL = 'https://widgets.bloomers.tv'
-export const DEVELOPMENT_WIDGETS_URL =
-  'https://widgets-git-dev-diversehq-xyz.vercel.app'
+export const DEVELOPMENT_WIDGETS_URL = 'https://widgets-git-dev-diversehq-xyz.vercel.app'
 
 export const WIDGETS_URL =
   NODE_API_MODE === 'local'
@@ -80,19 +77,15 @@ export const handlePrefix = 'lens/'
 
 export const SHARE_LENS_URL = 'https://share.lens.xyz'
 export const GITHUB_URL = 'https://github.com/bloomerstv/bloomerstv'
-export const FEEDBACK_URL =
-  'https://github.com/bloomerstv/bloomerstv/issues/new'
+export const FEEDBACK_URL = 'https://github.com/bloomerstv/bloomerstv/issues/new'
 export const REPORT_URL = 'https://github.com/bloomerstv/bloomerstv/issues/new'
 export const HEY_URL = 'https://hey.xyz/u/bloomerstv'
-export const HEY_APP_LINK = isMainnet
-  ? 'https://hey.xyz'
-  : 'https://testnet.hey.xyz'
+export const HEY_APP_LINK = isMainnet ? 'https://hey.xyz' : 'https://testnet.hey.xyz'
 export const DISCORD_INVITE_URL = 'https://discord.gg/rXUBVm7JxA'
 export const X_URL = 'https://x.com/intent/follow?screen_name=bloomerstv'
 export const DONATE_LINK =
   'https://explorer.gitcoin.co/#/projects/0x16429f74cbb2cef6f9f48481b6c8bc49fa12989d75c1f9d82462f8bb91f079eb'
-export const PRIVACY_POLICY =
-  'https://www.termsfeed.com/live/2064c7f9-de9e-44a0-b640-20cbc51c3b04'
+export const PRIVACY_POLICY = 'https://www.termsfeed.com/live/2064c7f9-de9e-44a0-b640-20cbc51c3b04'
 
 export const PROJECT_ADDRESS = '0xC8D0E78379d96D0A436b8597835670b13445A6Db'
 
@@ -205,8 +198,7 @@ export const ALERT_BOX_PREVIEW_VIDEO =
 export const HOW_TO_ADD_WIDGETS_VIDEO =
   'https://vod-cdn.lp-playback.studio/raw/jxf4iblf6wlsyor6526t4tcmtmqa/catalyst-vod-com/hls/6913ct06fo4vrc9p/1080p0.mp4'
 
-export const GITCOIN_ROUND_LINK =
-  'https://explorer.gitcoin.co/#/round/42161/608/149'
+export const GITCOIN_ROUND_LINK = 'https://explorer.gitcoin.co/#/round/42161/608/149'
 
 export const SuperFluidInfo = {
   endPoint: 'https://polygon-mainnet.subgraph.x.superfluid.dev/',

@@ -1,27 +1,20 @@
-import React from 'react'
-import formatHandle from '../../../utils/lib/formatHandle'
-import toast from 'react-hot-toast'
-import LoadingButton from '@mui/lab/LoadingButton'
-import {
-  Button,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  MenuList,
-  Tooltip
-} from '@mui/material'
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove'
+import type { Account } from '@lens-protocol/react'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Button, ListItemIcon, Menu, MenuItem, MenuList, Tooltip } from '@mui/material'
+import React from 'react'
+import toast from 'react-hot-toast'
 import {
   useAddNotificationSubscriberToStreamerMutation,
   useIsSubscribedNotificationForStreamerQuery,
   useRemoveNotificationSubscriberFromStreamerMutation
 } from '../../../graphql/generated'
-import { useTheme } from '../../wrappers/TailwindThemeProvider'
-import { Account } from '@lens-protocol/react'
 import useSession from '../../../utils/hooks/useSession'
+import formatHandle from '../../../utils/lib/formatHandle'
+import { useTheme } from '../../wrappers/TailwindThemeProvider'
 
 const FollowingButton = ({
   account,
@@ -42,44 +35,38 @@ const FollowingButton = ({
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
   const { theme } = useTheme()
-  const { data: isSubscribed, refetch } =
-    useIsSubscribedNotificationForStreamerQuery({
-      variables: {
-        accountAddress: account.address
-      },
-      skip: !isAuthenticated || !account.address
-    })
+  const { data: isSubscribed, refetch } = useIsSubscribedNotificationForStreamerQuery({
+    variables: {
+      accountAddress: account.address
+    },
+    skip: !isAuthenticated || !account.address
+  })
 
   const [addSubscriber] = useAddNotificationSubscriberToStreamerMutation({
     variables: {
       accountAddress: account.address
     },
     onCompleted: () => {
-      toast.success(
-        `You will recieve notification when ${formatHandle(account)} goes live!`
-      )
+      toast.success(`You will recieve notification when ${formatHandle(account)} goes live!`)
       refetch()
     }
   })
 
-  const [removeSubscriber] =
-    useRemoveNotificationSubscriberFromStreamerMutation({
-      variables: {
-        accountAddress: account.address
-      },
-      onCompleted: () => {
-        toast.success(
-          `You will no longer recieve notifications from ${formatHandle(account)}`
-        )
-        refetch()
-      }
-    })
+  const [removeSubscriber] = useRemoveNotificationSubscriberFromStreamerMutation({
+    variables: {
+      accountAddress: account.address
+    },
+    onCompleted: () => {
+      toast.success(`You will no longer recieve notifications from ${formatHandle(account)}`)
+      refetch()
+    }
+  })
 
   const handleOptionsClose = () => {
     setAnchorEl(null)
   }
 
-  const handleOptionsClicked = (e) => {
+  const handleOptionsClicked = e => {
     e.stopPropagation()
     setAnchorEl(e.currentTarget)
   }
@@ -145,12 +132,11 @@ const FollowingButton = ({
               handleOptionsClose()
             }}
             sx={{
-              backgroundColor:
-                !isSubscribed?.isSubscribedNotificationForStreamer
-                  ? theme === 'light'
-                    ? 'rgba(0,0,0,0.1)'
-                    : 'rgba(255,255,255,0.1)'
-                  : undefined
+              backgroundColor: !isSubscribed?.isSubscribedNotificationForStreamer
+                ? theme === 'light'
+                  ? 'rgba(0,0,0,0.1)'
+                  : 'rgba(255,255,255,0.1)'
+                : undefined
             }}
           >
             <ListItemIcon>
@@ -224,9 +210,7 @@ const FollowingButton = ({
                 textTransform: 'none'
               }}
             >
-              <div className="font-semibold text-sm">
-                {isFollowing ? 'Following' : 'Follow'}
-              </div>
+              <div className="font-semibold text-sm">{isFollowing ? 'Following' : 'Follow'}</div>
             </LoadingButton>
           </Tooltip>
         </>

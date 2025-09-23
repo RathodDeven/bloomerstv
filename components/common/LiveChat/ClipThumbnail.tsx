@@ -1,7 +1,7 @@
-import React from 'react'
-import LoadingImage from '../../ui/LoadingImage'
 import { usePost } from '@lens-protocol/react'
 import clsx from 'clsx'
+import React from 'react'
+import LoadingImage from '../../ui/LoadingImage'
 
 const ClipPostThumbnail = ({
   clipPostId,
@@ -14,14 +14,8 @@ const ClipPostThumbnail = ({
     post: clipPostId
   })
 
-  if (
-    !loading &&
-    data?.__typename === 'Post' &&
-    data?.metadata?.__typename === 'VideoMetadata'
-  ) {
-    return (
-      <LoadingImage className={className} src={data?.metadata?.video?.cover} />
-    )
+  if (!loading && data?.__typename === 'Post' && data?.metadata?.__typename === 'VideoMetadata') {
+    return <LoadingImage className={className} src={data?.metadata?.video?.cover} />
   }
 
   return <div className={clsx(className, 'animate-pulse bg-s-bg')} />

@@ -1,7 +1,7 @@
+// import { SettingRecipientType } from '../common/Collect/CollectSettingPopUp'
+import type { Erc20Amount } from '@lens-protocol/react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-// import { SettingRecipientType } from '../common/Collect/CollectSettingPopUp'
-import { Erc20Amount } from '@lens-protocol/react'
 
 interface CollectPreferencesStore {
   amount?: Erc20Amount
@@ -24,7 +24,7 @@ interface CollectPreferencesStore {
 
 export const useCollectPreferences = create<CollectPreferencesStore>(
   persist(
-    (set) => ({
+    set => ({
       amount: undefined,
       collectLimit: undefined,
       referalFee: undefined,
@@ -36,8 +36,7 @@ export const useCollectPreferences = create<CollectPreferencesStore>(
       setAmount: (amount?: Erc20Amount) => set(() => ({ amount })),
       setCollectLimit: (collectLimit?: number) => set(() => ({ collectLimit })),
       setReferalFee: (referalFee?: number) => set(() => ({ referalFee })),
-      setDisableCollect: (disableCollect: boolean) =>
-        set(() => ({ disableCollect })),
+      setDisableCollect: (disableCollect: boolean) => set(() => ({ disableCollect })),
       setNumberOfDays: (numberOfDays?: number) => set(() => ({ numberOfDays })),
       setFollowerOnly: (followerOnly: boolean) => set(() => ({ followerOnly }))
       // setRecipients: (recipients?: RecipientWithSplit[]) =>

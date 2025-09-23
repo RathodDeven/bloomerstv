@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { blockAccount } from '@lens-protocol/client/actions'
 import {
-  BlockRequest,
-  BlockResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type BlockRequest,
+  type BlockResult,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { blockAccount } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseBlockAccountReturn {
   execute: (
@@ -25,12 +25,10 @@ const useBlockAccount = (): UseBlockAccountReturn => {
 
   const execute = async (
     blockRequest: BlockRequest
-  ): Promise<
-    ResultAsync<BlockResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<BlockResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await blockAccount(sessionClient, blockRequest)
 
     setData(result?.isOk() ? result.value : null)

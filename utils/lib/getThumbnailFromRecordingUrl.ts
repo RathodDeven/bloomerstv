@@ -1,7 +1,4 @@
-export const getThumbnailFromRecordingUrl = (
-  url: string,
-  keyframe: number = 0
-): string => {
+export const getThumbnailFromRecordingUrl = (url: string, keyframe: number = 0): string => {
   const baseUrl = `${url.split('/').slice(0, -1).join('/')}/thumbnails/keyframes_${keyframe}`
   // const jpgUrl = `${baseUrl}.jpg`
   const pngUrl = `${baseUrl}.png`

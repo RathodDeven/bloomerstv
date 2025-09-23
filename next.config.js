@@ -2,6 +2,7 @@
 // const webpack = require('webpack')
 
 import nextPWA from '@ducanh2912/next-pwa'
+
 const withPWA = nextPWA({
   dest: 'public',
   cacheOnFrontEndNav: true,
@@ -20,7 +21,7 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'cdn.stamp.fyi']
   },
   reactStrictMode: false,
-  webpack: (config) => {
+  webpack: config => {
     config.resolve.fallback = { fs: false, net: false, tls: false }
     config.externals.push('pino-pretty', 'lokijs', 'encoding')
 

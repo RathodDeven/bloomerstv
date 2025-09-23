@@ -24,7 +24,11 @@
       "a11y": {
         "useButtonType": "off",
         "noSvgWithoutTitle": "off",
-        "noLabelWithoutControl": "off"
+        "noLabelWithoutControl": "off",
+        "noAutofocus": "off",
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off",
+        "useAltText": "off"
       }
     }
   },
@@ -47,6 +51,19 @@
     }
   },
   "files": {
-    "experimentalScannerIgnores": ["node_modules", ".next", "dist", "build", "out", "bun.lockb", "*.min.js"]
+    "includes": [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.json",
+      "!**/.next",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/out"
+    ],
+    "ignoreUnknown": true,
+    "maxSize": 2097152
   }
 }

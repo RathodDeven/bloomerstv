@@ -1,3 +1,21 @@
+import { MediaImageMimeType } from '@lens-protocol/metadata'
+import {
+  type Account,
+  PageSize,
+  useAccounts,
+  useAccount as useProfileAccount,
+  usePublicClient
+} from '@lens-protocol/react'
+import { MonetizationOnOutlined } from '@mui/icons-material'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+// import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import CloseIcon from '@mui/icons-material/Close'
+import GifIcon from '@mui/icons-material/Gif'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
+import SendIcon from '@mui/icons-material/Send'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Button,
   IconButton,
@@ -8,57 +26,30 @@ import {
   TextField,
   Tooltip
 } from '@mui/material'
-import React, { useEffect } from 'react'
-import SendIcon from '@mui/icons-material/Send'
-
-// import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import CloseIcon from '@mui/icons-material/Close'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import {
-  useAccount,
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract
-} from 'wagmi'
-import LoadingButton from '@mui/lab/LoadingButton'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-import { Address, formatUnits } from 'viem'
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
-import toast from 'react-hot-toast'
-import useEns from '../../../utils/hooks/useEns'
-import getAvatar from '../../../utils/lib/getAvatar'
-import getStampFyiURL from '../../../utils/getStampFyiURL'
-import formatHandle from '../../../utils/lib/formatHandle'
-import { getShortAddress } from '../../../utils/lib/getShortAddress'
-import { CURRENCIES, LENS_CHAIN_ID } from '../../../utils/config'
-import { Erc20TokenABI } from '../../../utils/lib/erc20'
-import {
-  tippingContractAbi,
-  tippingContractAddress
-} from '../../../utils/lib/tipping'
-import { useTokenPriceQuery } from '../../../graphql/generated'
-import useHandleWrongNetwork from '../../../utils/hooks/useHandleWrongNetwork'
-import { MAX_UINT256 } from '../../../utils/contants'
-import { getLastStreamPostId } from '../../../utils/lib/lensApi'
-import { viewPublicClientPolygon } from '../../../utils/lib/viemPublicClient'
-import { ImageAttachment, SendMessageInput } from './LiveChat'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-import { MediaImageMimeType } from '@lens-protocol/metadata'
-import uploadToIPFS from '../../../utils/uploadToIPFS'
-import GifIcon from '@mui/icons-material/Gif'
-import { AnimatePresence, motion } from 'framer-motion'
-import GifAndStickerSelector from './GifAndStickerSelector'
-import {
-  useAccount as useProfileAccount,
-  useAccounts,
-  Account,
-  usePublicClient,
-  PageSize
-} from '@lens-protocol/react'
-import useSession from '../../../utils/hooks/useSession'
-import TipZoraCoins from './TipZoraCoins'
-import { MonetizationOnOutlined } from '@mui/icons-material'
 import { ConnectKitButton } from 'connectkit'
+import { AnimatePresence, motion } from 'framer-motion'
+import React, { useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { type Address, formatUnits } from 'viem'
+import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useTokenPriceQuery } from '../../../graphql/generated'
+import { CURRENCIES, LENS_CHAIN_ID } from '../../../utils/config'
+import { MAX_UINT256 } from '../../../utils/contants'
+import getStampFyiURL from '../../../utils/getStampFyiURL'
+import useEns from '../../../utils/hooks/useEns'
+import useHandleWrongNetwork from '../../../utils/hooks/useHandleWrongNetwork'
+import useSession from '../../../utils/hooks/useSession'
+import { Erc20TokenABI } from '../../../utils/lib/erc20'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
+import { getShortAddress } from '../../../utils/lib/getShortAddress'
+import { getLastStreamPostId } from '../../../utils/lib/lensApi'
+import { tippingContractAbi, tippingContractAddress } from '../../../utils/lib/tipping'
+import { viewPublicClientPolygon } from '../../../utils/lib/viemPublicClient'
+import uploadToIPFS from '../../../utils/uploadToIPFS'
+import GifAndStickerSelector from './GifAndStickerSelector'
+import type { ImageAttachment, SendMessageInput } from './LiveChat'
+import TipZoraCoins from './TipZoraCoins'
 
 const LiveChatInput = ({
   inputMessage,
@@ -79,19 +70,15 @@ const LiveChatInput = ({
   const imageFileInputRef = React.useRef(null)
   const [selectGif, setSelectGif] = React.useState<boolean>(false)
   const [tipZoraCoins, setTipZoraCoins] = React.useState<boolean>(false)
-  const {
-    isAuthenticated,
-    account,
-    authenticatedFarcasterUser,
-    isFarcasterAuthenticated
-  } = useSession()
+  const { isAuthenticated, account, authenticatedFarcasterUser, isFarcasterAuthenticated } =
+    useSession()
   const { ensAvatar, ensName } = useEns({
     address: isAuthenticated ? account?.owner : null
   })
 
   // const accountAddress = isAuthenticated
   //   ? account?.address
-  //   : // @ts-ignore
+  //   : // @ts-expect-error
   //     (account?.owner ?? '')
   const avatar =
     isFarcasterAuthenticated && authenticatedFarcasterUser?.pfpUrl
@@ -146,13 +133,11 @@ const LiveChatInput = ({
   })
 
   const [amountValue, setAmountValue] = React.useState<number>(100)
-  const [amountCurrency, setAmountCurrency] = React.useState<
-    String | undefined
-  >(CURRENCIES[0]?.symbol)
-
-  const selectedCurrency = CURRENCIES.find(
-    (currency) => currency.symbol === amountCurrency
+  const [amountCurrency, setAmountCurrency] = React.useState<string | undefined>(
+    CURRENCIES[0]?.symbol
   )
+
+  const selectedCurrency = CURRENCIES.find(currency => currency.symbol === amountCurrency)
 
   const { data: txHash, writeContractAsync } = useWriteContract()
   const { isLoading: isWaitingForTransaction } = useWaitForTransactionReceipt({
@@ -163,30 +148,27 @@ const LiveChatInput = ({
 
   const { data: balanceData } = useReadContract({
     abi: Erc20TokenABI,
-    // @ts-ignore
+    // @ts-expect-error
     address: selectedCurrency?.address!,
     chainId: LENS_CHAIN_ID,
     args: [address],
     functionName: 'balanceOf'
   })
 
-  const { data: allowanceData, isLoading: isGettingAllowance } =
-    useReadContract({
-      abi: tippingContractAbi,
-      address: tippingContractAddress,
-      args: [selectedCurrency?.address, address],
-      functionName: 'checkAllowance',
-      query: { refetchInterval: 1000, enabled: address && superChat }
-    })
+  const { data: allowanceData, isLoading: isGettingAllowance } = useReadContract({
+    abi: tippingContractAbi,
+    address: tippingContractAddress,
+    args: [selectedCurrency?.address, address],
+    functionName: 'checkAllowance',
+    query: { refetchInterval: 1000, enabled: address && superChat }
+  })
 
   const allowance = parseFloat(allowanceData?.toString() || '0')
   const finalValue = amountValue * 10 ** (selectedCurrency?.decimals || 0)
   const hasAllowance = allowance >= finalValue
 
   const balance = balanceData
-    ? parseFloat(
-        formatUnits(balanceData as bigint, selectedCurrency?.decimals || 18)
-      ).toFixed(3)
+    ? parseFloat(formatUnits(balanceData as bigint, selectedCurrency?.decimals || 18)).toFixed(3)
     : 0
 
   const hasSufficientBalance = parseFloat(balance || '0') >= amountValue
@@ -232,7 +214,7 @@ const LiveChatInput = ({
       })
     } catch (error) {
       console.log('error', error)
-      // @ts-ignore
+      // @ts-expect-error
       toast.error(String(error))
     } finally {
       setEnablingAllowance(false)
@@ -256,10 +238,7 @@ const LiveChatInput = ({
 
       setIsTipping(true)
 
-      const lastStreamPostId = await getLastStreamPostId(
-        liveChatAccountAddress,
-        currentSession
-      )
+      const lastStreamPostId = await getLastStreamPostId(liveChatAccountAddress, currentSession)
 
       const tx = await writeContractAsync({
         abi: tippingContractAbi,
@@ -273,17 +252,16 @@ const LiveChatInput = ({
           lastStreamPostId?.split('-')[1]
         ]
       })
-      const transaction =
-        await viewPublicClientPolygon.waitForTransactionReceipt({
-          hash: tx,
-          confirmations: 3
-        })
+      const transaction = await viewPublicClientPolygon.waitForTransactionReceipt({
+        hash: tx,
+        confirmations: 3
+      })
       console.log('transaction', transaction)
 
       setTipped(true)
     } catch (error) {
       console.error(error)
-      // @ts-ignore
+      // @ts-expect-error
       toast.error(String(error))
     } finally {
       setIsTipping(false)
@@ -294,7 +272,7 @@ const LiveChatInput = ({
     setInputMessage(e.target.value)
   }
 
-  const handleImageFileChange = async (event) => {
+  const handleImageFileChange = async event => {
     const files = event.target.files
     if (!files?.length) return
 
@@ -309,8 +287,8 @@ const LiveChatInput = ({
 
     const url = URL.createObjectURL(file)
 
-    // @ts-ignore
-    setImageAttachment((prev) => ({
+    // @ts-expect-error
+    setImageAttachment(prev => ({
       ...prev,
       imagePreviewUrl: url,
       imageMimeType: file.type
@@ -318,8 +296,8 @@ const LiveChatInput = ({
 
     const uploadedImage = await uploadToIPFS(file)
 
-    // @ts-ignore
-    setImageAttachment((prev) => ({
+    // @ts-expect-error
+    setImageAttachment(prev => ({
       ...prev,
       imageUrl: uploadedImage?.url
     }))
@@ -334,10 +312,7 @@ const LiveChatInput = ({
   }
 
   const amountDisabled =
-    isWaitingForTransaction ||
-    isGettingAllowance ||
-    enablingAllowance ||
-    isTipping
+    isWaitingForTransaction || isGettingAllowance || enablingAllowance || isTipping
 
   const messageDisabled = isWaitingForTransaction || isTipping
 
@@ -379,8 +354,7 @@ const LiveChatInput = ({
     }
   }
 
-  const showAvatar =
-    inputMessage.trim().length > 0 || imageAttachment?.imagePreviewUrl
+  const showAvatar = inputMessage.trim().length > 0 || imageAttachment?.imagePreviewUrl
 
   // Handle opening Zora coins tipping
   const handleOpenZoraCoins = () => {
@@ -414,12 +388,7 @@ const LiveChatInput = ({
                 onClick={() => {
                   handleSelected(account)
                 }}
-                startIcon={
-                  <img
-                    src={getAvatar(account)}
-                    className="w-8 h-8 rounded-full"
-                  />
-                }
+                startIcon={<img src={getAvatar(account)} className="w-8 h-8 rounded-full" />}
                 disableElevation
                 autoCapitalize="none"
               >
@@ -429,9 +398,7 @@ const LiveChatInput = ({
                       {account?.metadata?.name}
                     </div>
                   )}
-                  <div className="text-p-text text-sm leading-0">
-                    {formatHandle(account)}
-                  </div>
+                  <div className="text-p-text text-sm leading-0">{formatHandle(account)}</div>
                 </div>
               </Button>
             )
@@ -441,15 +408,12 @@ const LiveChatInput = ({
       {/* image attachment preview */}
       {imageAttachment?.imagePreviewUrl && (
         <div className="max-w-full w-fit relative mb-1">
-          <img
-            src={imageAttachment?.imagePreviewUrl}
-            className="rounded-lg w-full max-h-40"
-          />
+          <img src={imageAttachment?.imagePreviewUrl} className="rounded-lg w-full max-h-40" />
           <div className="absolute top-1 right-1 bg-black/30 rounded-full">
             <IconButton
               onClick={() => {
-                // @ts-ignore
-                setImageAttachment((prev) => ({
+                // @ts-expect-error
+                setImageAttachment(prev => ({
                   ...prev,
                   imagePreviewUrl: undefined,
                   imageUrl: undefined,
@@ -467,7 +431,7 @@ const LiveChatInput = ({
       )}
       {selectGif && (
         <GifAndStickerSelector
-          onSelectGif={(url) => {
+          onSelectGif={url => {
             setImageAttachment({
               imageMimeType: MediaImageMimeType.GIF,
               imagePreviewUrl: url,
@@ -529,9 +493,7 @@ const LiveChatInput = ({
 
               <div className="font-semibold">{profileHandle}</div>
 
-              <div className="font-semibold">
-                {`${amountValue} ${amountCurrency}`}
-              </div>
+              <div className="font-semibold">{`${amountValue} ${amountCurrency}`}</div>
             </div>
 
             <TextareaAutosize
@@ -563,7 +525,7 @@ const LiveChatInput = ({
             <TextField
               type="number"
               value={amountValue}
-              onChange={(e) => {
+              onChange={e => {
                 setAmountValue(Number(e.target.value))
               }}
               disabled={amountDisabled}
@@ -575,7 +537,7 @@ const LiveChatInput = ({
             <Select
               defaultValue={CURRENCIES[0]?.symbol}
               value={String(amountCurrency)}
-              onChange={(e) => {
+              onChange={e => {
                 if (!e.target.value) return
                 setAmountCurrency(e.target.value)
               }}
@@ -583,13 +545,9 @@ const LiveChatInput = ({
               size="small"
               variant="standard"
             >
-              {CURRENCIES.map((currency) => {
+              {CURRENCIES.map(currency => {
                 return (
-                  <MenuItem
-                    value={currency?.symbol}
-                    key={currency?.symbol}
-                    className="text-p-text"
-                  >
+                  <MenuItem value={currency?.symbol} key={currency?.symbol} className="text-p-text">
                     {currency?.symbol}
                   </MenuItem>
                 )
@@ -598,12 +556,7 @@ const LiveChatInput = ({
 
             {tokenPriceQuery?.tokenPrice?.usdPrice && (
               <div className="text-xs text-s-text font-semibold">
-                <span>
-                  $
-                  {(
-                    tokenPriceQuery?.tokenPrice?.usdPrice * amountValue
-                  ).toFixed(2)}
-                </span>
+                <span>${(tokenPriceQuery?.tokenPrice?.usdPrice * amountValue).toFixed(2)}</span>
                 {tokenPriceQuery?.tokenPrice?.DayPercentChange && (
                   <span>
                     {` (${parseFloat(tokenPriceQuery?.tokenPrice?.DayPercentChange).toFixed(2)}%)`}
@@ -736,11 +689,7 @@ const LiveChatInput = ({
                 }}
                 variants={startIconVariants}
               >
-                <IconButton
-                  onClick={() => {}}
-                  className="text-s-text rounded-full"
-                  size="small"
-                >
+                <IconButton onClick={() => {}} className="text-s-text rounded-full" size="small">
                   <GifIcon />
                 </IconButton>
               </motion.div>
@@ -757,14 +706,13 @@ const LiveChatInput = ({
             maxRows={5}
             onChange={handleInputChage}
             value={inputMessage}
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (
                 e.key === 'Enter' &&
                 !e.shiftKey &&
                 inputMessage.trim().length > 0 &&
                 (imageAttachment?.imageUrl ||
-                  (!imageAttachment?.imagePreviewUrl &&
-                    !imageAttachment?.imageUrl))
+                  (!imageAttachment?.imagePreviewUrl && !imageAttachment?.imageUrl))
               ) {
                 e.preventDefault()
                 sendMessage()
@@ -798,8 +746,7 @@ const LiveChatInput = ({
                   size="small"
                   disabled={
                     inputMessage.trim().length === 0 ||
-                    (!!imageAttachment?.imagePreviewUrl &&
-                      !imageAttachment?.imageUrl)
+                    (!!imageAttachment?.imagePreviewUrl && !imageAttachment?.imageUrl)
                   }
                 >
                   <SendIcon />
@@ -808,7 +755,7 @@ const LiveChatInput = ({
             )}
 
             {!imageAttachment?.imagePreviewUrl &&
-              //  @ts-ignore
+              //  @ts-expect-error
               inputMessage.trim().length === 0 && (
                 <motion.div
                   key="add"
@@ -824,7 +771,7 @@ const LiveChatInput = ({
                       if (!imageFileInputRef.current) return
 
                       setSelectGif(false)
-                      // @ts-ignore
+                      // @ts-expect-error
                       imageFileInputRef.current.click()
                     }}
                     className="text-s-text rounded-full"

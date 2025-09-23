@@ -8,11 +8,7 @@ export const formatNumber = (num: number): string => {
 /**
  * Truncates an Ethereum address to a shorter form
  */
-export const truncateAddress = (
-  address: string,
-  startChars = 6,
-  endChars = 4
-): string => {
+export const truncateAddress = (address: string, startChars = 6, endChars = 4): string => {
   if (!address) return ''
   if (address.length <= startChars + endChars) return address
   return `${address.slice(0, startChars)}...${address.slice(-endChars)}`
@@ -21,10 +17,7 @@ export const truncateAddress = (
 /**
  * Formats a currency value with $ prefix and optional decimal places
  */
-export const formatCurrency = (
-  value: number | string,
-  decimals = 2
-): string => {
+export const formatCurrency = (value: number | string, decimals = 2): string => {
   const numValue = typeof value === 'string' ? parseFloat(value) : value
   if (isNaN(numValue)) return '$0.00'
 

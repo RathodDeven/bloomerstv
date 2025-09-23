@@ -1,11 +1,7 @@
 import React from 'react'
+import type { MyStream } from '../../../../graphql/generated'
 import { LIVE_PEER_RTMP_URL } from '../../../../utils/config'
-
-import { MyStream } from '../../../../graphql/generated'
-import {
-  getLiveStreamUrl,
-  getLiveStreamUrlWebRTC
-} from '../../../../utils/lib/getLiveStreamUrl'
+import { getLiveStreamUrl, getLiveStreamUrlWebRTC } from '../../../../utils/lib/getLiveStreamUrl'
 import TextInputWithCopy from './TextInputWithCopy'
 
 const StreamKey = ({ myStream }: { myStream: MyStream }) => {
@@ -16,11 +12,7 @@ const StreamKey = ({ myStream }: { myStream: MyStream }) => {
     <div className="space-y-6 flex-1 min-w-0 max-w-full">
       <div className="font-bold text-lg text-s-text">Stream Info</div>
 
-      <TextInputWithCopy
-        text={String(myStream?.streamKey)}
-        label="Stream Key"
-        hideText
-      />
+      <TextInputWithCopy text={String(myStream?.streamKey)} label="Stream Key" hideText />
       <TextInputWithCopy text={LIVE_PEER_RTMP_URL} label="Stream RTMP URL" />
 
       <TextInputWithCopy text={m3u8Url} label="m3u8 URL" />

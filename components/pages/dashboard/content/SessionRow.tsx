@@ -1,18 +1,36 @@
+import { MediaImageMimeType } from '@lens-protocol/metadata'
+import { usePost } from '@lens-protocol/react'
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
+import ContentCutIcon from '@mui/icons-material/ContentCut'
+import CreateIcon from '@mui/icons-material/Create'
+import DeleteIcon from '@mui/icons-material/Delete'
+import DownloadIcon from '@mui/icons-material/Download'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
+import { Button, IconButton, Tooltip } from '@mui/material'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import Link from 'next/link'
 import React, { useEffect } from 'react'
+import toast from 'react-hot-toast'
 import {
-  RecordedSession,
+  type RecordedSession,
   useUpdateLensStreamSessionMutation
 } from '../../../../graphql/generated'
-
-import { getThumbnailFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
+import { HEY_APP_LINK } from '../../../../utils/config'
+import getIPFSLink from '../../../../utils/getIPFSLink'
 import {
   localDate,
   secondsToTime
   // localDateAndTime,
   // secondsToTime
 } from '../../../../utils/helpers'
-import TableCell from '@mui/material/TableCell'
-import TableRow from '@mui/material/TableRow'
+import useDeletePost from '../../../../utils/hooks/lens/useDeletePost'
+import { getSenitizedContent } from '../../../../utils/lib/getSenitizedContent'
+import { getThumbnailFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
+import { stringToLength } from '../../../../utils/stringToLength'
+import uploadToIPFS from '../../../../utils/uploadToIPFS'
+import LoadingImage from '../../../ui/LoadingImage'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 // import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 // import DownloadIcon from '@mui/icons-material/Download'
 // import PauseIcon from '@mui/icons-material/Pause'
@@ -20,26 +38,8 @@ import TableRow from '@mui/material/TableRow'
 // import Markup from '../../../common/Lexical/Markup'
 // import PostStreamAsVideo from './PostStreamAsVideo'
 import ContentVisibiltyButton from './ContentVisibilty'
-import { getSenitizedContent } from '../../../../utils/lib/getSenitizedContent'
-import { stringToLength } from '../../../../utils/stringToLength'
-import Link from 'next/link'
-import { HEY_APP_LINK } from '../../../../utils/config'
-import { Button, IconButton, Tooltip } from '@mui/material'
-import DownloadIcon from '@mui/icons-material/Download'
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'
 import PostStreamAsVideo from './PostStreamAsVideo'
-import CreateIcon from '@mui/icons-material/Create'
-import ContentCutIcon from '@mui/icons-material/ContentCut'
-import DeleteIcon from '@mui/icons-material/Delete'
-import toast from 'react-hot-toast'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
-import LoadingImage from '../../../ui/LoadingImage'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
-import { MediaImageMimeType } from '@lens-protocol/metadata'
-import uploadToIPFS from '../../../../utils/uploadToIPFS'
-import getIPFSLink from '../../../../utils/getIPFSLink'
-import { usePost } from '@lens-protocol/react'
-import useDeletePost from '../../../../utils/hooks/lens/useDeletePost'
+
 // import Player from '../../../common/Player'
 
 const SessionRow = ({ session }: { session: RecordedSession }) => {
@@ -48,8 +48,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
   const [thumbnail, setThumbnail] = React.useState<string | null>(null)
   const [updateThumbnail] = useUpdateLensStreamSessionMutation()
 
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] =
-    React.useState<boolean>(false)
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = React.useState<boolean>(false)
   const { data } = usePost({
     post: newPostId || session?.postId
   })
@@ -86,15 +85,13 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
       ? Number(data.stats?.reposts ?? 0) + Number(data.stats?.quotes ?? 0)
       : 0
 
-  const checkImageAspectRatio = (file) => {
+  const checkImageAspectRatio = file => {
     return new Promise<boolean>((resolve, reject) => {
       const image = new Image()
       image.src = URL.createObjectURL(file)
       image.onload = () => {
         if (image.width / image.height !== 16 / 9) {
-          toast.error(
-            'Invalid image aspect ratio. Please upload an image with 16:9 aspect ratio'
-          )
+          toast.error('Invalid image aspect ratio. Please upload an image with 16:9 aspect ratio')
           resolve(false)
         } else {
           resolve(true)
@@ -106,9 +103,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
     })
   }
 
-  const handleImageFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const mediaImageMimeTypes = Object.values(MediaImageMimeType)
 
     const files = e.target.files
@@ -117,7 +112,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
     const file = files[0]
 
     // check if file type is in mediaImageMimeTypes
-    // @ts-ignore
+    // @ts-expect-error
     if (!mediaImageMimeTypes.includes(file.type)) {
       toast.error('Invalid image file type. Please upload a valid image file')
       return
@@ -167,7 +162,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
     if (!session?.recordingUrl) return
     setThumbnail(
       session?.customThumbnail ??
-        // @ts-ignore
+        // @ts-expect-error
         data?.metadata?.marketplace?.image?.optimized?.uri ??
         getThumbnailFromRecordingUrl(session?.recordingUrl)
     )
@@ -217,9 +212,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
           Icon={<DeleteIcon />}
           title="Delete Post"
         >
-          <div className="text-lg">
-            Are you sure you want to delete this post?
-          </div>
+          <div className="text-lg">Are you sure you want to delete this post?</div>
         </ModalWrapper>
       )}
 
@@ -231,7 +224,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
         open={postAsVideoProps.open}
         defaultMode={postAsVideoProps.defaultMode}
         setNewPostId={setNewPostId}
-        setOpen={(open) => setPostAsVideoProps((prev) => ({ ...prev, open }))}
+        setOpen={open => setPostAsVideoProps(prev => ({ ...prev, open }))}
       />
       {/* video */}
       <TableCell>
@@ -254,11 +247,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
 
           <div>
             <Link
-              href={
-                data?.id
-                  ? `/watch/${data?.slug}`
-                  : `/watch/session/${session?.sessionId}`
-              }
+              href={data?.id ? `/watch/${data?.slug}` : `/watch/session/${session?.sessionId}`}
               className="font-bold no-underline hover:underline text-p-text text-base"
             >
               {/* @ts-ignore */}
@@ -271,18 +260,16 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
               {data?.id
                 ? stringToLength(
                     getSenitizedContent(
-                      // @ts-ignore
+                      // @ts-expect-error
                       data?.metadata?.content,
-                      // @ts-ignore
+                      // @ts-expect-error
                       data?.metadata?.title
                     ),
                     120
                   )
                 : 'Untitled Stream'}{' '}
               {data?.isDeleted && (
-                <span className="text-red-500">
-                  Post Deleted & hidden from homepage.
-                </span>
+                <span className="text-red-500">Post Deleted & hidden from homepage.</span>
               )}
             </div>
             {/* show only on hover of the row */}
@@ -292,18 +279,11 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                   <IconButton
                     size="large"
                     onClick={() => {
-                      // @ts-ignore
-                      window.open(
-                        `${HEY_APP_LINK}/posts/${data?.slug}`,
-                        '_blank'
-                      )
+                      // @ts-expect-error
+                      window.open(`${HEY_APP_LINK}/posts/${data?.slug}`, '_blank')
                     }}
                   >
-                    <img
-                      src={'/icons/heyIcon.png'}
-                      className="w-6 h-6"
-                      alt="hey"
-                    />
+                    <img src={'/icons/heyIcon.png'} className="w-6 h-6" alt="hey" />
                   </IconButton>
                 </Tooltip>
               )}
@@ -312,11 +292,9 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                 <IconButton
                   size="large"
                   onClick={() => {
-                    // @ts-ignore
+                    // @ts-expect-error
                     window.open(
-                      data?.id
-                        ? `/watch/${data?.slug}`
-                        : `/watch/session/${session?.sessionId}`,
+                      data?.id ? `/watch/${data?.slug}` : `/watch/session/${session?.sessionId}`,
                       '_blank'
                     )
                   }}
@@ -332,7 +310,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                     onClick={() => {
                       // Programmatically click the file input when the button is clicked
                       if (!imageFileInputRef.current) return
-                      // @ts-ignore
+                      // @ts-expect-error
                       imageFileInputRef.current.click()
                     }}
                   >
@@ -354,7 +332,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                   <IconButton
                     size="large"
                     onClick={() => {
-                      // @ts-ignore
+                      // @ts-expect-error
                       window.open(session?.mp4Url, '_blank')
                     }}
                   >
@@ -368,8 +346,8 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                   <IconButton
                     size="large"
                     onClick={() => {
-                      // @ts-ignore
-                      setPostAsVideoProps((prev) => ({
+                      // @ts-expect-error
+                      setPostAsVideoProps(prev => ({
                         ...prev,
                         open: true,
                         defaultMode: 'Video',
@@ -387,8 +365,8 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                 <IconButton
                   size="large"
                   onClick={() => {
-                    // @ts-ignore
-                    setPostAsVideoProps((prev) => ({
+                    // @ts-expect-error
+                    setPostAsVideoProps(prev => ({
                       ...prev,
                       open: true,
                       defaultMode: 'Clip',
@@ -444,9 +422,7 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
       </TableCell>
 
       {/* comments */}
-      <TableCell>
-        {data?.stats?.comments ?? <span className="text-2xl">-</span>}
-      </TableCell>
+      <TableCell>{data?.stats?.comments ?? <span className="text-2xl">-</span>}</TableCell>
     </TableRow>
   )
 }

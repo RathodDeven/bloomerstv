@@ -34,11 +34,7 @@ const LoadingVideoCard = ({
         className
       )}
     >
-      <div
-        className={
-          'w-full aspect-video relative mb-2 sm:mb-2 overflow-hidden animate-pulse'
-        }
-      >
+      <div className={'w-full aspect-video relative mb-2 sm:mb-2 overflow-hidden animate-pulse'}>
         <div className="w-full h-full sm:bg-s-bg bg-p-hover sm:rounded-xl" />
       </div>
       <div className="flex items-center space-x-2 animate-pulse w-full">

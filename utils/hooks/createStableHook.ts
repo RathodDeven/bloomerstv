@@ -1,8 +1,6 @@
 import { useMemo } from 'react'
 
-function createStableHook<Props extends object, Result>(
-  useHook: (props: Props) => Result
-) {
+function createStableHook<Props extends object, Result>(useHook: (props: Props) => Result) {
   return (props: Props): Result => {
     // Automatically memoize the props inside the wrapper
     const stableProps = useMemo(

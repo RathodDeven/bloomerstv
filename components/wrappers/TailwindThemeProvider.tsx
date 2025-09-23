@@ -1,9 +1,6 @@
 'use client'
-import React from 'react'
-import { useContext } from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { createContext } from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { DEFAULT_THEME } from '../../utils/config'
 
 interface ContextType {
@@ -38,11 +35,10 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     if (theme) {
       document.body.classList.add(theme)
       document.documentElement.setAttribute('data-theme', theme)
-      // @ts-ignore
+      // @ts-expect-error
       setTheme(theme)
     } else {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : DEFAULT_THEME
       document.body.classList.add(systemTheme)
@@ -55,19 +51,12 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const metaThemeColor = document.querySelector('meta[name=theme-color]')
     if (metaThemeColor) {
-      // @ts-ignore
-      metaThemeColor.setAttribute(
-        'content',
-        theme === 'dark' ? '#1e1e1e' : '#ffffff'
-      )
+      // @ts-expect-error
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#1e1e1e' : '#ffffff')
     }
   }, [theme])
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  )
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
 }
 
 export const useTheme = () => useContext(ThemeContext)

@@ -1,6 +1,7 @@
 import MasterWrappers from '../components/wrappers/MasterWrappers'
 import './globals.css'
 import type { Metadata } from 'next'
+
 declare global {
   interface Navigator {
     standalone?: boolean
@@ -33,18 +34,11 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-W57EMMVS2J"
-        ></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W57EMMVS2J"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -56,10 +50,7 @@ export default function RootLayout({
     `
           }}
         />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
         {/* <link
           rel="apple-touch-icon"

@@ -1,20 +1,18 @@
-import { useState } from 'react'
-import {
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
-  useSessionClient,
-  UnfollowResult,
-  CreateUnfollowRequest
-} from '@lens-protocol/react'
 import { unfollow } from '@lens-protocol/client/actions'
+import {
+  type CreateUnfollowRequest,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
+  type UnfollowResult,
+  useSessionClient
+} from '@lens-protocol/react'
+import { useState } from 'react'
 
 interface UseUnFollowReturn {
   execute: (
     request: CreateUnfollowRequest
-  ) => Promise<
-    ResultAsync<UnfollowResult, UnexpectedError | UnauthenticatedError>
-  >
+  ) => Promise<ResultAsync<UnfollowResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   data: UnfollowResult | null
 }
@@ -26,12 +24,10 @@ const useUnFollow = (): UseUnFollowReturn => {
 
   const execute = async (
     request: CreateUnfollowRequest
-  ): Promise<
-    ResultAsync<UnfollowResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<UnfollowResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await unfollow(sessionClient, request)
 
     setData(result?.isOk() ? result.value : null)

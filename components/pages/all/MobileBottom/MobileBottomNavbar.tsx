@@ -1,12 +1,13 @@
 'use client'
 
-import { BottomNavigation, BottomNavigationAction } from '@mui/material'
-import React, { useEffect } from 'react'
-import HomeIcon from '@mui/icons-material/Home'
-import SearchIcon from '@mui/icons-material/Search'
-import { usePathname, useRouter } from 'next/navigation'
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
 import Diversity1Icon from '@mui/icons-material/Diversity1'
+import HomeIcon from '@mui/icons-material/Home'
+import OndemandVideoIcon from '@mui/icons-material/OndemandVideo'
+import SearchIcon from '@mui/icons-material/Search'
+import { BottomNavigation, BottomNavigationAction } from '@mui/material'
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
+
 const MobileBottomNavbar = () => {
   const [value, setValue] = React.useState(0)
   const router = useRouter()

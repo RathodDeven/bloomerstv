@@ -1,4 +1,4 @@
-import { FullPostMetadata } from '@lens-protocol/react'
+import type { FullPostMetadata } from '@lens-protocol/react'
 import getAttachmentsData from './getAttachmentsData'
 
 export interface MetadataAsset {
@@ -41,7 +41,7 @@ const getPublicationData = (
         },
         attachments: getAttachmentsData(metadata.attachments)
       }
-    case 'AudioMetadata':
+    case 'AudioMetadata': {
       const audioAttachments = getAttachmentsData(metadata.attachments)[0]
 
       return {
@@ -49,14 +49,14 @@ const getPublicationData = (
         asset: {
           uri: metadata.audio.item || audioAttachments?.uri,
           cover:
-            metadata.attachments.find(
-              (attachment) => attachment.__typename === 'MediaImage'
-            )?.item || audioAttachments?.coverUri,
+            metadata.attachments.find(attachment => attachment.__typename === 'MediaImage')?.item ||
+            audioAttachments?.coverUri,
           title: metadata.title!,
           type: 'Audio'
         }
       }
-    case 'VideoMetadata':
+    }
+    case 'VideoMetadata': {
       const videoAttachments = getAttachmentsData(metadata.attachments)[0]
 
       let videoUri = metadata.video.item || videoAttachments?.uri
@@ -88,9 +88,7 @@ const getPublicationData = (
         '.gltf-binary' // Note: These are not traditional video formats, but rather 3D model formats
       ]
 
-      const hasVideoFormat = videoFormats.some((format) =>
-        videoUri.endsWith(format)
-      )
+      const hasVideoFormat = videoFormats.some(format => videoUri.endsWith(format))
 
       if (!hasVideoFormat) {
         videoUri += '?type=.mp4'
@@ -102,14 +100,13 @@ const getPublicationData = (
           uri: videoUri,
           cover:
             metadata.video.cover ||
-            metadata.attachments.find(
-              (attachment) => attachment.__typename === 'MediaImage'
-            )?.item ||
+            metadata.attachments.find(attachment => attachment.__typename === 'MediaImage')?.item ||
             videoAttachments?.coverUri,
           type: 'Video',
           duration: metadata?.video?.duration
         }
       }
+    }
     case 'MintMetadata':
       return {
         content: metadata.content,
@@ -126,9 +123,8 @@ const getPublicationData = (
         asset: {
           uri: metadata.liveUrl,
           type: 'Video',
-          cover: metadata.attachments.find(
-            (attachment) => attachment.__typename === 'MediaImage'
-          )?.item
+          cover: metadata.attachments.find(attachment => attachment.__typename === 'MediaImage')
+            ?.item
         },
         attachments: getAttachmentsData(metadata.attachments)
       }

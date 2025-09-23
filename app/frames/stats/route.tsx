@@ -106,5 +106,4 @@ export const POST = frames(async (ctx) => {
 */
 
 // Placeholder export handler to keep the file structure intact
-export const POST = async () =>
-  new Response('Stats frames temporarily disabled')
+export const POST = async () => new Response('Stats frames temporarily disabled')

@@ -1,23 +1,23 @@
+import type { AnyPost } from '@lens-protocol/react'
+import CommentIcon from '@mui/icons-material/Comment'
+import NotesIcon from '@mui/icons-material/Notes'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { Button, Tooltip } from '@mui/material'
+import clsx from 'clsx'
+import Link from 'next/link'
 import React from 'react'
-import LoadingImage from '../../ui/LoadingImage'
-import getAvatar from '../../../utils/lib/getAvatar'
-import formatHandle from '../../../utils/lib/formatHandle'
 import { timeAgo } from '../../../utils/helpers'
-import VerifiedBadge from '../../ui/VerifiedBadge'
-import Markup from '../../common/Lexical/Markup'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
 import getPublicationData from '../../../utils/lib/getPublicationData'
 import { stringToLength } from '../../../utils/stringToLength'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import Link from 'next/link'
+import Markup from '../../common/Lexical/Markup'
+import LoadingImage from '../../ui/LoadingImage'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
+import VerifiedBadge from '../../ui/VerifiedBadge'
 import LikeButton from '../profile/LikeButton'
 import MirrorButton from '../profile/MirrorButton'
-import { Button, Tooltip } from '@mui/material'
-import CommentIcon from '@mui/icons-material/Comment'
-import clsx from 'clsx'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
-import NotesIcon from '@mui/icons-material/Notes'
 import TextAndImagePostPage from './TextAndImagePostPage'
-import { AnyPost } from '@lens-protocol/react'
 
 const TextAndImagePostCard = ({
   post,
@@ -32,11 +32,7 @@ const TextAndImagePostCard = ({
 }) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
-  if (
-    (post?.__typename === 'Post' && post?.commentOn) ||
-    post?.__typename === 'Repost'
-  )
-    return null
+  if ((post?.__typename === 'Post' && post?.commentOn) || post?.__typename === 'Repost') return null
   if (
     post?.metadata?.__typename !== 'TextOnlyMetadata' &&
     post?.metadata?.__typename !== 'ImageMetadata'
@@ -77,10 +73,7 @@ const TextAndImagePostCard = ({
       >
         <div className={clsx(isPostPage ? 'w-full' : 'w-[210px]')}>
           <div className="between-row w-full shrink-0">
-            <Link
-              href={`/${formatHandle(post?.author)}`}
-              className="text-p-text no-underline"
-            >
+            <Link href={`/${formatHandle(post?.author)}`} className="text-p-text no-underline">
               <div className="start-row gap-x-2 shrink-0 w-full">
                 <LoadingImage
                   src={getAvatar(post?.author)}
@@ -92,24 +85,17 @@ const TextAndImagePostCard = ({
                     <>{formatHandle(post?.author)}</>
                     {premium && <VerifiedBadge />}
                   </div>
-                  <div className="text-xs text-s-text shrink-0">
-                    {timeAgo(post?.timestamp)}
-                  </div>
+                  <div className="text-xs text-s-text shrink-0">{timeAgo(post?.timestamp)}</div>
                 </div>
               </div>
             </Link>
           </div>
           {/* content */}
           <div
-            className={clsx(
-              'pl-1 shrink-0',
-              !isPostPage ? 'h-[75px] overflow-hidden ' : 'mb-1'
-            )}
+            className={clsx('pl-1 shrink-0', !isPostPage ? 'h-[75px] overflow-hidden ' : 'mb-1')}
           >
             <Markup className="text-sm shrink-0">
-              {isPostPage
-                ? post?.metadata?.content
-                : stringToLength(post?.metadata?.content, 85)}
+              {isPostPage ? post?.metadata?.content : stringToLength(post?.metadata?.content, 85)}
             </Markup>
           </div>
           {/* quoted content with link */}
@@ -130,9 +116,7 @@ const TextAndImagePostCard = ({
                     className="w-4 h-4 rounded-full"
                     alt="avatar"
                   />
-                  <div className="font-semibold ml-1">
-                    {formatHandle(post?.quoteOf?.author)}
-                  </div>
+                  <div className="font-semibold ml-1">{formatHandle(post?.quoteOf?.author)}</div>
                 </div>
                 <div className="start-center-row">
                   <PlayArrowIcon fontSize="small" />
@@ -149,10 +133,7 @@ const TextAndImagePostCard = ({
           {isPostPage && asset?.type === 'Image' && (
             <LoadingImage
               src={asset?.uri}
-              className={clsx(
-                'rounded-xl ',
-                isPostPage ? 'w-full' : 'h-[205px] -mb-1.5 ml-2'
-              )}
+              className={clsx('rounded-xl ', isPostPage ? 'w-full' : 'h-[205px] -mb-1.5 ml-2')}
               alt="post"
             />
           )}
@@ -160,7 +141,7 @@ const TextAndImagePostCard = ({
           {/* buttons */}
           <div
             className="start-center-row gap-x-2 mt-2"
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
             }}
           >
@@ -187,10 +168,7 @@ const TextAndImagePostCard = ({
         {!isPostPage && asset?.type === 'Image' && (
           <LoadingImage
             src={asset?.uri}
-            className={clsx(
-              'rounded-xl ',
-              isPostPage ? 'w-full' : 'h-[205px] -mb-1.5 ml-2'
-            )}
+            className={clsx('rounded-xl ', isPostPage ? 'w-full' : 'h-[205px] -mb-1.5 ml-2')}
             alt="post"
           />
         )}

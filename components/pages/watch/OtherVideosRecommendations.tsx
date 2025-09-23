@@ -1,19 +1,19 @@
-import React, { useCallback } from 'react'
-import { APP_ADDRESS, hideAccountAddresses } from '../../../utils/config'
-import clsx from 'clsx'
-import RecommendedVideoCard from '../../common/RecommendedVideoCard'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import HomeVideoCard from '../../common/HomeVideoCard'
-import RecommendedCardLayout from '../../common/RecommendedCardLayout'
-import { usePathname } from 'next/navigation'
 import {
   MainContentFocus,
   PageSize,
-  Post,
-  PostStats,
+  type Post,
+  type PostStats,
   PostType,
   usePosts
 } from '@lens-protocol/react'
+import clsx from 'clsx'
+import { usePathname } from 'next/navigation'
+import React, { useCallback } from 'react'
+import { APP_ADDRESS, hideAccountAddresses } from '../../../utils/config'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import HomeVideoCard from '../../common/HomeVideoCard'
+import RecommendedCardLayout from '../../common/RecommendedCardLayout'
+import RecommendedVideoCard from '../../common/RecommendedVideoCard'
 import { usePostsStore } from '../../store/usePosts'
 import LoadingVideoCard from '../../ui/LoadingVideoCard'
 
@@ -31,17 +31,16 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
     pageSize: PageSize.Fifty
   })
 
-  const { posts, streamReplayPosts } = usePostsStore((state) => ({
+  const { posts, streamReplayPosts } = usePostsStore(state => ({
     posts: state.posts,
     streamReplayPosts: state.streamReplayPosts
   }))
 
   const getStreamReplay = useCallback(
     (postId: string) => {
-      const streamReplay =
-        streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.find(
-          (p) => p?.postId === postId
-        )
+      const streamReplay = streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.find(
+        p => p?.postId === postId
+      )
       return {
         thumbnail: streamReplay?.thumbnail,
         duration: streamReplay?.sourceSegmentsDuration
@@ -51,12 +50,12 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
   )
 
   const filteredPostsClips = data?.items?.filter(
-    (p) => p.__typename === 'Post' && p.metadata?.__typename === 'VideoMetadata'
+    p => p.__typename === 'Post' && p.metadata?.__typename === 'VideoMetadata'
   )
 
   // add type streamClips to data
   const streamClips =
-    filteredPostsClips?.map((post) => {
+    filteredPostsClips?.map(post => {
       return {
         ...post,
         type: 'streamClips'
@@ -65,7 +64,7 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
 
   // add type streamReplays to posts
   const streamReplays =
-    posts?.map((post) => {
+    posts?.map(post => {
       return {
         ...post,
         type: 'streamReplays'
@@ -73,8 +72,7 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
     }) ?? []
 
   const combinedData = [...streamClips, ...streamReplays].sort(
-    (a, b) =>
-      new Date(b?.timestamp).getTime() - new Date(a?.timestamp).getTime()
+    (a, b) => new Date(b?.timestamp).getTime() - new Date(a?.timestamp).getTime()
   )
 
   const currentPostId = pathname?.split('/')[2]
@@ -95,7 +93,7 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
 
   return (
     <div className={clsx('flex flex-col w-full h-full gap-y-4', className)}>
-      {combinedData?.map((post) => {
+      {combinedData?.map(post => {
         if (
           hideAccountAddresses.includes(post?.author?.address) ||
           currentPostId === post?.id ||
@@ -123,10 +121,10 @@ const OtherVideosRecommendations = ({ className }: { className?: string }) => {
                 coverUrl={getStreamReplay(post?.id)?.thumbnail ?? undefined}
                 postLink={`/watch/${post?.slug}`}
                 account={post?.author}
-                // @ts-ignore
+                // @ts-expect-error
                 stats={post?.stats as PostStats}
                 title={
-                  // @ts-ignore
+                  // @ts-expect-error
                   post?.metadata?.title ?? post?.metadata?.content?.slice(0, 50)
                 }
                 duration={getStreamReplay(post?.id)?.duration ?? undefined}

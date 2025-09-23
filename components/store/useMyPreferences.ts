@@ -18,18 +18,15 @@ interface MyPreferencesStore {
 
 export const useMyPreferences = create<MyPreferencesStore>(
   persist(
-    (set) => ({
+    set => ({
       playerStreamingMode: PlayerStreamingMode.Quality,
-      setPlayerStreamingMode: (playerStreamingMode) =>
-        set(() => ({ playerStreamingMode })),
+      setPlayerStreamingMode: playerStreamingMode => set(() => ({ playerStreamingMode })),
       liveChatPopUpSound: true,
-      setLiveChatPopUpSound: (liveChatPopUpSound) =>
-        set(() => ({ liveChatPopUpSound })),
+      setLiveChatPopUpSound: liveChatPopUpSound => set(() => ({ liveChatPopUpSound })),
       streamReplayViewType: ViewType.Public,
-      setStreamReplayViewType: (viewType) =>
-        set(() => ({ streamReplayViewType: viewType })),
+      setStreamReplayViewType: viewType => set(() => ({ streamReplayViewType: viewType })),
       category: 'None',
-      setCategory: (category) => set(() => ({ category }))
+      setCategory: category => set(() => ({ category }))
     }),
     {
       name: 'myPreferences',

@@ -1,11 +1,12 @@
-import React, { memo, useEffect } from 'react'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
+import clsx from 'clsx'
+import React, { memo, useEffect } from 'react'
+import { AnimatedCounter } from 'react-animated-counter'
 import io from 'socket.io-client'
 import { LIVE_CHAT_WEB_SOCKET_URL } from '../../../utils/config'
-import clsx from 'clsx'
-import { AnimatedCounter } from 'react-animated-counter'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
 import { useTheme } from '../../wrappers/TailwindThemeProvider'
+
 const LiveCount = ({ accountAddress }: { accountAddress: string }) => {
   const [count, setCount] = React.useState(0)
   const isMobile = useIsMobile()
@@ -20,14 +21,11 @@ const LiveCount = ({ accountAddress }: { accountAddress: string }) => {
       }, 1000) // Wait for 1 second before joining the room
     })
 
-    newSocket.on(
-      'liveCountUpdate',
-      ({ count, accountAddress: liveAccountAddress }) => {
-        if (liveAccountAddress === accountAddress) {
-          setCount(count)
-        }
+    newSocket.on('liveCountUpdate', ({ count, accountAddress: liveAccountAddress }) => {
+      if (liveAccountAddress === accountAddress) {
+        setCount(count)
       }
-    )
+    })
 
     // newSocket.on('connect', () => {
     //   setTimeout(() => {
@@ -42,11 +40,7 @@ const LiveCount = ({ accountAddress }: { accountAddress: string }) => {
   }, [])
 
   return (
-    <div
-      className={clsx(
-        'centered-row sm:gap-x-1 text-xl sm:text-2xl text-p-text'
-      )}
-    >
+    <div className={clsx('centered-row sm:gap-x-1 text-xl sm:text-2xl text-p-text')}>
       <PermIdentityIcon fontSize="inherit" />
 
       <AnimatedCounter

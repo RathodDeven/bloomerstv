@@ -1,13 +1,8 @@
 'use client'
-import React from 'react'
-import { NODE_GRAPHQL_URL } from '../../utils/config'
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  createHttpLink
-} from '@apollo/client'
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import type React from 'react'
+import { NODE_GRAPHQL_URL } from '../../utils/config'
 import { getIdentityTokenAsync } from '../../utils/lib/getIdentityTokenAsync'
 
 const httpLink = createHttpLink({

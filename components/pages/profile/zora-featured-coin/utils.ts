@@ -55,18 +55,11 @@ export const isPriceChangePositive = (value: string) => {
 }
 
 // Calculate price per token with smart precision
-export const calculateTokenPrice = (
-  marketCap?: string,
-  totalSupply?: string
-) => {
+export const calculateTokenPrice = (marketCap?: string, totalSupply?: string) => {
   const marketCapValue = parseFloat(marketCap || '0')
   const totalSupplyValue = parseFloat(totalSupply || '1')
 
-  if (
-    isNaN(marketCapValue) ||
-    isNaN(totalSupplyValue) ||
-    totalSupplyValue === 0
-  ) {
+  if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
     return '0.00'
   }
 

@@ -1,2 +1,2 @@
-export { default } from './ZoraFeaturedCoin'
 export type { ZoraCoin, ZoraFeaturedCoinProps } from './types'
+export { default } from './ZoraFeaturedCoin'

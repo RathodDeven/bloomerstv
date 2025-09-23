@@ -1,9 +1,9 @@
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton } from '@mui/material'
 import clsx from 'clsx'
 import React from 'react'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import ChatOptions from './ChatOptions'
 import useSession from '../../../utils/hooks/useSession'
+import ChatOptions from './ChatOptions'
 
 const ChatOptionsButton = ({
   handle,
@@ -25,7 +25,7 @@ const ChatOptionsButton = ({
   const { isAuthenticated, account } = useSession()
 
   const open = Boolean(anchorEl)
-  const handleClick = (event) => {
+  const handleClick = event => {
     setKeepShowingMoreIcon(true)
     setAnchorEl(event.currentTarget)
   }
@@ -35,11 +35,7 @@ const ChatOptionsButton = ({
   // const isWalletMsg = profileId && profileId?.length > 20
 
   // meaning most probably a wallet address
-  if (
-    isWalletMsg &&
-    isAuthenticated &&
-    account?.address !== chatAccountAddress
-  ) {
+  if (isWalletMsg && isAuthenticated && account?.address !== chatAccountAddress) {
     return null
   }
   return (

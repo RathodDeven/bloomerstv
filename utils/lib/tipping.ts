@@ -1,6 +1,5 @@
 // polygonpos
-export const tippingContractAddress =
-  '0xffEF59C276474E006b19905C0Dd9F4Ef7122Cb48'
+export const tippingContractAddress = '0xffEF59C276474E006b19905C0Dd9F4Ef7122Cb48'
 
 export const tippingContractAbi = [
   {

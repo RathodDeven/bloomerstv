@@ -1,8 +1,8 @@
-import React from 'react'
-import LoginComponent from './LoginComponent'
-import ModalWrapper from '../ui/Modal/ModalWrapper'
-import { useModal } from './ModalContext'
 import LoginIcon from '@mui/icons-material/Login'
+import React from 'react'
+import ModalWrapper from '../ui/Modal/ModalWrapper'
+import LoginComponent from './LoginComponent'
+import { useModal } from './ModalContext'
 
 export const ModalRoot = () => {
   const { modal, onClose, onOpen } = useModal()

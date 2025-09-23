@@ -1,5 +1,16 @@
-import React from 'react'
 import {
+  ArrowDownward,
+  ArrowUpward,
+  Star,
+  StarBorder,
+  SwapVert,
+  Visibility
+} from '@mui/icons-material'
+import {
+  Avatar,
+  Box,
+  Chip,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -7,22 +18,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Box,
-  Chip,
-  Avatar,
-  IconButton,
-  Tooltip
+  Tooltip,
+  Typography
 } from '@mui/material'
-import {
-  ArrowUpward,
-  ArrowDownward,
-  SwapVert,
-  Visibility,
-  Star,
-  StarBorder
-} from '@mui/icons-material'
-import { ProfileCoinBalances, CoinBalance } from '../../../../utils/types/zora'
+import React from 'react'
+import type { CoinBalance, ProfileCoinBalances } from '../../../../utils/types/zora'
 
 interface CoinTableProps {
   coinBalances: ProfileCoinBalances
@@ -36,9 +36,7 @@ export default function CoinTable({
   featuredCoinAddress
 }: CoinTableProps) {
   const [sortField, setSortField] = React.useState<string>('marketCap')
-  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>(
-    'desc'
-  )
+  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('desc')
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -54,25 +52,16 @@ export default function CoinTable({
     const trimmed = balance.replace(/^0+/, '')
     if (trimmed.length > 18) {
       const intPart = trimmed.slice(0, trimmed.length - 18)
-      const decPart = trimmed.slice(
-        trimmed.length - 18,
-        trimmed.length - 18 + 6
-      )
+      const decPart = trimmed.slice(trimmed.length - 18, trimmed.length - 18 + 6)
       // Format to max 2 decimal places
-      const formattedDecimal = parseFloat(`0.${decPart}`)
-        .toFixed(2)
-        .substring(2)
+      const formattedDecimal = parseFloat(`0.${decPart}`).toFixed(2).substring(2)
       return `${intPart || '0'}.${formattedDecimal}`
     }
     return '0.00'
   }
 
   // Calculate USD equivalent of balance
-  const calculateUsdValue = (
-    balance: string,
-    marketCap: string,
-    totalSupply: string
-  ) => {
+  const calculateUsdValue = (balance: string, marketCap: string, totalSupply: string) => {
     try {
       const balanceValue = parseFloat(formatBalance(balance))
       const marketCapValue = parseFloat(marketCap)
@@ -100,11 +89,7 @@ export default function CoinTable({
     const marketCapValue = parseFloat(marketCap)
     const totalSupplyValue = parseFloat(totalSupply)
 
-    if (
-      isNaN(marketCapValue) ||
-      isNaN(totalSupplyValue) ||
-      totalSupplyValue === 0
-    ) {
+    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 
@@ -118,10 +103,7 @@ export default function CoinTable({
 
   // Open coin page on Zora
   const openCoinPage = (coinAddress: string) => {
-    window.open(
-      `https://zora.co/coin/base:${coinAddress.toLowerCase()}`,
-      '_blank'
-    )
+    window.open(`https://zora.co/coin/base:${coinAddress.toLowerCase()}`, '_blank')
   }
 
   const sortedCoins = [...coinBalances.edges].sort((a, b) => {
@@ -146,8 +128,7 @@ export default function CoinTable({
   })
 
   const getSortIcon = (field: string) => {
-    if (sortField !== field)
-      return <SwapVert fontSize="small" color="disabled" />
+    if (sortField !== field) return <SwapVert fontSize="small" color="disabled" />
     return sortDirection === 'asc' ? (
       <ArrowUpward fontSize="small" />
     ) : (
@@ -201,19 +182,14 @@ export default function CoinTable({
             {sortedCoins.map(({ node }) => {
               const isFeatured =
                 featuredCoinAddress &&
-                node.coin.address.toLowerCase() ===
-                  featuredCoinAddress.toLowerCase()
+                node.coin.address.toLowerCase() === featuredCoinAddress.toLowerCase()
 
               // Calculate market cap percentage change
               const calculateMarketCapPercentageChange = () => {
                 const currentMarketCap = parseFloat(node.coin.marketCap)
                 const deltaValue = parseFloat(node.coin.marketCapDelta24h)
 
-                if (
-                  isNaN(currentMarketCap) ||
-                  isNaN(deltaValue) ||
-                  currentMarketCap === 0
-                ) {
+                if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
                   return '0.00'
                 }
 
@@ -228,26 +204,20 @@ export default function CoinTable({
                 return percentageChange.toFixed(2)
               }
 
-              const marketCapPercentageChange =
-                calculateMarketCapPercentageChange()
+              const marketCapPercentageChange = calculateMarketCapPercentageChange()
               const isPositiveTrend = parseFloat(marketCapPercentageChange) >= 0
               const usdValue = calculateUsdValue(
                 node.balance,
                 node.coin.marketCap,
                 node.coin.totalSupply
               )
-              const tokenPrice = calculateTokenPrice(
-                node.coin.marketCap,
-                node.coin.totalSupply
-              )
+              const tokenPrice = calculateTokenPrice(node.coin.marketCap, node.coin.totalSupply)
 
               return (
                 <TableRow
                   key={node.id}
                   sx={{
-                    bgcolor: isFeatured
-                      ? 'rgba(99, 102, 241, 0.05)'
-                      : 'inherit',
+                    bgcolor: isFeatured ? 'rgba(99, 102, 241, 0.05)' : 'inherit',
                     borderLeft: isFeatured ? '4px solid #6366F1' : 'none'
                   }}
                 >
@@ -292,9 +262,7 @@ export default function CoinTable({
                   <TableCell>
                     <Box display="flex" flexDirection="column">
                       <Typography>${node.coin.totalVolume}</Typography>
-                      <Typography variant="caption">
-                        24h: ${node.coin.volume24h}
-                      </Typography>
+                      <Typography variant="caption">24h: ${node.coin.volume24h}</Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
@@ -308,13 +276,7 @@ export default function CoinTable({
                           <Visibility />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip
-                        title={
-                          isFeatured
-                            ? 'Unfeature This Coin'
-                            : 'Feature This Coin'
-                        }
-                      >
+                      <Tooltip title={isFeatured ? 'Unfeature This Coin' : 'Feature This Coin'}>
                         <IconButton
                           size="small"
                           color={isFeatured ? 'primary' : 'default'}

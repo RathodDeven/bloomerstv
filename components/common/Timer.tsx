@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 type TimerProps = {
   targetDate: string | number // Date string, epoch milliseconds, or seconds

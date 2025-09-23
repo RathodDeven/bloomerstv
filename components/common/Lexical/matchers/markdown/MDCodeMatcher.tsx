@@ -18,7 +18,7 @@ export class MDCodeMatcher extends Matcher {
     return this.doMatch(
       value,
       /`(.*?)`/,
-      (matches) => ({
+      matches => ({
         match: matches[1]
       }),
       true

@@ -1,4 +1,4 @@
-import { IStorageProvider } from '@lens-protocol/client'
+import type { IStorageProvider } from '@lens-protocol/client'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 
 const MAX_AGE = 30 * 24 * 60 * 60

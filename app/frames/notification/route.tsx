@@ -88,5 +88,4 @@ export const POST = frames(async (ctx) => {
 */
 
 // Placeholder export handler to keep the file structure intact
-export const POST = async () =>
-  new Response('Notification frames temporarily disabled')
+export const POST = async () => new Response('Notification frames temporarily disabled')

@@ -1,25 +1,21 @@
+import { useAccountsBulk } from '@lens-protocol/react'
 import React from 'react'
-import { useLiveStreamersQuery } from '../../graphql/generated'
 import {
-  StreamerWithAccount,
+  type StreamerWithAccount,
   useStreamersWithAccounts
 } from '../../components/store/useStreamersWithAccounts'
-import { useAccountsBulk } from '@lens-protocol/react'
+import { useLiveStreamersQuery } from '../../graphql/generated'
 
 const useLiveStreamerProfiles = () => {
   const { data, loading: streamersLoading } = useLiveStreamersQuery()
-  const { setStreamersWithAccounts, setLoading } = useStreamersWithAccounts(
-    (state) => ({
-      setStreamersWithAccounts: state.setStreamersWithAccounts,
-      setLoading: state.setLoading
-    })
-  )
+  const { setStreamersWithAccounts, setLoading } = useStreamersWithAccounts(state => ({
+    setStreamersWithAccounts: state.setStreamersWithAccounts,
+    setLoading: state.setLoading
+  }))
 
   // Memoize the addresses array to prevent unnecessary re-renders
   const addresses = React.useMemo(() => {
-    return (
-      data?.liveStreamers?.map((streamer) => streamer?.accountAddress) || []
-    )
+    return data?.liveStreamers?.map(streamer => streamer?.accountAddress) || []
   }, [data?.liveStreamers])
 
   // Skip the query if there are no addresses
@@ -31,12 +27,10 @@ const useLiveStreamerProfiles = () => {
   const streamers = React.useMemo(() => {
     if (!data?.liveStreamers || !accounts) return []
 
-    return data.liveStreamers.map((streamer) => {
+    return data.liveStreamers.map(streamer => {
       return {
         ...streamer,
-        account: accounts.find(
-          (account) => account?.address === streamer?.accountAddress
-        )
+        account: accounts.find(account => account?.address === streamer?.accountAddress)
       }
     })
   }, [data?.liveStreamers, accounts])
@@ -45,8 +39,7 @@ const useLiveStreamerProfiles = () => {
   React.useEffect(() => {
     if (streamers && streamers.length > 0) {
       const validStreamers = streamers.filter(
-        (streamer): streamer is StreamerWithAccount =>
-          streamer.account !== undefined
+        (streamer): streamer is StreamerWithAccount => streamer.account !== undefined
       )
       setStreamersWithAccounts(validStreamers)
     }

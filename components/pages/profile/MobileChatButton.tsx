@@ -1,8 +1,9 @@
+import ChatIcon from '@mui/icons-material/Chat'
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
 import LiveChat from '../../common/LiveChat/LiveChat'
-import ChatIcon from '@mui/icons-material/Chat'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
+
 const MobileChatButton = ({ accountAddress }: { accountAddress: string }) => {
   const [open, setOpen] = useState(false)
   const [heightOfChat, setHeightOfChat] = useState<string>('500')
@@ -44,10 +45,7 @@ const MobileChatButton = ({ accountAddress }: { accountAddress: string }) => {
         hideBackdrop
       >
         <div style={{ height: `${heightOfChat}px` }} className="w-screen">
-          <LiveChat
-            accountAddress={accountAddress}
-            onClose={() => setOpen(false)}
-          />
+          <LiveChat accountAddress={accountAddress} onClose={() => setOpen(false)} />
         </div>
       </ModalWrapper>
     </>

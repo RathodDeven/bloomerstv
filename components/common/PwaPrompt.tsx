@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import MigrationNotice from './MigrationNotice' // Assuming path
-import ModalWrapper from '../ui/Modal/ModalWrapper'
 import InstallMobileIcon from '@mui/icons-material/InstallMobile'
+import type React from 'react'
+import { useEffect, useState } from 'react'
+import ModalWrapper from '../ui/Modal/ModalWrapper'
+import MigrationNotice from './MigrationNotice' // Assuming path
 
 interface PwaPromptProps {
   isMobile: boolean
@@ -10,8 +11,7 @@ interface PwaPromptProps {
 
 const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
-  const [InstallationInstructions, setInstallationInstructions] =
-    useState<React.ReactNode>(<></>)
+  const [InstallationInstructions, setInstallationInstructions] = useState<React.ReactNode>(<></>)
 
   const [isPWA, setIsPWA] = useState<boolean>(false)
 
@@ -21,12 +21,10 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const chromeAndroidInstructions = (
     <div>
       <p>
-        Tap the <strong>three dots menu</strong> at the top right of the
-        browser.
+        Tap the <strong>three dots menu</strong> at the top right of the browser.
       </p>
       <p>
-        Then select <strong>"Install App"</strong> or{' '}
-        <strong>"Add to Home Screen"</strong>.
+        Then select <strong>"Install App"</strong> or <strong>"Add to Home Screen"</strong>.
       </p>
     </div>
   )
@@ -34,8 +32,8 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const safariIOSInstructions = (
     <div>
       <p>
-        Tap the <strong>Share</strong> icon (the square with an arrow pointing
-        up) at the bottom of the screen.
+        Tap the <strong>Share</strong> icon (the square with an arrow pointing up) at the bottom of
+        the screen.
       </p>
       <p>
         Select <strong>"Add to Home Screen"</strong> from the options.
@@ -46,14 +44,13 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const chromeIOSInstructions = (
     <div>
       <p>
-        Unfortunately, Chrome on iOS doesn't support direct installation. To add
-        this app to your home screen, please open this page in Safari.
+        Unfortunately, Chrome on iOS doesn't support direct installation. To add this app to your
+        home screen, please open this page in Safari.
       </p>
       <p>Once in Safari, follow these steps:</p>
       <p>
-        Tap the <strong>Share</strong> icon (the square with an arrow pointing
-        up) at the bottom of the screen and select{' '}
-        <strong>"Add to Home Screen"</strong>.
+        Tap the <strong>Share</strong> icon (the square with an arrow pointing up) at the bottom of
+        the screen and select <strong>"Add to Home Screen"</strong>.
       </p>
     </div>
   )
@@ -61,12 +58,10 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const firefoxAndroidInstructions = (
     <div>
       <p>
-        Tap the <strong>three dots menu</strong> at the top right of the
-        browser.
+        Tap the <strong>three dots menu</strong> at the top right of the browser.
       </p>
       <p>
-        Select <strong>"Install"</strong> or{' '}
-        <strong>"Add to Home Screen"</strong>.
+        Select <strong>"Install"</strong> or <strong>"Add to Home Screen"</strong>.
       </p>
     </div>
   )
@@ -74,8 +69,7 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const edgeAndroidInstructions = (
     <div>
       <p>
-        Tap the <strong>three dots menu</strong> at the bottom right of the
-        browser.
+        Tap the <strong>three dots menu</strong> at the bottom right of the browser.
       </p>
       <p>
         Select <strong>"Add to Home Screen"</strong>.
@@ -86,25 +80,20 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const genericInstructions = (
     <div>
       <p>
-        Your browser may not support direct installation. To install this app,
-        use a browser like Chrome on Android or Safari on iOS.
+        Your browser may not support direct installation. To install this app, use a browser like
+        Chrome on Android or Safari on iOS.
       </p>
-      <p>
-        Alternatively, visit the website using one of these browsers for a
-        better experience.
-      </p>
+      <p>Alternatively, visit the website using one of these browsers for a better experience.</p>
     </div>
   )
 
   const braveAndroidInstructions = (
     <div>
       <p>
-        Tap the <strong>three dots menu</strong> at the bottom right of the
-        browser.
+        Tap the <strong>three dots menu</strong> at the bottom right of the browser.
       </p>
       <p>
-        Select <strong>"Install App"</strong> or{' '}
-        <strong>"Add to Home Screen"</strong>.
+        Select <strong>"Install App"</strong> or <strong>"Add to Home Screen"</strong>.
       </p>
     </div>
   )
@@ -112,8 +101,7 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
   const operaAndroidInstructions = (
     <div>
       <p>
-        Tap the <strong>red "O" menu</strong> icon at the bottom right of the
-        browser.
+        Tap the <strong>red "O" menu</strong> icon at the bottom right of the browser.
       </p>
       <p>
         Select <strong>"Add to Home Screen"</strong>.
@@ -140,8 +128,7 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
     const isIOS = /iphone|ipad|ipod/.test(userAgent)
 
     // Check if it's Safari (Safari is the only browser on iOS that can install PWAs)
-    const isSafari =
-      /safari/.test(userAgent) && !/crios|fxios|opr/.test(userAgent) // Ensure it's not Chrome, Firefox, or Opera on iOS
+    const isSafari = /safari/.test(userAgent) && !/crios|fxios|opr/.test(userAgent) // Ensure it's not Chrome, Firefox, or Opera on iOS
 
     if (isIOS) {
       if (isSafari) {
@@ -200,11 +187,7 @@ const PwaPrompt: React.FC<PwaPromptProps> = ({ isMobile, pathname }) => {
 
             <div className="centered -translate-y-4 relative">
               <div className="w-16 h-28 bg-white rounded-md shadow-lg centered">
-                <img
-                  src="/icon-192x192.png"
-                  className="w-6 h-6 rounded-full"
-                  alt="logo"
-                />
+                <img src="/icon-192x192.png" className="w-6 h-6 rounded-full" alt="logo" />
               </div>
 
               <div className="absolute top-1 left-0 right-0 centered-row">

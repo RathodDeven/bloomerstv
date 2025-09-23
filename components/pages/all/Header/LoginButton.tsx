@@ -1,13 +1,13 @@
 'use client'
-import React from 'react'
-import AvatarWithOptions from './AvatarWithOptions'
-import { Button } from '@mui/material'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 import LoginIcon from '@mui/icons-material/Login'
-import LoginComponent from '../../../common/LoginComponent'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import SignupComponent from '../../../common/SignupComponent'
+import { Button } from '@mui/material'
+import React from 'react'
 import useSession from '../../../../utils/hooks/useSession'
+import LoginComponent from '../../../common/LoginComponent'
+import SignupComponent from '../../../common/SignupComponent'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
+import AvatarWithOptions from './AvatarWithOptions'
 
 const LoginButton = () => {
   const { isAuthenticated } = useSession()
@@ -28,11 +28,7 @@ const LoginButton = () => {
         onOpen={() => setOpenSignup(true)}
         classname="w-[450px]"
       >
-        <SignupComponent
-          openSignup={openSignup}
-          setOpen={setOpen}
-          setOpenSignup={setOpenSignup}
-        />
+        <SignupComponent openSignup={openSignup} setOpen={setOpen} setOpenSignup={setOpenSignup} />
       </ModalWrapper>
       <ModalWrapper
         open={open}

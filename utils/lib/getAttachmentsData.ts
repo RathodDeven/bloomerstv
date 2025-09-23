@@ -1,12 +1,12 @@
-import { Maybe } from '../../graphql/generated'
-import { AnyMedia } from '@lens-protocol/react'
+import type { AnyMedia } from '@lens-protocol/react'
+import type { Maybe } from '../../graphql/generated'
 
 const getAttachmentsData = (attachments?: Maybe<AnyMedia[]>): any => {
   if (!attachments) {
     return []
   }
 
-  return attachments.map((attachment) => {
+  return attachments.map(attachment => {
     switch (attachment.__typename) {
       case 'MediaImage':
         return {

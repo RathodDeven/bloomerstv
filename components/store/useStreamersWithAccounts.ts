@@ -1,6 +1,6 @@
+import type { Account } from '@lens-protocol/react'
 import { create } from 'zustand'
-import { Streamer } from '../../graphql/generated'
-import { Account } from '@lens-protocol/react'
+import type { Streamer } from '../../graphql/generated'
 
 export interface StreamerWithAccount extends Streamer {
   account: Account
@@ -8,9 +8,7 @@ export interface StreamerWithAccount extends Streamer {
 
 interface StreamerWithAccountStore {
   streamersWithAccounts: StreamerWithAccount[]
-  setStreamersWithAccounts: (
-    streamersWithAccounts: StreamerWithAccount[]
-  ) => void
+  setStreamersWithAccounts: (streamersWithAccounts: StreamerWithAccount[]) => void
   accountsFromPublicReplays: Account[]
   setAccountsFromPublicReplays: (accountsFromPublicReplays: Account[]) => void
   resetStreamersWithAccounts: () => void
@@ -19,28 +17,24 @@ interface StreamerWithAccountStore {
   setLoading: (loading: boolean) => void
 }
 
-export const useStreamersWithAccounts = create<StreamerWithAccountStore>(
-  (set) => ({
-    streamersWithAccounts: [],
-    setStreamersWithAccounts: (newStreamers) =>
-      set({ streamersWithAccounts: newStreamers }),
-    resetStreamersWithAccounts: () => set({ streamersWithAccounts: [] }),
-    accountsFromPublicReplays: [],
-    setAccountsFromPublicReplays: (newAccounts) =>
-      set((state) => {
-        // Only update if the accounts have actually changed
-        // Compare by checking length and addresses
-        const hasChanged =
-          state.accountsFromPublicReplays.length !== newAccounts.length ||
-          !state.accountsFromPublicReplays.every(
-            (account, index) => account.address === newAccounts[index]?.address
-          )
+export const useStreamersWithAccounts = create<StreamerWithAccountStore>(set => ({
+  streamersWithAccounts: [],
+  setStreamersWithAccounts: newStreamers => set({ streamersWithAccounts: newStreamers }),
+  resetStreamersWithAccounts: () => set({ streamersWithAccounts: [] }),
+  accountsFromPublicReplays: [],
+  setAccountsFromPublicReplays: newAccounts =>
+    set(state => {
+      // Only update if the accounts have actually changed
+      // Compare by checking length and addresses
+      const hasChanged =
+        state.accountsFromPublicReplays.length !== newAccounts.length ||
+        !state.accountsFromPublicReplays.every(
+          (account, index) => account.address === newAccounts[index]?.address
+        )
 
-        return hasChanged ? { accountsFromPublicReplays: newAccounts } : state
-      }),
-    resetAccountsFromPublicReplays: () =>
-      set({ accountsFromPublicReplays: [] }),
-    loading: true,
-    setLoading: (loading) => set({ loading })
-  })
-)
+      return hasChanged ? { accountsFromPublicReplays: newAccounts } : state
+    }),
+  resetAccountsFromPublicReplays: () => set({ accountsFromPublicReplays: [] }),
+  loading: true,
+  setLoading: loading => set({ loading })
+}))

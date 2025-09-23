@@ -1,12 +1,12 @@
 'use client'
-import React, { useState } from 'react'
-import { WIDGETS_URL } from '../../../../utils/config'
-import toast from 'react-hot-toast'
-import Link from 'next/link'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
-import { Button, Checkbox, Input } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { Button, Checkbox, Input } from '@mui/material'
+import Link from 'next/link'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import { WIDGETS_URL } from '../../../../utils/config'
 import useSession from '../../../../utils/hooks/useSession'
 
 const AlexBoxWidgetPage = () => {
@@ -41,8 +41,8 @@ const AlexBoxWidgetPage = () => {
           </div>
         </Link>
         <div className="text-sm font-semibold text-s-text mt-2">
-          Use the alert box to display alerts, such as notifications for new
-          followers and new collects.
+          Use the alert box to display alerts, such as notifications for new followers and new
+          collects.
         </div>
       </div>
 
@@ -58,7 +58,7 @@ const AlexBoxWidgetPage = () => {
                 inputProps={{ min: 100, max: 800 }}
                 value={width}
                 className="w-[70px]"
-                onChange={(e) => setWidth(Number(e.target.value))}
+                onChange={e => setWidth(Number(e.target.value))}
               />
             </div>
             <div className="between-row w-full gap-x-6">
@@ -69,14 +69,14 @@ const AlexBoxWidgetPage = () => {
                 inputProps={{ min: 100, max: 800 }}
                 value={height}
                 className="w-[70px]"
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={e => setHeight(Number(e.target.value))}
               />
             </div>
             <div className="between-row w-full gap-x-6">
               <div>Show collect alerts</div>
               <Checkbox
                 checked={collectAlert}
-                onChange={(e) => setCollectAlert(e.target.checked)}
+                onChange={e => setCollectAlert(e.target.checked)}
                 disabled={!followerAlert}
                 size="small"
               />
@@ -85,7 +85,7 @@ const AlexBoxWidgetPage = () => {
               <div>Show new follower alerts</div>
               <Checkbox
                 checked={followerAlert}
-                onChange={(e) => setFollowerAlert(e.target.checked)}
+                onChange={e => setFollowerAlert(e.target.checked)}
                 disabled={!collectAlert}
                 size="small"
               />

@@ -1,23 +1,23 @@
-import React from 'react'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
+import { MediaVideoMimeType, shortVideo } from '@lens-protocol/metadata'
+// import { getThumbnailFromRecordingUrl } from '../../../utils/lib/getThumbnailFromRecordingUrl'
+import { type Account, useCreatePost } from '@lens-protocol/react'
+import { handleOperationWith } from '@lens-protocol/react/viem'
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, MenuItem, Select, TextField } from '@mui/material'
-import { v4 as uuid } from 'uuid'
-import getUserLocale from '../../../utils/getUserLocale'
-import { MediaVideoMimeType, shortVideo } from '@lens-protocol/metadata'
-import formatHandle from '../../../utils/lib/formatHandle'
+import React from 'react'
 import toast from 'react-hot-toast'
-import { CATEGORIES_LIST, getTagsForCategory } from '../../../utils/categories'
-import { useMyPreferences } from '../../store/useMyPreferences'
-// import { getThumbnailFromRecordingUrl } from '../../../utils/lib/getThumbnailFromRecordingUrl'
-import { Account, useCreatePost } from '@lens-protocol/react'
-import useSession from '../../../utils/hooks/useSession'
-import { handleOperationWith } from '@lens-protocol/react/viem'
+import { v4 as uuid } from 'uuid'
 import { useWalletClient } from 'wagmi'
-import { acl, storageClient } from '../../../utils/lib/lens/storageClient'
+import { CATEGORIES_LIST, getTagsForCategory } from '../../../utils/categories'
 import { getThumbnailFromVideoUrl } from '../../../utils/generateThumbnail'
-import { useChatInteractions } from '../../store/useChatInteractions'
+import getUserLocale from '../../../utils/getUserLocale'
+import useSession from '../../../utils/hooks/useSession'
+import formatHandle from '../../../utils/lib/formatHandle'
+import { acl, storageClient } from '../../../utils/lib/lens/storageClient'
 import { ContentType } from '../../common/LiveChat/LiveChatType'
+import { useChatInteractions } from '../../store/useChatInteractions'
+import { useMyPreferences } from '../../store/useMyPreferences'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
 
 const PostClipOnLens = ({
   open,
@@ -33,25 +33,21 @@ const PostClipOnLens = ({
   sessionId?: string | null
 }) => {
   const { isAuthenticated } = useSession()
-  const { category, setCategory } = useMyPreferences((state) => {
+  const { category, setCategory } = useMyPreferences(state => {
     return {
       category: state.category,
       setCategory: state.setCategory
     }
   })
-  const [title, setTitle] = React.useState(
-    `Clip from @${account?.username?.value} 's stream`
-  )
+  const [title, setTitle] = React.useState(`Clip from @${account?.username?.value} 's stream`)
   const { data: walletClient } = useWalletClient()
   const { execute } = useCreatePost({
     handler: handleOperationWith(walletClient)
   })
-  const sendMessagePayload = useChatInteractions(
-    (state) => state.sendMessagePayload
-  )
+  const sendMessagePayload = useChatInteractions(state => state.sendMessagePayload)
 
   const createLensPost = async () => {
-    // @ts-ignore
+    // @ts-expect-error
     if (title.trim().length === 0) {
       toast.error('Please enter a title')
       return
@@ -67,10 +63,7 @@ const PostClipOnLens = ({
 
     // generate thumbnail from video
 
-    const tags = [
-      `clip-${formatHandle(account)}`,
-      ...getTagsForCategory(category)
-    ]
+    const tags = [`clip-${formatHandle(account)}`, ...getTagsForCategory(category)]
     if (sessionId) {
       tags.push(`sessionId-${sessionId}`)
     }
@@ -116,10 +109,10 @@ const PostClipOnLens = ({
 
     // if (type) {
     //   actions = [
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     {
     //       type,
-    //       // @ts-ignore
+    //       // @ts-expect-error
     //       amount,
     //       collectLimit,
     //       endsAt,
@@ -129,12 +122,12 @@ const PostClipOnLens = ({
     //   ]
 
     //   if (type === OpenActionType.MULTIRECIPIENT_COLLECT) {
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     actions[0]['recipients'] = recipients
     //   }
 
     //   if (type === OpenActionType.SIMPLE_COLLECT) {
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     actions[0]['recipient'] = recipient
     //   }
     // }
@@ -143,7 +136,7 @@ const PostClipOnLens = ({
     //   actions?.push({
     //     type: OpenActionType.UNKNOWN_OPEN_ACTION,
     //     address: VerifiedOpenActionModules.Tip,
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     data: encodeAbiParameters(
     //       [{ name: 'tipReceiver', type: 'address' }],
     //       [data?.profile?.handle?.ownedBy as Address]
@@ -165,10 +158,7 @@ const PostClipOnLens = ({
 
     if (result?.isOk()) {
       // If sendMessagePayload is available, send the clip to the chat
-      if (
-        sendMessagePayload &&
-        result.value.metadata.__typename === 'VideoMetadata'
-      ) {
+      if (sendMessagePayload && result.value.metadata.__typename === 'VideoMetadata') {
         sendMessagePayload({
           id: uuid(),
           type: ContentType.Clip,
@@ -206,11 +196,7 @@ const PostClipOnLens = ({
             <Button variant="text" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button
-              variant="text"
-              onClick={handleCreatePost}
-              disabled={title.trim().length === 0}
-            >
+            <Button variant="text" onClick={handleCreatePost} disabled={title.trim().length === 0}>
               Post
             </Button>
           </div>
@@ -221,8 +207,8 @@ const PostClipOnLens = ({
             label="Clip Title"
             variant="outlined"
             onChange={
-              // @ts-ignore
-              (e) => setTitle(e.target.value)
+              // @ts-expect-error
+              e => setTitle(e.target.value)
             }
             value={title}
             inputProps={{
@@ -242,7 +228,7 @@ const PostClipOnLens = ({
             <div className="text-s-text font-bold text-md">Category</div>
             <Select
               value={category}
-              onChange={(e) => {
+              onChange={e => {
                 if (!e.target.value) return
                 setCategory(e.target.value as string)
               }}
@@ -252,7 +238,7 @@ const PostClipOnLens = ({
                 borderRadius: '100px'
               }}
             >
-              {CATEGORIES_LIST.map((category) => (
+              {CATEGORIES_LIST.map(category => (
                 <MenuItem value={category} key={category}>
                   {category}
                 </MenuItem>
@@ -260,13 +246,7 @@ const PostClipOnLens = ({
             </Select>
           </div>
 
-          <video
-            controls
-            src={url}
-            className="w-full rounded-xl"
-            autoPlay
-            muted
-          />
+          <video controls src={url} className="w-full rounded-xl" autoPlay muted />
         </div>
       </ModalWrapper>
     </>

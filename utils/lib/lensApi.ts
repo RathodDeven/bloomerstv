@@ -1,18 +1,13 @@
-import {
-  AnyClient,
-  MainContentFocus,
-  PageSize,
-  PostType
-} from '@lens-protocol/react'
-import { APP_ADDRESS, APP_ID, lensUrl } from '../config'
 import { fetchPosts } from '@lens-protocol/client/actions'
+import { type AnyClient, MainContentFocus, PageSize, PostType } from '@lens-protocol/react'
+import { APP_ADDRESS, APP_ID, lensUrl } from '../config'
 
 export const getLastStreamPostId = async (
   accountAddress: string,
   anyClient: AnyClient
 ): Promise<string | null> => {
   if (!accountAddress) return null
-  // @ts-ignore
+  // @ts-expect-error
   const result = await fetchPosts(anyClient, {
     pageSize: PageSize.Ten,
     filter: {
@@ -33,9 +28,7 @@ export const getLastStreamPostId = async (
   return result.value.items[0]?.id
 }
 
-export const getLastStreamPublicationId = async (
-  profileId: string
-): Promise<string | null> => {
+export const getLastStreamPublicationId = async (profileId: string): Promise<string | null> => {
   if (!profileId) return null
 
   const data = await fetch(lensUrl, {
@@ -67,7 +60,7 @@ export const getLastStreamPublicationId = async (
         }
         `
     })
-  }).then((res) => res.json())
+  }).then(res => res.json())
 
   return data?.data?.publications?.items?.[0]?.id ?? null
 }

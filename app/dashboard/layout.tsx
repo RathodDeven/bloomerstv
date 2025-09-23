@@ -1,14 +1,10 @@
 'use client'
 
-import useIsMobile from '../../utils/hooks/useIsMobile'
 import WorkingOnIt from '../../components/common/WorkingOnIt'
+import useIsMobile from '../../utils/hooks/useIsMobile'
 import useSession from '../../utils/hooks/useSession'
 
-export default function RootLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useSession()
   const isMobile = useIsMobile()
   if (isMobile) {

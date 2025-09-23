@@ -1,21 +1,19 @@
+import type { AnyPost } from '@lens-protocol/react'
 import { create } from 'zustand'
-import { AnyPost } from '@lens-protocol/react'
-import { StreamReplayPostsQuery } from '../../graphql/generated'
+import type { StreamReplayPostsQuery } from '../../graphql/generated'
 
 interface PostsStore {
   posts: AnyPost[]
   setPosts: (posts: AnyPost[]) => void
   streamReplayPosts: StreamReplayPostsQuery | null
-  setStreamReplayPosts: (
-    streamReplayPosts: StreamReplayPostsQuery | null
-  ) => void
+  setStreamReplayPosts: (streamReplayPosts: StreamReplayPostsQuery | null) => void
 }
 
-export const usePostsStore = create<PostsStore>((set) => ({
+export const usePostsStore = create<PostsStore>(set => ({
   posts: [],
   streamReplayPosts: null,
-  setPosts: (posts) =>
-    set((state) => {
+  setPosts: posts =>
+    set(state => {
       // Check if posts have changed by comparing length and post IDs
       const hasChanged =
         state.posts.length !== posts.length ||
@@ -23,6 +21,5 @@ export const usePostsStore = create<PostsStore>((set) => ({
 
       return hasChanged ? { posts } : state
     }),
-  setStreamReplayPosts: (streamReplayPosts) =>
-    set(() => ({ streamReplayPosts }))
+  setStreamReplayPosts: streamReplayPosts => set(() => ({ streamReplayPosts }))
 }))

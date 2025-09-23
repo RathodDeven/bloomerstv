@@ -1,23 +1,20 @@
-import LoadingButton from '@mui/lab/LoadingButton'
-import React, { useState } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
-import {
-  Role,
-  useAccount as useFetchAccount,
-  useLogin
-} from '@lens-protocol/react'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-import { TextField } from '@mui/material'
-import toast from 'react-hot-toast'
-import { useTheme } from '../wrappers/TailwindThemeProvider'
-import { stringToLength } from '../../utils/stringToLength'
-import useCreateAccount from '../../utils/hooks/lens/useCreateAccount'
 import { account as accountMetadata } from '@lens-protocol/metadata'
-import { acl, storageClient } from '../../utils/lib/lens/storageClient'
-import useSession from '../../utils/hooks/useSession'
+import { Role, useAccount as useFetchAccount, useLogin } from '@lens-protocol/react'
 import { signMessageWith } from '@lens-protocol/react/viem'
-import { APP_ADDRESS } from '../../utils/config'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { TextField } from '@mui/material'
 import { ConnectKitButton } from 'connectkit'
+import type React from 'react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { useAccount, useWalletClient } from 'wagmi'
+import { APP_ADDRESS } from '../../utils/config'
+import useCreateAccount from '../../utils/hooks/lens/useCreateAccount'
+import useSession from '../../utils/hooks/useSession'
+import { acl, storageClient } from '../../utils/lib/lens/storageClient'
+import { stringToLength } from '../../utils/stringToLength'
+import { useTheme } from '../wrappers/TailwindThemeProvider'
 
 const SignupComponent = ({
   setOpen,
@@ -110,18 +107,12 @@ const SignupComponent = ({
             </div>
           )}
           {localName && data && loading && (
-            <div className="text-s-text text-xs font-semibold mt-1">
-              {'Checking username...'}
-            </div>
+            <div className="text-s-text text-xs font-semibold mt-1">{'Checking username...'}</div>
           )}
           {localName && !data && !loading && (
-            <div className="text-green-500 text-xs font-semibold mt-1">
-              {'Username available!'}
-            </div>
+            <div className="text-green-500 text-xs font-semibold mt-1">{'Username available!'}</div>
           )}
-          <div className="text-s-text text-xs mt-1 mb-4">
-            Connected Wallet: {address}
-          </div>
+          <div className="text-s-text text-xs mt-1 mb-4">Connected Wallet: {address}</div>
         </div>
       )}
 

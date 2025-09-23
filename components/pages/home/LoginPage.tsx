@@ -1,31 +1,27 @@
-import LoadingButton from '@mui/lab/LoadingButton'
-import { Button, CircularProgress } from '@mui/material'
-import React from 'react'
-import { useAccount, useDisconnect, useWalletClient } from 'wagmi'
+import { type LoginParams, useAccountsAvailable, useLogin } from '@lens-protocol/react'
+import { signMessageWith } from '@lens-protocol/react/viem'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
-import formatHandle from '../../../utils/lib/formatHandle'
-import getAvatar from '../../../utils/lib/getAvatar'
+import WalletIcon from '@mui/icons-material/Wallet'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Button, CircularProgress } from '@mui/material'
 import clsx from 'clsx'
+import { ConnectKitButton } from 'connectkit'
 import { usePathname } from 'next/navigation'
+import React from 'react'
 // import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import toast from 'react-hot-toast'
-import { useTheme } from '../../wrappers/TailwindThemeProvider'
-import WalletIcon from '@mui/icons-material/Wallet'
-import { getShortAddress } from '../../../utils/lib/getShortAddress'
-import useEns from '../../../utils/hooks/useEns'
-import getStampFyiURL from '../../../utils/getStampFyiURL'
-import LoadingImage from '../../ui/LoadingImage'
-import useSession from '../../../utils/hooks/useSession'
-import {
-  LoginParams,
-  useAccountsAvailable,
-  useLogin
-} from '@lens-protocol/react'
+import { useAccount, useDisconnect, useWalletClient } from 'wagmi'
 // import useEnableSignless from '../../../utils/hooks/useEnableSignless'
 import { APP_ADDRESS } from '../../../utils/config'
-import { signMessageWith } from '@lens-protocol/react/viem'
-import { ConnectKitButton } from 'connectkit'
+import getStampFyiURL from '../../../utils/getStampFyiURL'
+import useEns from '../../../utils/hooks/useEns'
+import useSession from '../../../utils/hooks/useSession'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
+import { getShortAddress } from '../../../utils/lib/getShortAddress'
+import LoadingImage from '../../ui/LoadingImage'
+import { useTheme } from '../../wrappers/TailwindThemeProvider'
 
 const LoginPage = () => {
   const { data: walletClient } = useWalletClient()
@@ -35,8 +31,7 @@ const LoginPage = () => {
   const { isAuthenticated } = useSession()
   const { disconnectAsync } = useDisconnect()
   const { isConnected, address, isConnecting, isReconnecting } = useAccount()
-  const [selectedAccountAddress, setSelectedAccountAddress] =
-    React.useState<string>()
+  const [selectedAccountAddress, setSelectedAccountAddress] = React.useState<string>()
   const { data: profiles, loading: loadingProfiles } = useAccountsAvailable({
     managedBy: address,
     includeOwned: true
@@ -67,9 +62,7 @@ const LoginPage = () => {
           {!isAuthenticated ? (
             // login page
             <div className="between-col h-full">
-              <div className="font-bold text-5xl mt-4 mb-8">
-                Login with your Lens profile
-              </div>
+              <div className="font-bold text-5xl mt-4 mb-8">Login with your Lens profile</div>
 
               <div className="start-col space-y-8 ">
                 <div className="text-s-text font-bold text-lg">
@@ -86,8 +79,7 @@ const LoginPage = () => {
                     <div
                       className={clsx(
                         'between-row w-full p-4',
-                        i < profiles?.items.length - 1 &&
-                          'border-b border-p-border '
+                        i < profiles?.items.length - 1 && 'border-b border-p-border '
                       )}
                       key={profile?.account?.address}
                     >
@@ -133,10 +125,7 @@ const LoginPage = () => {
                               toast.error('Failed to login')
                             }
                           }}
-                          loading={
-                            logging &&
-                            selectedAccountAddress === profile.account.address
-                          }
+                          loading={logging && selectedAccountAddress === profile.account.address}
                           loadingPosition="start"
                           startIcon={
                             <img
@@ -157,9 +146,8 @@ const LoginPage = () => {
 
                   {profiles?.items.length === 0 && !loadingProfiles && (
                     <div className="centered-row w-full text-s-text p-4 text-sm">
-                      You don’t have any lens profiles linked to this wallet
-                      address. However, You can log in with your wallet and chat
-                      with streamers
+                      You don’t have any lens profiles linked to this wallet address. However, You
+                      can log in with your wallet and chat with streamers
                     </div>
                   )}
 
@@ -174,9 +162,7 @@ const LoginPage = () => {
                           <div className="text-xs sm:text-sm text-s-text font-semibold">
                             {getShortAddress(String(address), 20)}
                           </div>
-                          <div>
-                            {ensName ?? getShortAddress(String(address))}
-                          </div>
+                          <div>{ensName ?? getShortAddress(String(address))}</div>
                         </div>
                       </div>
                       <LoadingButton
@@ -231,8 +217,8 @@ const LoginPage = () => {
                   </Button>
 
                   <div className="centered-row w-full text-s-text text-xs">
-                    If you're unable to login, please try clearing this site's
-                    cache and refreshing the page.
+                    If you're unable to login, please try clearing this site's cache and refreshing
+                    the page.
                   </div>
 
                   {/* // disconnect wallet */}
@@ -269,7 +255,7 @@ const LoginPage = () => {
             //             try {
             //               await enableSignless()
             //             } catch (e) {
-            //               // @ts-ignore
+            //               // @ts-expect-error
             //               toast.error(e.message)
             //             }
             //           }}

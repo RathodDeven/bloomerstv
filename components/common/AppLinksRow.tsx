@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import React from 'react'
 import {
@@ -10,29 +11,17 @@ import {
   REPORT_URL,
   X_URL
 } from '../../utils/config'
-import clsx from 'clsx'
 
 const AppLinksRow = ({ className, ...props }: { className?: string }) => {
   return (
     <div
       {...props}
-      className={clsx(
-        className,
-        'start-row flex-wrap gap-y-2 gap-x-3 px-4 text-sm font-semibold'
-      )}
+      className={clsx(className, 'start-row flex-wrap gap-y-2 gap-x-3 px-4 text-sm font-semibold')}
     >
-      <Link
-        href={HEY_URL}
-        className="no-underline text-s-text hover:text-p-text"
-        target="_blank"
-      >
+      <Link href={HEY_URL} className="no-underline text-s-text hover:text-p-text" target="_blank">
         Hey
       </Link>
-      <Link
-        href={X_URL}
-        className="no-underline text-s-text hover:text-p-text"
-        target="_blank"
-      >
+      <Link href={X_URL} className="no-underline text-s-text hover:text-p-text" target="_blank">
         X
       </Link>
       <Link

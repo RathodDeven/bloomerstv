@@ -1,20 +1,18 @@
-import { useState } from 'react'
+import { undoReaction } from '@lens-protocol/client/actions'
 import {
-  UndoReactionRequest,
-  UndoReactionResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UndoReactionRequest,
+  type UndoReactionResult,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { undoReaction } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseUndoReactionReturn {
   execute: (
     request: UndoReactionRequest
-  ) => Promise<
-    ResultAsync<UndoReactionResult, UnexpectedError | UnauthenticatedError>
-  >
+  ) => Promise<ResultAsync<UndoReactionResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   data: UndoReactionResult | null
 }
@@ -26,12 +24,10 @@ const useUndoReaction = (): UseUndoReactionReturn => {
 
   const execute = async (
     request: UndoReactionRequest
-  ): Promise<
-    ResultAsync<UndoReactionResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<UndoReactionResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await undoReaction(sessionClient, request)
 
     setData(result?.isOk() ? result.value : null)

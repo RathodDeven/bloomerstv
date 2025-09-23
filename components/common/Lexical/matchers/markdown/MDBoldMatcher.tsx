@@ -11,7 +11,7 @@ export class MDBoldMatcher extends Matcher {
   }
 
   match(value: string) {
-    return this.doMatch(value, /\*\*([^**]*?)\*\*/, (matches) => ({
+    return this.doMatch(value, /\*\*([^**]*?)\*\*/, matches => ({
       match: matches[1]
     }))
   }

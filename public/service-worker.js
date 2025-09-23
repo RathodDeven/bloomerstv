@@ -1,4 +1,4 @@
-self.addEventListener('push', (event) => {
+self.addEventListener('push', event => {
   // Handle push notification event here
 
   if (event.data) {
@@ -16,20 +16,19 @@ self.addEventListener('push', (event) => {
   }
 })
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
   event.notification.close()
   // Handle notification click event here
   // redirect according to the notification
   const urlToOpen =
-    event?.notification?.data?.url ||
-    new URL('https://bloomers.tv', self.location.origin).href
+    event?.notification?.data?.url || new URL('https://bloomers.tv', self.location.origin).href
   const clients = self.clients
   const promiseChain = clients
     .matchAll({
       type: 'window',
       includeUncontrolled: true
     })
-    .then((windowClients) => {
+    .then(windowClients => {
       let matchingClient = null
 
       for (let i = 0; i < windowClients.length; i++) {

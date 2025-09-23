@@ -1,20 +1,18 @@
-import { useState } from 'react'
+import { deletePost } from '@lens-protocol/client/actions'
 import {
-  DeletePostRequest,
-  DeletePostResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type DeletePostRequest,
+  type DeletePostResult,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { deletePost } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseHidePublicationReturn {
   execute: (
     request: DeletePostRequest
-  ) => Promise<
-    ResultAsync<DeletePostResult, UnexpectedError | UnauthenticatedError>
-  >
+  ) => Promise<ResultAsync<DeletePostResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   data: DeletePostResult | null
 }
@@ -26,12 +24,10 @@ const useDeletePost = (): UseHidePublicationReturn => {
 
   const execute = async (
     request: DeletePostRequest
-  ): Promise<
-    ResultAsync<DeletePostResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<DeletePostResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await deletePost(sessionClient, request)
 
     setData(result?.isOk() ? result.value : null)

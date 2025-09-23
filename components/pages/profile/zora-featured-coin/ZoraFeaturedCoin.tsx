@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { getCoin, getProfileBalances } from '@zoralabs/coins-sdk'
 import { CircularProgress } from '@mui/material'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useAccount, useChainId } from 'wagmi'
+import { getCoin, getProfileBalances } from '@zoralabs/coins-sdk'
+import { AnimatePresence, motion } from 'framer-motion'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 import { base } from 'viem/chains'
-import { ZoraCoin, ZoraFeaturedCoinProps } from './types'
-import CoinHeader from './CoinHeader'
+import { useAccount, useChainId } from 'wagmi'
+import BuyMode from './BuyMode'
+import CoinActionButtons from './CoinActionButtons'
 import CoinDetails from './CoinDetails'
 import CoinExternalLink from './CoinExternalLink'
-import CoinActionButtons from './CoinActionButtons'
-import BuyMode from './BuyMode'
-import SellMode from './SellMode'
+import CoinHeader from './CoinHeader'
 import PriceChart from './PriceChart'
+import SellMode from './SellMode'
+import type { ZoraCoin, ZoraFeaturedCoinProps } from './types'
 
-const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({
-  coinAddress,
-  className = ''
-}) => {
+const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({ coinAddress, className = '' }) => {
   const [coin, setCoin] = useState<ZoraCoin | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -48,8 +46,7 @@ const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({
 
         // Find this specific coin in user's balances
         const userCoinBalance = coinBalances.find(
-          (edge: any) =>
-            edge.node.coin.address.toLowerCase() === coinAddress.toLowerCase()
+          (edge: any) => edge.node.coin.address.toLowerCase() === coinAddress.toLowerCase()
         )
 
         if (userCoinBalance) {
@@ -128,7 +125,7 @@ const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({
         const coinData = response.data?.zora20Token
 
         if (coinData) {
-          // @ts-ignore
+          // @ts-expect-error
           setCoin(coinData)
 
           // Fetch user balance when coin data is available
@@ -197,9 +194,7 @@ const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({
 
   if (error || !coin) {
     return (
-      <div
-        className={`text-s-text text-center p-4 bg-p-hover lg:bg-s-bg rounded-xl ${className}`}
-      >
+      <div className={`text-s-text text-center p-4 bg-p-hover lg:bg-s-bg rounded-xl ${className}`}>
         {error || 'No coin data available'}
       </div>
     )

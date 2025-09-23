@@ -1,18 +1,14 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { getListOfThumbnailsFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
-import Draggable from 'react-draggable'
+import { type MediaScopedProps, useMediaContext, useStore } from '@livepeer/react/player'
 import clsx from 'clsx'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import Draggable from 'react-draggable'
+import { getListOfThumbnailsFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
 import { useStreamAsVideo } from '../../../store/useStreamAsVideo'
-import {
-  MediaScopedProps,
-  useMediaContext,
-  useStore
-} from '@livepeer/react/player'
 
 // max time distance between start and end time in seconds
 const MAX_TIME_DISTANCE = 60
 
-const formatTime = (value) => {
+const formatTime = value => {
   const hours = Math.floor(value / 3600)
   const minutes = Math.floor((value % 3600) / 60)
   const seconds = Math.floor(value % 60)
@@ -21,32 +17,26 @@ const formatTime = (value) => {
     ? `${hours.toString().padStart(2, '0')}:${minutes
         .toString()
         .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-    : `${minutes.toString().padStart(2, '0')}:${seconds
-        .toString()
-        .padStart(2, '0')}`
+    : `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
-const VideoClipper = ({
-  url,
-  __scopeMedia
-}: MediaScopedProps<{ url: string }>) => {
+const VideoClipper = ({ url, __scopeMedia }: MediaScopedProps<{ url: string }>) => {
   const context = useMediaContext('CurrentSource', __scopeMedia)
-  const { duration, playing, loading, progress, __controlsFunctions } =
-    useStore(
-      context.store,
-      ({ duration, playing, loading, progress, __controlsFunctions }) => ({
-        duration,
-        playing,
-        loading,
-        progress,
-        __controlsFunctions
-      })
-    )
+  const { duration, playing, loading, progress, __controlsFunctions } = useStore(
+    context.store,
+    ({ duration, playing, loading, progress, __controlsFunctions }) => ({
+      duration,
+      playing,
+      loading,
+      progress,
+      __controlsFunctions
+    })
+  )
   // const { duration, playing, loading, progress, requestSeek, togglePlay } =
   //   useMediaController((state) => state)
 
-  const setStartTime = useStreamAsVideo((state) => state.setStartTime)
-  const setEndTime = useStreamAsVideo((state) => state.setEndTime)
+  const setStartTime = useStreamAsVideo(state => state.setStartTime)
+  const setEndTime = useStreamAsVideo(state => state.setEndTime)
 
   const [startPosition, setStartPosition] = useState(0)
   const [endPosition, setEndPosition] = useState(0)
@@ -82,7 +72,7 @@ const VideoClipper = ({
   // }
 
   const timeToLocation = useCallback(
-    (time) => {
+    time => {
       return (time / duration) * totalWidth
     },
     [duration, totalWidth]
@@ -132,10 +122,10 @@ const VideoClipper = ({
               src={thumbnail}
               alt={`Thumbnail ${index}`}
               className={clsx('w-full h-20 object-cover unselectable block')}
-              onError={(e) => {
-                // @ts-ignore
+              onError={e => {
+                // @ts-expect-error
                 e.target.onerror = null // Prevents infinite looping in case the fallback image also fails to load
-                // @ts-ignore
+                // @ts-expect-error
                 e.target.src = `/placeholders/blur-bg-${randomNumberBetween(1, 6)}.png` // Replace with your default background image
               }}
             />
@@ -147,9 +137,7 @@ const VideoClipper = ({
           className="absolute top-0 h-full rounded-l-lg"
           style={{
             left: '0%',
-            right: `${
-              100 - (startPosition / (totalWidth || startPosition)) * 100
-            }%`,
+            right: `${100 - (startPosition / (totalWidth || startPosition)) * 100}%`,
             backgroundColor: 'rgba(0, 0, 0, 0.7)'
           }}
         ></div>
@@ -168,12 +156,8 @@ const VideoClipper = ({
         <div
           className="absolute top-0 h-1 bg-brand"
           style={{
-            left: `${
-              (startPosition / (totalWidth || startPosition + 4)) * 100
-            }%`,
-            right: `${
-              100 - ((endPosition + 9) / (totalWidth || endPosition)) * 100
-            }%`
+            left: `${(startPosition / (totalWidth || startPosition + 4)) * 100}%`,
+            right: `${100 - ((endPosition + 9) / (totalWidth || endPosition)) * 100}%`
           }}
         ></div>
 
@@ -181,12 +165,8 @@ const VideoClipper = ({
         <div
           className="absolute bottom-0 h-1 bg-brand"
           style={{
-            left: `${
-              (startPosition / (totalWidth || startPosition + 4)) * 100
-            }%`,
-            right: `${
-              100 - ((endPosition + 9) / (totalWidth || endPosition)) * 100
-            }%`
+            left: `${(startPosition / (totalWidth || startPosition + 4)) * 100}%`,
+            right: `${100 - ((endPosition + 9) / (totalWidth || endPosition)) * 100}%`
           }}
         ></div>
 
@@ -221,15 +201,13 @@ const VideoClipper = ({
           position={{ x: startPosition, y: 0 }}
           onDrag={(e, data) => {
             if (!containerRef?.current?.offsetWidth) return
-            const newTimeDistance =
-              ((endPosition - data.x) / totalWidth) * duration
+            const newTimeDistance = ((endPosition - data.x) / totalWidth) * duration
 
             if (data.x < endPosition + 8) {
               setStartPosition(data.x)
 
               if (newTimeDistance > MAX_TIME_DISTANCE) {
-                const newEndPosition =
-                  data.x + (MAX_TIME_DISTANCE / duration) * totalWidth
+                const newEndPosition = data.x + (MAX_TIME_DISTANCE / duration) * totalWidth
                 setEndPosition(newEndPosition)
               }
             }
@@ -254,14 +232,12 @@ const VideoClipper = ({
           position={{ x: endPosition, y: 0 }}
           onDrag={(e, data) => {
             if (!containerRef?.current?.offsetWidth) return
-            const newTimeDistance =
-              ((data.x - startPosition) / totalWidth) * duration
+            const newTimeDistance = ((data.x - startPosition) / totalWidth) * duration
             if (data.x + 8 > startPosition) {
               setEndPosition(data.x)
 
               if (newTimeDistance > MAX_TIME_DISTANCE) {
-                const newStartPosition =
-                  data.x - (MAX_TIME_DISTANCE / duration) * totalWidth
+                const newStartPosition = data.x - (MAX_TIME_DISTANCE / duration) * totalWidth
                 setStartPosition(newStartPosition)
               }
             }

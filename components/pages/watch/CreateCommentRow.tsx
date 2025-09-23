@@ -1,18 +1,18 @@
-import React from 'react'
-import getAvatar from '../../../utils/lib/getAvatar'
-import { IconButton } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import { v4 as uuid } from 'uuid'
-import getUserLocale from '../../../utils/getUserLocale'
 import { textOnly } from '@lens-protocol/metadata'
-import { NewComment } from './CommentSection'
-import clsx from 'clsx'
-import toast from 'react-hot-toast'
-import useSession from '../../../utils/hooks/useSession'
 import { useCreatePost } from '@lens-protocol/react'
 import { handleOperationWith } from '@lens-protocol/react/viem'
+import SendIcon from '@mui/icons-material/Send'
+import { IconButton } from '@mui/material'
+import clsx from 'clsx'
+import React from 'react'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
 import { useWalletClient } from 'wagmi'
+import getUserLocale from '../../../utils/getUserLocale'
+import useSession from '../../../utils/hooks/useSession'
+import getAvatar from '../../../utils/lib/getAvatar'
 import { acl, storageClient } from '../../../utils/lib/lens/storageClient'
+import type { NewComment } from './CommentSection'
 
 const CreateCommentRow = ({
   commentOn,
@@ -84,12 +84,7 @@ const CreateCommentRow = ({
     return null
   }
   return (
-    <div
-      className={clsx(
-        'start-center-row w-full gap-x-2 pl-2.5 py-2.5',
-        className
-      )}
-    >
+    <div className={clsx('start-center-row w-full gap-x-2 pl-2.5 py-2.5', className)}>
       <img src={getAvatar(sessionAccount)} className="w-8 h-8 rounded-full" />
       <div className="border border-p-border rounded-lg overflow-hidden w-full">
         <input
@@ -99,8 +94,8 @@ const CreateCommentRow = ({
           )}
           placeholder="Add a comment..."
           value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onKeyDown={async (e) => {
+          onChange={e => setContent(e.target.value)}
+          onKeyDown={async e => {
             if (e.key === 'Enter' && content?.trim().length > 0) {
               await sendComment()
             }

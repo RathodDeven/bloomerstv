@@ -1,13 +1,5 @@
-query StreamReplayRecording(
-  $postId: String
-  $accountAddress: String
-  $sessionId: String
-) {
-  streamReplayRecording(
-    postId: $postId
-    accountAddress: $accountAddress
-    sessionId: $sessionId
-  ) {
+query StreamReplayRecording($postId: String, $accountAddress: String, $sessionId: String) {
+  streamReplayRecording(postId: $postId, accountAddress: $accountAddress, sessionId: $sessionId) {
     postId
     recordingUrl
     premium

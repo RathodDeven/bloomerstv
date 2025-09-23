@@ -1,19 +1,13 @@
-import React from 'react'
+import { PageSize, useAccounts } from '@lens-protocol/react'
+import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
-import {
-  ClickAwayListener,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton
-} from '@mui/material'
+import { ClickAwayListener, IconButton, List, ListItem, ListItemButton } from '@mui/material'
+import clsx from 'clsx'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import React from 'react'
 import formatHandle from '../../../../utils/lib/formatHandle'
 import MobileProfileList from '../../../ui/account/MobileProfileList'
-import CloseIcon from '@mui/icons-material/Close'
-import clsx from 'clsx'
-import { PageSize, useAccounts } from '@lens-protocol/react'
-import { motion, AnimatePresence } from 'framer-motion'
 
 const HeaderSearch = () => {
   const { push } = useRouter()
@@ -29,7 +23,7 @@ const HeaderSearch = () => {
     pageSize: PageSize.Ten
   })
 
-  // @ts-ignore
+  // @ts-expect-error
   const showSearch = data?.length > 0 && search?.length > 0
 
   const closeSearch = () => {
@@ -46,7 +40,7 @@ const HeaderSearch = () => {
             className="w-full rounded-xl border-0 text-sm px-6 font-semibold bg-s-bg outline-none text-p-text"
             placeholder="Search..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
           />
           <div className={clsx(search.length === 0 && 'invisible')}>
             <IconButton

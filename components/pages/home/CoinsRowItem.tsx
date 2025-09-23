@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { getCoin } from '@zoralabs/coins-sdk'
 import { useAccount } from '@lens-protocol/react'
-import { TrendingUp, TrendingDown } from 'lucide-react'
-import { base } from 'viem/chains'
-import { motion } from 'framer-motion'
+import { getCoin } from '@zoralabs/coins-sdk'
 import clsx from 'clsx'
+import { motion } from 'framer-motion'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
+import type React from 'react'
+import { useEffect, useState } from 'react'
+import { base } from 'viem/chains'
 import { stringToLength } from '../../../utils/stringToLength'
 
 interface CoinsRowItemProps {
@@ -26,11 +27,7 @@ interface CoinData {
   }
 }
 
-const CoinsRowItem: React.FC<CoinsRowItemProps> = ({
-  accountAddress,
-  coinAddress,
-  chainId
-}) => {
+const CoinsRowItem: React.FC<CoinsRowItemProps> = ({ accountAddress, coinAddress, chainId }) => {
   const [coinData, setCoinData] = useState<CoinData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -70,11 +67,7 @@ const CoinsRowItem: React.FC<CoinsRowItemProps> = ({
     const currentMarketCap = parseFloat(coinData.marketCap)
     const deltaValue = parseFloat(coinData.marketCapDelta24h)
 
-    if (
-      isNaN(currentMarketCap) ||
-      isNaN(deltaValue) ||
-      currentMarketCap === 0
-    ) {
+    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 
@@ -110,10 +103,7 @@ const CoinsRowItem: React.FC<CoinsRowItemProps> = ({
       whileTap={{ scale: 0.97 }}
       className="flex-shrink-0 cursor-pointer border-none py-1.5 px-3 sm:py-2 sm:px-4 font-semibold text-sm outline-none shadow-sm transition duration-300 ease-in-out transform rounded-md bg-p-bg sm:bg-s-bg text-p-text hover:bg-p-hover"
     >
-      <Link
-        href={`/${accountData?.username?.localName}`}
-        className="no-underline text-p-text"
-      >
+      <Link href={`/${accountData?.username?.localName}`} className="no-underline text-p-text">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full overflow-hidden">
             {coinData.mediaContent?.previewImage?.small ? (
@@ -130,9 +120,7 @@ const CoinsRowItem: React.FC<CoinsRowItemProps> = ({
               </div>
             )}
           </div>
-          <span className="font-medium">
-            ${stringToLength(coinData.symbol, 10)}
-          </span>
+          <span className="font-medium">${stringToLength(coinData.symbol, 10)}</span>
           <span
             className={clsx(
               'flex items-center text-xs',

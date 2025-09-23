@@ -1,13 +1,14 @@
 'use client'
-import { Button, Input } from '@mui/material'
-import React, { useState } from 'react'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import { WIDGETS_URL } from '../../../../utils/config'
-import toast from 'react-hot-toast'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import { Button, Input } from '@mui/material'
 import Link from 'next/link'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import { WIDGETS_URL } from '../../../../utils/config'
 import useSession from '../../../../utils/hooks/useSession'
+
 const ChatBoxWidgetPage = () => {
   const { isAuthenticated, account } = useSession()
   const [width, setWidth] = useState(300)
@@ -56,7 +57,7 @@ const ChatBoxWidgetPage = () => {
                 inputProps={{ min: 100, max: 800 }}
                 value={width}
                 className="w-[70px]"
-                onChange={(e) => setWidth(Number(e.target.value))}
+                onChange={e => setWidth(Number(e.target.value))}
               />
             </div>
             <div className="between-row w-full gap-x-6">
@@ -67,7 +68,7 @@ const ChatBoxWidgetPage = () => {
                 inputProps={{ min: 100, max: 800 }}
                 value={height}
                 className="w-[70px]"
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={e => setHeight(Number(e.target.value))}
               />
             </div>
 
@@ -79,7 +80,7 @@ const ChatBoxWidgetPage = () => {
                 inputProps={{ min: 1, max: 10 }}
                 value={limit}
                 className="w-[70px]"
-                onChange={(e) => setLimit(Number(e.target.value))}
+                onChange={e => setLimit(Number(e.target.value))}
               />
             </div>
             <div className="between-row w-full gap-x-6">
@@ -93,9 +94,7 @@ const ChatBoxWidgetPage = () => {
                 inputProps={{ min: 1, max: 10 }}
                 value={autoRemoveChatInterval}
                 className="w-[70px]"
-                onChange={(e) =>
-                  setAutoRemoveChatInterval(Number(e.target.value))
-                }
+                onChange={e => setAutoRemoveChatInterval(Number(e.target.value))}
               />
             </div>
           </div>
@@ -103,43 +102,31 @@ const ChatBoxWidgetPage = () => {
           <div className="mt-4 w-[500px]">
             <div className="font-bold text-xl">Chat Widget Class Names</div>
             <div className="text-s-text text-sm font-semibold">
-              Use this classnames to edit chat widget theme using custom css
-              field in browser source of obs
+              Use this classnames to edit chat widget theme using custom css field in browser source
+              of obs
             </div>
             <ul>
               <li>
                 <strong>chat-container:</strong>
-                <span>
-                  Container for each chat message, controlling positioning and
-                  margins.
-                </span>
+                <span>Container for each chat message, controlling positioning and margins.</span>
               </li>
               <li>
                 <strong>profile-container:</strong>
                 <span>
-                  Container for the profile info (avatar and handle) displayed
-                  above the message.
+                  Container for the profile info (avatar and handle) displayed above the message.
                 </span>
               </li>
               <li>
                 <strong>avatar:</strong>
-                <span>
-                  Displays the user's avatar image. Make sure the size fits your
-                  design.
-                </span>
+                <span>Displays the user's avatar image. Make sure the size fits your design.</span>
               </li>
               <li>
                 <strong>handle:</strong>
-                <span>
-                  User's handle (username), displayed alongside the avatar.
-                </span>
+                <span>User's handle (username), displayed alongside the avatar.</span>
               </li>
               <li>
                 <strong>super-chat:</strong>
-                <span>
-                  Displays the super chat amount and currency symbol, if
-                  applicable.
-                </span>
+                <span>Displays the super chat amount and currency symbol, if applicable.</span>
               </li>
               <li>
                 <strong>message:</strong>
@@ -147,10 +134,7 @@ const ChatBoxWidgetPage = () => {
               </li>
               <li>
                 <strong>message-container:</strong>
-                <span>
-                  Container for the message, with styles for padding and
-                  background.
-                </span>
+                <span>Container for the message, with styles for padding and background.</span>
               </li>
             </ul>
           </div>

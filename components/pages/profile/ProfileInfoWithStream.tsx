@@ -1,7 +1,7 @@
+import type { Account, Post } from '@lens-protocol/react'
 import React from 'react'
-import { SingleStreamer, useIsVerifiedQuery } from '../../../graphql/generated'
+import { type SingleStreamer, useIsVerifiedQuery } from '../../../graphql/generated'
 import ProfileBar from './ProfileBar'
-import { Account, Post } from '@lens-protocol/react'
 
 const ProfileInfoWithStream = ({
   account,

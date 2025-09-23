@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import { ReactNode, useMemo, useState } from 'react'
+import { type ReactNode, useMemo, useState } from 'react'
 
 const HorizontalNavigation = ({
   navItems,
@@ -13,14 +13,10 @@ const HorizontalNavigation = ({
   }[]
   navClassName?: string
 }) => {
-  const [selectedComponent, setSelectedComponent] = useState(
-    navItems[0].component
-  )
+  const [selectedComponent, setSelectedComponent] = useState(navItems[0].component)
 
   const renderedComponent = useMemo(() => {
-    const selectedItem = navItems.find(
-      (item) => item.component === selectedComponent
-    )
+    const selectedItem = navItems.find(item => item.component === selectedComponent)
     return selectedItem ? selectedItem.render() : null
   }, [selectedComponent, navItems])
 

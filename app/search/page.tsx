@@ -1,13 +1,13 @@
 'use client'
-import React from 'react'
+import { PageSize, useAccounts } from '@lens-protocol/react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import CloseIcon from '@mui/icons-material/Close'
 import { IconButton, List, ListItem, ListItemButton } from '@mui/material'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import formatHandle from '../../utils/lib/formatHandle'
+import React from 'react'
 import MobileAccountList from '../../components/ui/account/MobileProfileList'
-import { PageSize, useAccounts } from '@lens-protocol/react'
-import { motion, AnimatePresence } from 'framer-motion'
+import formatHandle from '../../utils/lib/formatHandle'
 
 const SearchPage = () => {
   const { back, push } = useRouter()
@@ -43,7 +43,7 @@ const SearchPage = () => {
             placeholder="Search..."
             autoFocus
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
           />
         </div>
         {search.length > 0 && (

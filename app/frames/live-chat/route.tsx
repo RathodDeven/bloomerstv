@@ -97,5 +97,4 @@ export const POST = frames(async (ctx) => {
 */
 
 // Placeholder export handler to keep the file structure intact
-export const POST = async () =>
-  new Response('Live-chat frames temporarily disabled')
+export const POST = async () => new Response('Live-chat frames temporarily disabled')

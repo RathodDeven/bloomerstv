@@ -1,30 +1,26 @@
-import React from 'react'
-import getAvatar from '../../../utils/lib/getAvatar'
-import formatHandle from '../../../utils/lib/formatHandle'
-import Link from 'next/link'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
-import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
-import LiveDiv from '../../ui/LiveDiv'
-import {
-  humanReadableDateTime,
-  humanReadableNumber,
-  timeAgoShort
-} from '../../../utils/helpers'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import VerifiedBadge from '../../ui/VerifiedBadge'
-import Countdown from 'react-countdown'
 import { Tooltip } from '@mui/material'
-import { StreamerWithAccount } from '../../store/useStreamersWithAccounts'
+import clsx from 'clsx'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React from 'react'
+import Countdown from 'react-countdown'
+import { humanReadableDateTime, humanReadableNumber, timeAgoShort } from '../../../utils/helpers'
 import useAccountStats from '../../../utils/hooks/lens/useAccountStats'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
 import { stringToLength } from '../../../utils/stringToLength'
+import type { StreamerWithAccount } from '../../store/useStreamersWithAccounts'
+import LiveDiv from '../../ui/LiveDiv'
+import VerifiedBadge from '../../ui/VerifiedBadge'
+
 const StreamerBar = ({ streamer }: { streamer: StreamerWithAccount }) => {
   const pathname = usePathname()
   const isMobile = useIsMobile()
   const minimize = !isMobile && pathname !== '/'
   const nextStreamInFuture =
-    !!streamer?.nextStreamTime &&
-    new Date(streamer?.nextStreamTime) > new Date()
+    !!streamer?.nextStreamTime && new Date(streamer?.nextStreamTime) > new Date()
 
   const { data } = useAccountStats({
     account: streamer?.account?.address
@@ -43,10 +39,7 @@ const StreamerBar = ({ streamer }: { streamer: StreamerWithAccount }) => {
         <img
           src={getAvatar(streamer?.account)}
           alt="avatar"
-          className={clsx(
-            'rounded-full',
-            minimize ? 'w-10 h-10' : 'sm:w-8 sm:h-8 w-10 h-10'
-          )}
+          className={clsx('rounded-full', minimize ? 'w-10 h-10' : 'sm:w-8 sm:h-8 w-10 h-10')}
         />
         {minimize && streamer?.isActive && (
           <div className="-mt-4">
@@ -94,23 +87,15 @@ const StreamerBar = ({ streamer }: { streamer: StreamerWithAccount }) => {
           {streamer?.isActive ? (
             <div className="centered-row gap-x-1 text-xl text-brand ">
               <PermIdentityIcon fontSize="inherit" />
-              <div className="text-base font-semibold">
-                {streamer?.liveCount}
-              </div>
+              <div className="text-base font-semibold">{streamer?.liveCount}</div>
             </div>
           ) : (
             <Tooltip
-              title={
-                streamer?.lastSeen
-                  ? humanReadableDateTime(streamer?.lastSeen)
-                  : 'Offline'
-              }
+              title={streamer?.lastSeen ? humanReadableDateTime(streamer?.lastSeen) : 'Offline'}
               arrow
             >
               <div className="text-s-text text-xs">
-                {streamer?.lastSeen
-                  ? `${timeAgoShort(streamer?.lastSeen)} ago`
-                  : 'Offline'}
+                {streamer?.lastSeen ? `${timeAgoShort(streamer?.lastSeen)} ago` : 'Offline'}
               </div>
             </Tooltip>
           )}

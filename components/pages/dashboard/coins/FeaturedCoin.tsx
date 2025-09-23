@@ -1,36 +1,32 @@
-import React from 'react'
 import {
+  BarChart,
+  CalendarToday,
+  ContentCopy,
+  LinkOutlined,
+  MonetizationOn,
+  People,
+  Star,
+  StarBorder
+} from '@mui/icons-material'
+import {
+  Avatar,
   Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  Grid,
   Chip,
-  Button,
   Divider,
-  Avatar,
-  Paper,
+  Grid,
   IconButton,
+  Paper,
+  Stack,
   Tooltip,
-  Stack
+  Typography
 } from '@mui/material'
-import {
-  ContentCopy,
-  MonetizationOn,
-  Star,
-  StarBorder,
-  LinkOutlined,
-  People,
-  CalendarToday,
-  BarChart
-} from '@mui/icons-material'
-import { CoinBalance } from '../../../../utils/types/zora'
-import {
-  truncateAddress,
-  formatNumber,
-  formatTimeAgo
-} from '../../../../utils/formatters'
+import React from 'react'
 import toast from 'react-hot-toast'
+import { formatNumber, formatTimeAgo, truncateAddress } from '../../../../utils/formatters'
+import type { CoinBalance } from '../../../../utils/types/zora'
 
 interface FeaturedCoinProps {
   coinBalance: CoinBalance
@@ -55,11 +51,7 @@ export default function FeaturedCoin({
     const currentMarketCap = parseFloat(coin.marketCap)
     const deltaValue = parseFloat(coin.marketCapDelta24h)
 
-    if (
-      isNaN(currentMarketCap) ||
-      isNaN(deltaValue) ||
-      currentMarketCap === 0
-    ) {
+    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 
@@ -82,14 +74,9 @@ export default function FeaturedCoin({
     const trimmed = balance.replace(/^0+/, '')
     if (trimmed.length > 18) {
       const intPart = trimmed.slice(0, trimmed.length - 18)
-      const decPart = trimmed.slice(
-        trimmed.length - 18,
-        trimmed.length - 18 + 6
-      )
+      const decPart = trimmed.slice(trimmed.length - 18, trimmed.length - 18 + 6)
       // Format to max 2 decimal places
-      const formattedDecimal = parseFloat(`0.${decPart}`)
-        .toFixed(2)
-        .substring(2)
+      const formattedDecimal = parseFloat(`0.${decPart}`).toFixed(2).substring(2)
       return `${intPart || '0'}.${formattedDecimal}`
     }
     return '0.00'
@@ -99,10 +86,7 @@ export default function FeaturedCoin({
 
   // Open coin URL in Zora
   const openOnZora = () => {
-    window.open(
-      `https://zora.co/coin/base:${coin.address.toLowerCase()}`,
-      '_blank'
-    )
+    window.open(`https://zora.co/coin/base:${coin.address.toLowerCase()}`, '_blank')
   }
 
   // Calculate price per token
@@ -110,11 +94,7 @@ export default function FeaturedCoin({
     const marketCapValue = parseFloat(coin.marketCap)
     const totalSupplyValue = parseFloat(coin.totalSupply)
 
-    if (
-      isNaN(marketCapValue) ||
-      isNaN(totalSupplyValue) ||
-      totalSupplyValue === 0
-    ) {
+    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 
@@ -154,12 +134,7 @@ export default function FeaturedCoin({
             }}
           >
             {/* Header with name and actions */}
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="flex-start"
-              mb={2}
-            >
+            <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
               <Box>
                 <Typography
                   variant="h4"
@@ -347,10 +322,7 @@ export default function FeaturedCoin({
               }}
             >
               <Typography variant="subtitle1" fontWeight="medium" mb={1.5}>
-                <BarChart
-                  fontSize="small"
-                  sx={{ mr: 1, verticalAlign: 'middle' }}
-                />
+                <BarChart fontSize="small" sx={{ mr: 1, verticalAlign: 'middle' }} />
                 Key Statistics
               </Typography>
 
@@ -370,14 +342,8 @@ export default function FeaturedCoin({
                     <Typography variant="body2" color="text.secondary">
                       Holders
                     </Typography>
-                    <Typography
-                      fontWeight="medium"
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <People
-                        fontSize="small"
-                        sx={{ mr: 0.5, color: 'text.secondary' }}
-                      />
+                    <Typography fontWeight="medium" sx={{ display: 'flex', alignItems: 'center' }}>
+                      <People fontSize="small" sx={{ mr: 0.5, color: 'text.secondary' }} />
                       {coin.uniqueHolders}
                     </Typography>
                   </Box>
@@ -387,14 +353,8 @@ export default function FeaturedCoin({
                     <Typography variant="body2" color="text.secondary">
                       Created
                     </Typography>
-                    <Typography
-                      fontWeight="medium"
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <CalendarToday
-                        fontSize="small"
-                        sx={{ mr: 0.5, color: 'text.secondary' }}
-                      />
+                    <Typography fontWeight="medium" sx={{ display: 'flex', alignItems: 'center' }}>
+                      <CalendarToday fontSize="small" sx={{ mr: 0.5, color: 'text.secondary' }} />
                       {formatTimeAgo(new Date(coin.createdAt))}
                     </Typography>
                   </Box>
@@ -404,9 +364,7 @@ export default function FeaturedCoin({
                     <Typography variant="body2" color="text.secondary">
                       Chain
                     </Typography>
-                    <Typography fontWeight="medium">
-                      Base #{coin.chainId}
-                    </Typography>
+                    <Typography fontWeight="medium">Base #{coin.chainId}</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
@@ -414,9 +372,7 @@ export default function FeaturedCoin({
                     <Typography variant="body2" color="text.secondary">
                       Creator
                     </Typography>
-                    <Typography fontWeight="medium">
-                      @{coin.creatorProfile.handle}
-                    </Typography>
+                    <Typography fontWeight="medium">@{coin.creatorProfile.handle}</Typography>
                   </Box>
                 </Grid>
               </Grid>
@@ -487,10 +443,7 @@ export default function FeaturedCoin({
                 autoPlay
                 muted
                 loop
-                src={coin.mediaContent.originalUri.replace(
-                  'ipfs://',
-                  'https://ipfs.io/ipfs/'
-                )}
+                src={coin.mediaContent.originalUri.replace('ipfs://', 'https://ipfs.io/ipfs/')}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -516,8 +469,7 @@ export default function FeaturedCoin({
                 left: 0,
                 right: 0,
                 p: 2,
-                background:
-                  'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2

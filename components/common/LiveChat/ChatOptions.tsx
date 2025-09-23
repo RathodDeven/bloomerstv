@@ -1,15 +1,14 @@
-import React from 'react'
+import { useAccount } from '@lens-protocol/react'
+import BlockIcon from '@mui/icons-material/Block'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { Button, ListItemIcon, Menu, MenuItem, MenuList } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import BlockIcon from '@mui/icons-material/Block'
-
+import React from 'react'
 import toast from 'react-hot-toast'
-import LoadingButton from '@mui/lab/LoadingButton'
 import { HEY_APP_LINK } from '../../../utils/config'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
-import useSession from '../../../utils/hooks/useSession'
-import { useAccount } from '@lens-protocol/react'
 import useBlockAccount from '../../../utils/hooks/lens/useBlockAccount'
+import useSession from '../../../utils/hooks/useSession'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
 
 const ChatOptions = ({
   handle,
@@ -114,21 +113,20 @@ const ChatOptions = ({
       >
         <div className="space-y-2 ">
           <div className="font-bold text-lg">
-            Are you sure you want to block and remove all chat messages from{' '}
-            {handle}?
+            Are you sure you want to block and remove all chat messages from {handle}?
           </div>
 
           {optionAccount && (
             <div className="text-sm text-s-text font-semibold">
-              This actions is also a lens block, so you won't be able to see{' '}
-              {handle}'s posts from other lens clients.
+              This actions is also a lens block, so you won't be able to see {handle}'s posts from
+              other lens clients.
             </div>
           )}
 
           {optionAccount && (
             <div className="text-sm text-s-text font-semibold">
-              Chat Messages are removed just from this bloomerstv chat and
-              corresponding Lens Comments can't be removed.
+              Chat Messages are removed just from this bloomerstv chat and corresponding Lens
+              Comments can't be removed.
             </div>
           )}
         </div>
@@ -163,11 +161,7 @@ const ChatOptions = ({
                 handleClose()
               }}
             >
-              <img
-                src={avatarUrl}
-                alt="avatar"
-                className="w-6 h-6 rounded-full mr-3"
-              />
+              <img src={avatarUrl} alt="avatar" className="w-6 h-6 rounded-full mr-3" />
               Visit Profile
             </MenuItem>
           )}
@@ -178,11 +172,7 @@ const ChatOptions = ({
                 window.open(`${HEY_APP_LINK}/u/${handle}`, '_blank')
               }}
             >
-              <img
-                src={'/icons/heyIcon.png'}
-                className="w-6 h-6 mr-3"
-                alt="hey"
-              />
+              <img src={'/icons/heyIcon.png'} className="w-6 h-6 mr-3" alt="hey" />
               Hey Profile
             </MenuItem>
           )}

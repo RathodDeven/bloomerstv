@@ -1,25 +1,25 @@
 'use client'
-import React, { memo, useEffect, useState } from 'react'
-import {
-  ViewType,
-  useMyStreamQuery,
-  useUpdateMyStreamMutation
-} from '../../../../graphql/generated'
-import MyStreamEditButton from './MyStreamEditButton'
 import { MenuItem, Select } from '@mui/material'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import clsx from 'clsx'
-import StartLoadingPage from '../../loading/StartLoadingPage'
+import dayjs, { type Dayjs } from 'dayjs'
+import React, { memo, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useMyPreferences } from '../../../store/useMyPreferences'
-import LiveVideoComponent from './LiveVideoComponent'
+import {
+  useMyStreamQuery,
+  useUpdateMyStreamMutation,
+  ViewType
+} from '../../../../graphql/generated'
 import { CATEGORIES_LIST } from '../../../../utils/categories'
+import useSession from '../../../../utils/hooks/useSession'
+import Timer from '../../../common/Timer'
+import { useMyPreferences } from '../../../store/useMyPreferences'
+import StartLoadingPage from '../../loading/StartLoadingPage'
+import LiveVideoComponent from './LiveVideoComponent'
+import MyStreamEditButton from './MyStreamEditButton'
 // import { stringToLength } from '../../../../utils/stringToLength'
 import StreamHealth from './StreamHealth'
 import StreamKey from './StreamKey'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import dayjs, { Dayjs } from 'dayjs'
-import Timer from '../../../common/Timer'
-import useSession from '../../../../utils/hooks/useSession'
 
 // import Link from 'next/link'
 const LiveStreamEditor = () => {
@@ -42,19 +42,16 @@ const LiveStreamEditor = () => {
     }
   }, [data?.myStream])
 
-  const {
-    category,
-    setCategory,
-    setStreamReplayViewType,
-    streamReplayViewType
-  } = useMyPreferences((state) => {
-    return {
-      streamReplayViewType: state.streamReplayViewType,
-      setStreamReplayViewType: state.setStreamReplayViewType,
-      category: state.category,
-      setCategory: state.setCategory
+  const { category, setCategory, setStreamReplayViewType, streamReplayViewType } = useMyPreferences(
+    state => {
+      return {
+        streamReplayViewType: state.streamReplayViewType,
+        setStreamReplayViewType: state.setStreamReplayViewType,
+        category: state.category,
+        setCategory: state.setCategory
+      }
     }
-  })
+  )
 
   useEffect(() => {
     refetch()
@@ -100,10 +97,7 @@ const LiveStreamEditor = () => {
                     {myStream?.streamName}
                   </div>
                 </div>
-                <MyStreamEditButton
-                  refreshStreamInfo={refetch}
-                  myStream={myStream}
-                />
+                <MyStreamEditButton refreshStreamInfo={refetch} myStream={myStream} />
               </div>
 
               {/* <div className="space-y-1">
@@ -118,12 +112,10 @@ const LiveStreamEditor = () => {
               <div className="flex flex-row gap-x-6">
                 <div className="flex flex-row gap-x-8">
                   <div className="space-y-1">
-                    <div className="text-s-text font-bold text-md">
-                      Replay Visibility
-                    </div>
+                    <div className="text-s-text font-bold text-md">Replay Visibility</div>
                     <Select
                       value={streamReplayViewType}
-                      onChange={(e) => {
+                      onChange={e => {
                         if (!e.target.value) return
                         setStreamReplayViewType(e.target.value as ViewType)
                       }}
@@ -155,19 +147,17 @@ const LiveStreamEditor = () => {
                     </Select>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-s-text font-bold text-md">
-                      Category
-                    </div>
+                    <div className="text-s-text font-bold text-md">Category</div>
                     <Select
                       value={category}
-                      onChange={(e) => {
+                      onChange={e => {
                         if (!e.target.value) return
                         setCategory(e.target.value as string)
                       }}
                       variant="standard"
                       size="small"
                     >
-                      {CATEGORIES_LIST.map((category) => (
+                      {CATEGORIES_LIST.map(category => (
                         <MenuItem value={category} key={category}>
                           {category}
                         </MenuItem>
@@ -189,20 +179,18 @@ const LiveStreamEditor = () => {
                 <div className="">
                   <DateTimePicker
                     label="Next Stream Date & Time"
-                    // @ts-ignore
+                    // @ts-expect-error
                     value={selectedDate ?? null}
-                    onChange={async (newValue) => {
-                      // @ts-ignore
+                    onChange={async newValue => {
+                      // @ts-expect-error
                       if (newValue < new Date() && myStream?.nextStreamTime) {
-                        // @ts-ignore
-                        toast.error(
-                          'Next stream time removed. Select a future time to update.'
-                        )
+                        // @ts-expect-error
+                        toast.error('Next stream time removed. Select a future time to update.')
                       }
 
-                      // @ts-ignore
+                      // @ts-expect-error
                       setSelectedDate(newValue)
-                      // @ts-ignore
+                      // @ts-expect-error
                       const epochTime = new Date(newValue).getTime()
 
                       try {
@@ -215,12 +203,12 @@ const LiveStreamEditor = () => {
                         })
 
                         if (data?.updateMyStream) {
-                          // @ts-ignore
+                          // @ts-expect-error
                           toast.success('Next stream time updated')
                         }
                       } catch (error) {
                         setSelectedDate(null)
-                        // @ts-ignore
+                        // @ts-expect-error
                         toast.error(error.message)
                       }
                     }}
@@ -249,26 +237,21 @@ const LiveStreamEditor = () => {
         <div className="px-4 py-3 start-center-row space-x-2">
           {/* dot that goes red when live and green when not */}
           <div
-            className={clsx(
-              'w-4 h-4 rounded-full',
-              startedStreaming ? 'bg-brand' : 'bg-s-text'
-            )}
+            className={clsx('w-4 h-4 rounded-full', startedStreaming ? 'bg-brand' : 'bg-s-text')}
           />
 
-          {myStream?.isActive &&
-            startedStreaming &&
-            myStream?.latestSessionCreatedAt && (
-              <div className="">
-                <Timer
-                  targetDate={myStream?.latestSessionCreatedAt}
-                  renderer={({ hours, minutes, seconds }) => {
-                    return (
-                      <div className="text-brand">{`${hours ? `${hours}:` : ''}${minutes}:${seconds}`}</div>
-                    )
-                  }}
-                />
-              </div>
-            )}
+          {myStream?.isActive && startedStreaming && myStream?.latestSessionCreatedAt && (
+            <div className="">
+              <Timer
+                targetDate={myStream?.latestSessionCreatedAt}
+                renderer={({ hours, minutes, seconds }) => {
+                  return (
+                    <div className="text-brand">{`${hours ? `${hours}:` : ''}${minutes}:${seconds}`}</div>
+                  )
+                }}
+              />
+            </div>
+          )}
 
           <div className="font-semibold ">
             {startedStreaming
@@ -285,10 +268,7 @@ const LiveStreamEditor = () => {
       <div className="mt-4 2xl:mt-6 p-6 bg-s-bg shadow-sm rounded-xl w-full overflow-hidden">
         <div className="flex flex-wrap gap-y-6 lg:flex-nowrap lg:gap-x-6 2xl:gap-x-12 w-full overflow-x-auto">
           <StreamKey myStream={myStream} />
-          <StreamHealth
-            isActive={startedStreaming && !!myStream.isActive}
-            myStream={myStream}
-          />
+          <StreamHealth isActive={startedStreaming && !!myStream.isActive} myStream={myStream} />
         </div>
       </div>
     </div>

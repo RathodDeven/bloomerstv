@@ -1,4 +1,4 @@
-import { Account } from '@lens-protocol/react'
+import type { Account } from '@lens-protocol/react'
 
 export const getBanner = (account?: Account | null): string | undefined => {
   if (!account) {

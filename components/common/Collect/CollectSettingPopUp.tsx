@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
-import { useCollectPreferences } from '../../store/useCollectPreferences'
-import LayersIcon from '@mui/icons-material/Layers'
-import { IOSSwitch } from '../../ui/IOSSwitch'
-import { motion } from 'framer-motion'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
+import type { Erc20Amount } from '@lens-protocol/react'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange'
+import GroupsIcon from '@mui/icons-material/Groups'
+import LayersIcon from '@mui/icons-material/Layers'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 import {
   // Button,
   // IconButton,
@@ -14,16 +13,17 @@ import {
   Slider,
   TextField
 } from '@mui/material'
-import GroupsIcon from '@mui/icons-material/Groups'
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-
-import { CURRENCIES } from '../../../utils/config'
+import { motion } from 'framer-motion'
+import React, { useEffect } from 'react'
 // import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1'
 // import clsx from 'clsx'
 // import WalletAddressTextField from './WalletAddressTextField'
 import { useIsVerifiedQuery } from '../../../graphql/generated'
+
+import { CURRENCIES } from '../../../utils/config'
 import useSession from '../../../utils/hooks/useSession'
-import { Erc20Amount } from '@lens-protocol/react'
+import { useCollectPreferences } from '../../store/useCollectPreferences'
+import { IOSSwitch } from '../../ui/IOSSwitch'
 
 export interface SettingRecipientType {
   recipient?: string
@@ -69,16 +69,14 @@ const CollectSettingPopUp = () => {
     setReferalFee,
     setNumberOfDays,
     setFollowerOnly
-  } = useCollectPreferences((state) => state)
+  } = useCollectPreferences(state => state)
 
   const [isCollectLimit, setIsCollectLimit] = React.useState(false)
   const [isTimeLimit, setIsTimeLimit] = React.useState(false)
   const [isReferalFee, setIsReferalFee] = React.useState(false)
   const [isPaid, setIsPaid] = React.useState(false)
   const [amountValue, setAmountValue] = React.useState<number | undefined>()
-  const [amountCurrency, setAmountCurrency] = React.useState<
-    String | undefined
-  >()
+  const [amountCurrency, setAmountCurrency] = React.useState<string | undefined>()
 
   // const [recipientError, setRecipientError] = React.useState<
   //   | "Split doesn't add up to 100%"
@@ -116,7 +114,7 @@ const CollectSettingPopUp = () => {
 
     if (amount) {
       setIsPaid(true)
-      // @ts-ignore
+      // @ts-expect-error
       setAmountValue(amount?.value)
       setAmountCurrency(amount?.asset?.symbol)
     }
@@ -127,7 +125,7 @@ const CollectSettingPopUp = () => {
     //   recipients.length > 0 &&
     //   isAuthenticated
     // ) {
-    //   // @ts-ignore
+    //   // @ts-expect-error
     //   // for project address add bloomerstv as handle & data?.address as data?.handle
     //   const initRecipients = recipients.map((recipient) => {
     //     if (recipient?.recipient === PROJECT_ADDRESS) {
@@ -216,14 +214,14 @@ const CollectSettingPopUp = () => {
   //   if (!settingRecipients) return
   //   // check if the split adds up to 100
   //   const total = settingRecipients.reduce((acc, recipient) => {
-  //     // @ts-ignore
+  //     // @ts-expect-error
   //     return acc + recipient?.split || 0
   //   }, 0)
 
   //   // split can not be 0
 
   //   const zeroSplit = settingRecipients.find((recipient) => {
-  //     // @ts-ignore
+  //     // @ts-expect-error
   //     return recipient?.split <= 0 || !recipient?.split
   //   })
 
@@ -279,9 +277,7 @@ const CollectSettingPopUp = () => {
   useEffect(() => {
     if (amountValue && amountCurrency) {
       // find the currency object
-      const currency = CURRENCIES.find(
-        (currency) => currency?.symbol === amountCurrency
-      )
+      const currency = CURRENCIES.find(currency => currency?.symbol === amountCurrency)
       setAmount({
         asset: {
           __typename: 'Erc20',
@@ -368,7 +364,7 @@ const CollectSettingPopUp = () => {
                   type="number"
                   label="Number of Collects"
                   value={collectLimit}
-                  onChange={(e) => setCollectLimit(Number(e.target.value))}
+                  onChange={e => setCollectLimit(Number(e.target.value))}
                   className="text-right w-full"
                   size="small"
                   focused={isCollectLimit}
@@ -444,10 +440,7 @@ const CollectSettingPopUp = () => {
                   Only those who follow you can collect your content
                 </div>
               </div>
-              <IOSSwitch
-                checked={followerOnly}
-                onChange={() => setFollowerOnly(!followerOnly)}
-              />
+              <IOSSwitch checked={followerOnly} onChange={() => setFollowerOnly(!followerOnly)} />
             </div>
           </div>
         </motion.div>
@@ -507,7 +500,7 @@ const CollectSettingPopUp = () => {
                     type="number"
                     label="Amount"
                     value={amountValue}
-                    onChange={(e) => {
+                    onChange={e => {
                       if (e.target.value) {
                         setAmountValue(Number(e.target.value))
                       }
@@ -524,13 +517,13 @@ const CollectSettingPopUp = () => {
                     className=" w-full"
                     defaultValue={CURRENCIES[0]?.symbol}
                     value={String(amountCurrency)}
-                    onChange={(e) => {
+                    onChange={e => {
                       if (!e.target.value) return
                       setAmountCurrency(e.target.value)
                     }}
                     size="small"
                   >
-                    {CURRENCIES.map((currency) => {
+                    {CURRENCIES.map(currency => {
                       return (
                         <MenuItem
                           value={currency?.symbol}
@@ -549,9 +542,8 @@ const CollectSettingPopUp = () => {
                   <div className="text-sm font-semibold">Revenue Split</div>
                   {!isSubscribedToSuperBloomers && (
                     <div className="text-xs text-s-text font-normal">
-                      Free plan has a 5% revenue split. Subscribe to Super
-                      Bloomers to remove this and support this open source
-                      project!
+                      Free plan has a 5% revenue split. Subscribe to Super Bloomers to remove this
+                      and support this open source project!
                     </div>
                   )}
                 </motion.div>
@@ -696,7 +688,7 @@ const CollectSettingPopUp = () => {
                     type="number"
                     label="Referral Fee %"
                     value={referalFee}
-                    onChange={(e) => setReferalFee(Number(e.target.value))}
+                    onChange={e => setReferalFee(Number(e.target.value))}
                     className="text-right w-full"
                     size="small"
                     focused={isReferalFee}

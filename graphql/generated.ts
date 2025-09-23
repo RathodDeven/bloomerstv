@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
+import { gql } from '@apollo/client'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -11,10 +11,9 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T
-> = { [_ in K]?: never }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never
+}
 export type Incremental<T> =
   | T
   | {
@@ -460,8 +459,7 @@ export type IsSubscribedNotificationForStreamerQuery = {
 
 export type IsVerifiedQueryVariables = Exact<{
   accountAddresses?: InputMaybe<
-    | Array<InputMaybe<Scalars['String']['input']>>
-    | InputMaybe<Scalars['String']['input']>
+    Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>
   >
 }>
 
@@ -750,11 +748,10 @@ export const AddNotificationSubscriberToStreamerDocument = gql`
     addNotificationSubscriberToStreamer(accountAddress: $accountAddress)
   }
 `
-export type AddNotificationSubscriberToStreamerMutationFn =
-  Apollo.MutationFunction<
-    AddNotificationSubscriberToStreamerMutation,
-    AddNotificationSubscriberToStreamerMutationVariables
-  >
+export type AddNotificationSubscriberToStreamerMutationFn = Apollo.MutationFunction<
+  AddNotificationSubscriberToStreamerMutation,
+  AddNotificationSubscriberToStreamerMutationVariables
+>
 
 /**
  * __useAddNotificationSubscriberToStreamerMutation__
@@ -790,11 +787,10 @@ export type AddNotificationSubscriberToStreamerMutationHookResult = ReturnType<
 >
 export type AddNotificationSubscriberToStreamerMutationResult =
   Apollo.MutationResult<AddNotificationSubscriberToStreamerMutation>
-export type AddNotificationSubscriberToStreamerMutationOptions =
-  Apollo.BaseMutationOptions<
-    AddNotificationSubscriberToStreamerMutation,
-    AddNotificationSubscriberToStreamerMutationVariables
-  >
+export type AddNotificationSubscriberToStreamerMutationOptions = Apollo.BaseMutationOptions<
+  AddNotificationSubscriberToStreamerMutation,
+  AddNotificationSubscriberToStreamerMutationVariables
+>
 export const AddSubscriptionDocument = gql`
   mutation AddSubscription($subscription: JSON!) {
     addSubscription(subscription: $subscription)
@@ -829,16 +825,13 @@ export function useAddSubscriptionMutation(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    AddSubscriptionMutation,
-    AddSubscriptionMutationVariables
-  >(AddSubscriptionDocument, options)
+  return Apollo.useMutation<AddSubscriptionMutation, AddSubscriptionMutationVariables>(
+    AddSubscriptionDocument,
+    options
+  )
 }
-export type AddSubscriptionMutationHookResult = ReturnType<
-  typeof useAddSubscriptionMutation
->
-export type AddSubscriptionMutationResult =
-  Apollo.MutationResult<AddSubscriptionMutation>
+export type AddSubscriptionMutationHookResult = ReturnType<typeof useAddSubscriptionMutation>
+export type AddSubscriptionMutationResult = Apollo.MutationResult<AddSubscriptionMutation>
 export type AddSubscriptionMutationOptions = Apollo.BaseMutationOptions<
   AddSubscriptionMutation,
   AddSubscriptionMutationVariables
@@ -891,10 +884,7 @@ export type CreateClipMutationFn = Apollo.MutationFunction<
  * });
  */
 export function useCreateClipMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateClipMutation,
-    CreateClipMutationVariables
-  >
+  baseOptions?: Apollo.MutationHookOptions<CreateClipMutation, CreateClipMutationVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateClipMutation, CreateClipMutationVariables>(
@@ -902,9 +892,7 @@ export function useCreateClipMutation(
     options
   )
 }
-export type CreateClipMutationHookResult = ReturnType<
-  typeof useCreateClipMutation
->
+export type CreateClipMutationHookResult = ReturnType<typeof useCreateClipMutation>
 export type CreateClipMutationResult = Apollo.MutationResult<CreateClipMutation>
 export type CreateClipMutationOptions = Apollo.BaseMutationOptions<
   CreateClipMutation,
@@ -964,11 +952,10 @@ export type CreateMyLensStreamSessionMutationHookResult = ReturnType<
 >
 export type CreateMyLensStreamSessionMutationResult =
   Apollo.MutationResult<CreateMyLensStreamSessionMutation>
-export type CreateMyLensStreamSessionMutationOptions =
-  Apollo.BaseMutationOptions<
-    CreateMyLensStreamSessionMutation,
-    CreateMyLensStreamSessionMutationVariables
-  >
+export type CreateMyLensStreamSessionMutationOptions = Apollo.BaseMutationOptions<
+  CreateMyLensStreamSessionMutation,
+  CreateMyLensStreamSessionMutationVariables
+>
 export const GetFeaturedCoinsDocument = gql`
   query GetFeaturedCoins {
     getFeaturedCoins {
@@ -998,10 +985,7 @@ export const GetFeaturedCoinsDocument = gql`
  * });
  */
 export function useGetFeaturedCoinsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetFeaturedCoinsQuery,
-    GetFeaturedCoinsQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>(
@@ -1010,40 +994,28 @@ export function useGetFeaturedCoinsQuery(
   )
 }
 export function useGetFeaturedCoinsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetFeaturedCoinsQuery,
-    GetFeaturedCoinsQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    GetFeaturedCoinsQuery,
-    GetFeaturedCoinsQueryVariables
-  >(GetFeaturedCoinsDocument, options)
+  return Apollo.useLazyQuery<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>(
+    GetFeaturedCoinsDocument,
+    options
+  )
 }
 export function useGetFeaturedCoinsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        GetFeaturedCoinsQuery,
-        GetFeaturedCoinsQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    GetFeaturedCoinsQuery,
-    GetFeaturedCoinsQueryVariables
-  >(GetFeaturedCoinsDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GetFeaturedCoinsQuery, GetFeaturedCoinsQueryVariables>(
+    GetFeaturedCoinsDocument,
+    options
+  )
 }
-export type GetFeaturedCoinsQueryHookResult = ReturnType<
-  typeof useGetFeaturedCoinsQuery
->
-export type GetFeaturedCoinsLazyQueryHookResult = ReturnType<
-  typeof useGetFeaturedCoinsLazyQuery
->
+export type GetFeaturedCoinsQueryHookResult = ReturnType<typeof useGetFeaturedCoinsQuery>
+export type GetFeaturedCoinsLazyQueryHookResult = ReturnType<typeof useGetFeaturedCoinsLazyQuery>
 export type GetFeaturedCoinsSuspenseQueryHookResult = ReturnType<
   typeof useGetFeaturedCoinsSuspenseQuery
 >
@@ -1116,9 +1088,7 @@ export function useGetMyRecordedStreamSessionsSuspenseQuery(
       >
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<
     GetMyRecordedStreamSessionsQuery,
     GetMyRecordedStreamSessionsQueryVariables
@@ -1199,9 +1169,7 @@ export function useIsSubscribedNotificationForStreamerSuspenseQuery(
       >
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<
     IsSubscribedNotificationForStreamerQuery,
     IsSubscribedNotificationForStreamerQueryVariables
@@ -1213,8 +1181,9 @@ export type IsSubscribedNotificationForStreamerQueryHookResult = ReturnType<
 export type IsSubscribedNotificationForStreamerLazyQueryHookResult = ReturnType<
   typeof useIsSubscribedNotificationForStreamerLazyQuery
 >
-export type IsSubscribedNotificationForStreamerSuspenseQueryHookResult =
-  ReturnType<typeof useIsSubscribedNotificationForStreamerSuspenseQuery>
+export type IsSubscribedNotificationForStreamerSuspenseQueryHookResult = ReturnType<
+  typeof useIsSubscribedNotificationForStreamerSuspenseQuery
+>
 export type IsSubscribedNotificationForStreamerQueryResult = Apollo.QueryResult<
   IsSubscribedNotificationForStreamerQuery,
   IsSubscribedNotificationForStreamerQueryVariables
@@ -1245,28 +1214,16 @@ export const IsVerifiedDocument = gql`
  * });
  */
 export function useIsVerifiedQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    IsVerifiedQuery,
-    IsVerifiedQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<IsVerifiedQuery, IsVerifiedQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<IsVerifiedQuery, IsVerifiedQueryVariables>(
-    IsVerifiedDocument,
-    options
-  )
+  return Apollo.useQuery<IsVerifiedQuery, IsVerifiedQueryVariables>(IsVerifiedDocument, options)
 }
 export function useIsVerifiedLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    IsVerifiedQuery,
-    IsVerifiedQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<IsVerifiedQuery, IsVerifiedQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<IsVerifiedQuery, IsVerifiedQueryVariables>(
-    IsVerifiedDocument,
-    options
-  )
+  return Apollo.useLazyQuery<IsVerifiedQuery, IsVerifiedQueryVariables>(IsVerifiedDocument, options)
 }
 export function useIsVerifiedSuspenseQuery(
   baseOptions?:
@@ -1274,25 +1231,16 @@ export function useIsVerifiedSuspenseQuery(
     | Apollo.SuspenseQueryHookOptions<IsVerifiedQuery, IsVerifiedQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<IsVerifiedQuery, IsVerifiedQueryVariables>(
     IsVerifiedDocument,
     options
   )
 }
 export type IsVerifiedQueryHookResult = ReturnType<typeof useIsVerifiedQuery>
-export type IsVerifiedLazyQueryHookResult = ReturnType<
-  typeof useIsVerifiedLazyQuery
->
-export type IsVerifiedSuspenseQueryHookResult = ReturnType<
-  typeof useIsVerifiedSuspenseQuery
->
-export type IsVerifiedQueryResult = Apollo.QueryResult<
-  IsVerifiedQuery,
-  IsVerifiedQueryVariables
->
+export type IsVerifiedLazyQueryHookResult = ReturnType<typeof useIsVerifiedLazyQuery>
+export type IsVerifiedSuspenseQueryHookResult = ReturnType<typeof useIsVerifiedSuspenseQuery>
+export type IsVerifiedQueryResult = Apollo.QueryResult<IsVerifiedQuery, IsVerifiedQueryVariables>
 export const LiveStreamersDocument = gql`
   query LiveStreamers {
     liveStreamers {
@@ -1326,10 +1274,7 @@ export const LiveStreamersDocument = gql`
  * });
  */
 export function useLiveStreamersQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    LiveStreamersQuery,
-    LiveStreamersQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<LiveStreamersQuery, LiveStreamersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<LiveStreamersQuery, LiveStreamersQueryVariables>(
@@ -1338,10 +1283,7 @@ export function useLiveStreamersQuery(
   )
 }
 export function useLiveStreamersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    LiveStreamersQuery,
-    LiveStreamersQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<LiveStreamersQuery, LiveStreamersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<LiveStreamersQuery, LiveStreamersQueryVariables>(
@@ -1352,29 +1294,18 @@ export function useLiveStreamersLazyQuery(
 export function useLiveStreamersSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        LiveStreamersQuery,
-        LiveStreamersQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<LiveStreamersQuery, LiveStreamersQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    LiveStreamersQuery,
-    LiveStreamersQueryVariables
-  >(LiveStreamersDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<LiveStreamersQuery, LiveStreamersQueryVariables>(
+    LiveStreamersDocument,
+    options
+  )
 }
-export type LiveStreamersQueryHookResult = ReturnType<
-  typeof useLiveStreamersQuery
->
-export type LiveStreamersLazyQueryHookResult = ReturnType<
-  typeof useLiveStreamersLazyQuery
->
-export type LiveStreamersSuspenseQueryHookResult = ReturnType<
-  typeof useLiveStreamersSuspenseQuery
->
+export type LiveStreamersQueryHookResult = ReturnType<typeof useLiveStreamersQuery>
+export type LiveStreamersLazyQueryHookResult = ReturnType<typeof useLiveStreamersLazyQuery>
+export type LiveStreamersSuspenseQueryHookResult = ReturnType<typeof useLiveStreamersSuspenseQuery>
 export type LiveStreamersQueryResult = Apollo.QueryResult<
   LiveStreamersQuery,
   LiveStreamersQueryVariables
@@ -1423,22 +1354,13 @@ export function useMyStreamQuery(
   baseOptions?: Apollo.QueryHookOptions<MyStreamQuery, MyStreamQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<MyStreamQuery, MyStreamQueryVariables>(
-    MyStreamDocument,
-    options
-  )
+  return Apollo.useQuery<MyStreamQuery, MyStreamQueryVariables>(MyStreamDocument, options)
 }
 export function useMyStreamLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    MyStreamQuery,
-    MyStreamQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<MyStreamQuery, MyStreamQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<MyStreamQuery, MyStreamQueryVariables>(
-    MyStreamDocument,
-    options
-  )
+  return Apollo.useLazyQuery<MyStreamQuery, MyStreamQueryVariables>(MyStreamDocument, options)
 }
 export function useMyStreamSuspenseQuery(
   baseOptions?:
@@ -1446,25 +1368,13 @@ export function useMyStreamSuspenseQuery(
     | Apollo.SuspenseQueryHookOptions<MyStreamQuery, MyStreamQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<MyStreamQuery, MyStreamQueryVariables>(
-    MyStreamDocument,
-    options
-  )
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyStreamQuery, MyStreamQueryVariables>(MyStreamDocument, options)
 }
 export type MyStreamQueryHookResult = ReturnType<typeof useMyStreamQuery>
-export type MyStreamLazyQueryHookResult = ReturnType<
-  typeof useMyStreamLazyQuery
->
-export type MyStreamSuspenseQueryHookResult = ReturnType<
-  typeof useMyStreamSuspenseQuery
->
-export type MyStreamQueryResult = Apollo.QueryResult<
-  MyStreamQuery,
-  MyStreamQueryVariables
->
+export type MyStreamLazyQueryHookResult = ReturnType<typeof useMyStreamLazyQuery>
+export type MyStreamSuspenseQueryHookResult = ReturnType<typeof useMyStreamSuspenseQuery>
+export type MyStreamQueryResult = Apollo.QueryResult<MyStreamQuery, MyStreamQueryVariables>
 export const OfflineStreamersDocument = gql`
   query OfflineStreamers {
     offlineStreamers {
@@ -1497,10 +1407,7 @@ export const OfflineStreamersDocument = gql`
  * });
  */
 export function useOfflineStreamersQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    OfflineStreamersQuery,
-    OfflineStreamersQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<OfflineStreamersQuery, OfflineStreamersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<OfflineStreamersQuery, OfflineStreamersQueryVariables>(
@@ -1509,40 +1416,28 @@ export function useOfflineStreamersQuery(
   )
 }
 export function useOfflineStreamersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    OfflineStreamersQuery,
-    OfflineStreamersQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<OfflineStreamersQuery, OfflineStreamersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    OfflineStreamersQuery,
-    OfflineStreamersQueryVariables
-  >(OfflineStreamersDocument, options)
+  return Apollo.useLazyQuery<OfflineStreamersQuery, OfflineStreamersQueryVariables>(
+    OfflineStreamersDocument,
+    options
+  )
 }
 export function useOfflineStreamersSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        OfflineStreamersQuery,
-        OfflineStreamersQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<OfflineStreamersQuery, OfflineStreamersQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    OfflineStreamersQuery,
-    OfflineStreamersQueryVariables
-  >(OfflineStreamersDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<OfflineStreamersQuery, OfflineStreamersQueryVariables>(
+    OfflineStreamersDocument,
+    options
+  )
 }
-export type OfflineStreamersQueryHookResult = ReturnType<
-  typeof useOfflineStreamersQuery
->
-export type OfflineStreamersLazyQueryHookResult = ReturnType<
-  typeof useOfflineStreamersLazyQuery
->
+export type OfflineStreamersQueryHookResult = ReturnType<typeof useOfflineStreamersQuery>
+export type OfflineStreamersLazyQueryHookResult = ReturnType<typeof useOfflineStreamersLazyQuery>
 export type OfflineStreamersSuspenseQueryHookResult = ReturnType<
   typeof useOfflineStreamersSuspenseQuery
 >
@@ -1575,53 +1470,34 @@ export function useQueryQuery(
   baseOptions?: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options
-  )
+  return Apollo.useQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options)
 }
 export function useQueryLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options
-  )
+  return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options)
 }
 export function useQuerySuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options
-  )
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options)
 }
 export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>
 export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>
-export type QuerySuspenseQueryHookResult = ReturnType<
-  typeof useQuerySuspenseQuery
->
-export type QueryQueryResult = Apollo.QueryResult<
-  QueryQuery,
-  QueryQueryVariables
->
+export type QuerySuspenseQueryHookResult = ReturnType<typeof useQuerySuspenseQuery>
+export type QueryQueryResult = Apollo.QueryResult<QueryQuery, QueryQueryVariables>
 export const RemoveNotificationSubscriberFromStreamerDocument = gql`
   mutation RemoveNotificationSubscriberFromStreamer($accountAddress: String!) {
     removeNotificationSubscriberFromStreamer(accountAddress: $accountAddress)
   }
 `
-export type RemoveNotificationSubscriberFromStreamerMutationFn =
-  Apollo.MutationFunction<
-    RemoveNotificationSubscriberFromStreamerMutation,
-    RemoveNotificationSubscriberFromStreamerMutationVariables
-  >
+export type RemoveNotificationSubscriberFromStreamerMutationFn = Apollo.MutationFunction<
+  RemoveNotificationSubscriberFromStreamerMutation,
+  RemoveNotificationSubscriberFromStreamerMutationVariables
+>
 
 /**
  * __useRemoveNotificationSubscriberFromStreamerMutation__
@@ -1652,15 +1528,15 @@ export function useRemoveNotificationSubscriberFromStreamerMutation(
     RemoveNotificationSubscriberFromStreamerMutationVariables
   >(RemoveNotificationSubscriberFromStreamerDocument, options)
 }
-export type RemoveNotificationSubscriberFromStreamerMutationHookResult =
-  ReturnType<typeof useRemoveNotificationSubscriberFromStreamerMutation>
+export type RemoveNotificationSubscriberFromStreamerMutationHookResult = ReturnType<
+  typeof useRemoveNotificationSubscriberFromStreamerMutation
+>
 export type RemoveNotificationSubscriberFromStreamerMutationResult =
   Apollo.MutationResult<RemoveNotificationSubscriberFromStreamerMutation>
-export type RemoveNotificationSubscriberFromStreamerMutationOptions =
-  Apollo.BaseMutationOptions<
-    RemoveNotificationSubscriberFromStreamerMutation,
-    RemoveNotificationSubscriberFromStreamerMutationVariables
-  >
+export type RemoveNotificationSubscriberFromStreamerMutationOptions = Apollo.BaseMutationOptions<
+  RemoveNotificationSubscriberFromStreamerMutation,
+  RemoveNotificationSubscriberFromStreamerMutationVariables
+>
 export const StreamReplayRecordingDocument = gql`
   query StreamReplayRecording(
     $postId: String
@@ -1707,10 +1583,10 @@ export function useStreamReplayRecordingQuery(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<
-    StreamReplayRecordingQuery,
-    StreamReplayRecordingQueryVariables
-  >(StreamReplayRecordingDocument, options)
+  return Apollo.useQuery<StreamReplayRecordingQuery, StreamReplayRecordingQueryVariables>(
+    StreamReplayRecordingDocument,
+    options
+  )
 }
 export function useStreamReplayRecordingLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -1719,10 +1595,10 @@ export function useStreamReplayRecordingLazyQuery(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    StreamReplayRecordingQuery,
-    StreamReplayRecordingQueryVariables
-  >(StreamReplayRecordingDocument, options)
+  return Apollo.useLazyQuery<StreamReplayRecordingQuery, StreamReplayRecordingQueryVariables>(
+    StreamReplayRecordingDocument,
+    options
+  )
 }
 export function useStreamReplayRecordingSuspenseQuery(
   baseOptions?:
@@ -1733,17 +1609,13 @@ export function useStreamReplayRecordingSuspenseQuery(
       >
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    StreamReplayRecordingQuery,
-    StreamReplayRecordingQueryVariables
-  >(StreamReplayRecordingDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<StreamReplayRecordingQuery, StreamReplayRecordingQueryVariables>(
+    StreamReplayRecordingDocument,
+    options
+  )
 }
-export type StreamReplayRecordingQueryHookResult = ReturnType<
-  typeof useStreamReplayRecordingQuery
->
+export type StreamReplayRecordingQueryHookResult = ReturnType<typeof useStreamReplayRecordingQuery>
 export type StreamReplayRecordingLazyQueryHookResult = ReturnType<
   typeof useStreamReplayRecordingLazyQuery
 >
@@ -1776,16 +1648,13 @@ export const ShouldCreateNewPostDocument = gql`
  * });
  */
 export function useShouldCreateNewPostQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    ShouldCreateNewPostQuery,
-    ShouldCreateNewPostQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<ShouldCreateNewPostQuery, ShouldCreateNewPostQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<
-    ShouldCreateNewPostQuery,
-    ShouldCreateNewPostQueryVariables
-  >(ShouldCreateNewPostDocument, options)
+  return Apollo.useQuery<ShouldCreateNewPostQuery, ShouldCreateNewPostQueryVariables>(
+    ShouldCreateNewPostDocument,
+    options
+  )
 }
 export function useShouldCreateNewPostLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -1794,31 +1663,24 @@ export function useShouldCreateNewPostLazyQuery(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    ShouldCreateNewPostQuery,
-    ShouldCreateNewPostQueryVariables
-  >(ShouldCreateNewPostDocument, options)
+  return Apollo.useLazyQuery<ShouldCreateNewPostQuery, ShouldCreateNewPostQueryVariables>(
+    ShouldCreateNewPostDocument,
+    options
+  )
 }
 export function useShouldCreateNewPostSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        ShouldCreateNewPostQuery,
-        ShouldCreateNewPostQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<ShouldCreateNewPostQuery, ShouldCreateNewPostQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    ShouldCreateNewPostQuery,
-    ShouldCreateNewPostQueryVariables
-  >(ShouldCreateNewPostDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<ShouldCreateNewPostQuery, ShouldCreateNewPostQueryVariables>(
+    ShouldCreateNewPostDocument,
+    options
+  )
 }
-export type ShouldCreateNewPostQueryHookResult = ReturnType<
-  typeof useShouldCreateNewPostQuery
->
+export type ShouldCreateNewPostQueryHookResult = ReturnType<typeof useShouldCreateNewPostQuery>
 export type ShouldCreateNewPostLazyQueryHookResult = ReturnType<
   typeof useShouldCreateNewPostLazyQuery
 >
@@ -1868,26 +1730,14 @@ export const StreamChatsDocument = gql`
  * });
  */
 export function useStreamChatsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    StreamChatsQuery,
-    StreamChatsQueryVariables
-  > &
-    (
-      | { variables: StreamChatsQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    )
+  baseOptions: Apollo.QueryHookOptions<StreamChatsQuery, StreamChatsQueryVariables> &
+    ({ variables: StreamChatsQueryVariables; skip?: boolean } | { skip: boolean })
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<StreamChatsQuery, StreamChatsQueryVariables>(
-    StreamChatsDocument,
-    options
-  )
+  return Apollo.useQuery<StreamChatsQuery, StreamChatsQueryVariables>(StreamChatsDocument, options)
 }
 export function useStreamChatsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    StreamChatsQuery,
-    StreamChatsQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<StreamChatsQuery, StreamChatsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<StreamChatsQuery, StreamChatsQueryVariables>(
@@ -1898,31 +1748,19 @@ export function useStreamChatsLazyQuery(
 export function useStreamChatsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        StreamChatsQuery,
-        StreamChatsQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<StreamChatsQuery, StreamChatsQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<StreamChatsQuery, StreamChatsQueryVariables>(
     StreamChatsDocument,
     options
   )
 }
 export type StreamChatsQueryHookResult = ReturnType<typeof useStreamChatsQuery>
-export type StreamChatsLazyQueryHookResult = ReturnType<
-  typeof useStreamChatsLazyQuery
->
-export type StreamChatsSuspenseQueryHookResult = ReturnType<
-  typeof useStreamChatsSuspenseQuery
->
-export type StreamChatsQueryResult = Apollo.QueryResult<
-  StreamChatsQuery,
-  StreamChatsQueryVariables
->
+export type StreamChatsLazyQueryHookResult = ReturnType<typeof useStreamChatsLazyQuery>
+export type StreamChatsSuspenseQueryHookResult = ReturnType<typeof useStreamChatsSuspenseQuery>
+export type StreamChatsQueryResult = Apollo.QueryResult<StreamChatsQuery, StreamChatsQueryVariables>
 export const StreamReplayPostsDocument = gql`
   query StreamReplayPosts($skip: Int, $accountAddress: String) {
     streamReplayPosts(skip: $skip, accountAddress: $accountAddress) {
@@ -1959,52 +1797,37 @@ export const StreamReplayPostsDocument = gql`
  * });
  */
 export function useStreamReplayPostsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    StreamReplayPostsQuery,
-    StreamReplayPostsQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<
-    StreamReplayPostsQuery,
-    StreamReplayPostsQueryVariables
-  >(StreamReplayPostsDocument, options)
+  return Apollo.useQuery<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>(
+    StreamReplayPostsDocument,
+    options
+  )
 }
 export function useStreamReplayPostsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    StreamReplayPostsQuery,
-    StreamReplayPostsQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    StreamReplayPostsQuery,
-    StreamReplayPostsQueryVariables
-  >(StreamReplayPostsDocument, options)
+  return Apollo.useLazyQuery<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>(
+    StreamReplayPostsDocument,
+    options
+  )
 }
 export function useStreamReplayPostsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        StreamReplayPostsQuery,
-        StreamReplayPostsQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    StreamReplayPostsQuery,
-    StreamReplayPostsQueryVariables
-  >(StreamReplayPostsDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<StreamReplayPostsQuery, StreamReplayPostsQueryVariables>(
+    StreamReplayPostsDocument,
+    options
+  )
 }
-export type StreamReplayPostsQueryHookResult = ReturnType<
-  typeof useStreamReplayPostsQuery
->
-export type StreamReplayPostsLazyQueryHookResult = ReturnType<
-  typeof useStreamReplayPostsLazyQuery
->
+export type StreamReplayPostsQueryHookResult = ReturnType<typeof useStreamReplayPostsQuery>
+export type StreamReplayPostsLazyQueryHookResult = ReturnType<typeof useStreamReplayPostsLazyQuery>
 export type StreamReplayPostsSuspenseQueryHookResult = ReturnType<
   typeof useStreamReplayPostsSuspenseQuery
 >
@@ -2057,22 +1880,13 @@ export function useStreamerQuery(
     ({ variables: StreamerQueryVariables; skip?: boolean } | { skip: boolean })
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<StreamerQuery, StreamerQueryVariables>(
-    StreamerDocument,
-    options
-  )
+  return Apollo.useQuery<StreamerQuery, StreamerQueryVariables>(StreamerDocument, options)
 }
 export function useStreamerLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    StreamerQuery,
-    StreamerQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<StreamerQuery, StreamerQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<StreamerQuery, StreamerQueryVariables>(
-    StreamerDocument,
-    options
-  )
+  return Apollo.useLazyQuery<StreamerQuery, StreamerQueryVariables>(StreamerDocument, options)
 }
 export function useStreamerSuspenseQuery(
   baseOptions?:
@@ -2080,25 +1894,13 @@ export function useStreamerSuspenseQuery(
     | Apollo.SuspenseQueryHookOptions<StreamerQuery, StreamerQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<StreamerQuery, StreamerQueryVariables>(
-    StreamerDocument,
-    options
-  )
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<StreamerQuery, StreamerQueryVariables>(StreamerDocument, options)
 }
 export type StreamerQueryHookResult = ReturnType<typeof useStreamerQuery>
-export type StreamerLazyQueryHookResult = ReturnType<
-  typeof useStreamerLazyQuery
->
-export type StreamerSuspenseQueryHookResult = ReturnType<
-  typeof useStreamerSuspenseQuery
->
-export type StreamerQueryResult = Apollo.QueryResult<
-  StreamerQuery,
-  StreamerQueryVariables
->
+export type StreamerLazyQueryHookResult = ReturnType<typeof useStreamerLazyQuery>
+export type StreamerSuspenseQueryHookResult = ReturnType<typeof useStreamerSuspenseQuery>
+export type StreamerQueryResult = Apollo.QueryResult<StreamerQuery, StreamerQueryVariables>
 export const ThumbnailDocument = gql`
   query Thumbnail($handle: String!) {
     thumbnail(handle: $handle)
@@ -2122,29 +1924,17 @@ export const ThumbnailDocument = gql`
  * });
  */
 export function useThumbnailQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    ThumbnailQuery,
-    ThumbnailQueryVariables
-  > &
+  baseOptions: Apollo.QueryHookOptions<ThumbnailQuery, ThumbnailQueryVariables> &
     ({ variables: ThumbnailQueryVariables; skip?: boolean } | { skip: boolean })
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<ThumbnailQuery, ThumbnailQueryVariables>(
-    ThumbnailDocument,
-    options
-  )
+  return Apollo.useQuery<ThumbnailQuery, ThumbnailQueryVariables>(ThumbnailDocument, options)
 }
 export function useThumbnailLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ThumbnailQuery,
-    ThumbnailQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<ThumbnailQuery, ThumbnailQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<ThumbnailQuery, ThumbnailQueryVariables>(
-    ThumbnailDocument,
-    options
-  )
+  return Apollo.useLazyQuery<ThumbnailQuery, ThumbnailQueryVariables>(ThumbnailDocument, options)
 }
 export function useThumbnailSuspenseQuery(
   baseOptions?:
@@ -2152,25 +1942,16 @@ export function useThumbnailSuspenseQuery(
     | Apollo.SuspenseQueryHookOptions<ThumbnailQuery, ThumbnailQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<ThumbnailQuery, ThumbnailQueryVariables>(
     ThumbnailDocument,
     options
   )
 }
 export type ThumbnailQueryHookResult = ReturnType<typeof useThumbnailQuery>
-export type ThumbnailLazyQueryHookResult = ReturnType<
-  typeof useThumbnailLazyQuery
->
-export type ThumbnailSuspenseQueryHookResult = ReturnType<
-  typeof useThumbnailSuspenseQuery
->
-export type ThumbnailQueryResult = Apollo.QueryResult<
-  ThumbnailQuery,
-  ThumbnailQueryVariables
->
+export type ThumbnailLazyQueryHookResult = ReturnType<typeof useThumbnailLazyQuery>
+export type ThumbnailSuspenseQueryHookResult = ReturnType<typeof useThumbnailSuspenseQuery>
+export type ThumbnailQueryResult = Apollo.QueryResult<ThumbnailQuery, ThumbnailQueryVariables>
 export const TokenPriceDocument = gql`
   query TokenPrice($address: String!) {
     tokenPrice(address: $address) {
@@ -2198,32 +1979,17 @@ export const TokenPriceDocument = gql`
  * });
  */
 export function useTokenPriceQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    TokenPriceQuery,
-    TokenPriceQueryVariables
-  > &
-    (
-      | { variables: TokenPriceQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    )
+  baseOptions: Apollo.QueryHookOptions<TokenPriceQuery, TokenPriceQueryVariables> &
+    ({ variables: TokenPriceQueryVariables; skip?: boolean } | { skip: boolean })
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<TokenPriceQuery, TokenPriceQueryVariables>(
-    TokenPriceDocument,
-    options
-  )
+  return Apollo.useQuery<TokenPriceQuery, TokenPriceQueryVariables>(TokenPriceDocument, options)
 }
 export function useTokenPriceLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    TokenPriceQuery,
-    TokenPriceQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<TokenPriceQuery, TokenPriceQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<TokenPriceQuery, TokenPriceQueryVariables>(
-    TokenPriceDocument,
-    options
-  )
+  return Apollo.useLazyQuery<TokenPriceQuery, TokenPriceQueryVariables>(TokenPriceDocument, options)
 }
 export function useTokenPriceSuspenseQuery(
   baseOptions?:
@@ -2231,25 +1997,16 @@ export function useTokenPriceSuspenseQuery(
     | Apollo.SuspenseQueryHookOptions<TokenPriceQuery, TokenPriceQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
   return Apollo.useSuspenseQuery<TokenPriceQuery, TokenPriceQueryVariables>(
     TokenPriceDocument,
     options
   )
 }
 export type TokenPriceQueryHookResult = ReturnType<typeof useTokenPriceQuery>
-export type TokenPriceLazyQueryHookResult = ReturnType<
-  typeof useTokenPriceLazyQuery
->
-export type TokenPriceSuspenseQueryHookResult = ReturnType<
-  typeof useTokenPriceSuspenseQuery
->
-export type TokenPriceQueryResult = Apollo.QueryResult<
-  TokenPriceQuery,
-  TokenPriceQueryVariables
->
+export type TokenPriceLazyQueryHookResult = ReturnType<typeof useTokenPriceLazyQuery>
+export type TokenPriceSuspenseQueryHookResult = ReturnType<typeof useTokenPriceSuspenseQuery>
+export type TokenPriceQueryResult = Apollo.QueryResult<TokenPriceQuery, TokenPriceQueryVariables>
 export const UpdateLensStreamSessionDocument = gql`
   mutation UpdateLensStreamSession(
     $sessionId: String!
@@ -2336,22 +2093,16 @@ export type UpdateMyStreamMutationFn = Apollo.MutationFunction<
  * });
  */
 export function useUpdateMyStreamMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateMyStreamMutation,
-    UpdateMyStreamMutationVariables
-  >
+  baseOptions?: Apollo.MutationHookOptions<UpdateMyStreamMutation, UpdateMyStreamMutationVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    UpdateMyStreamMutation,
-    UpdateMyStreamMutationVariables
-  >(UpdateMyStreamDocument, options)
+  return Apollo.useMutation<UpdateMyStreamMutation, UpdateMyStreamMutationVariables>(
+    UpdateMyStreamDocument,
+    options
+  )
 }
-export type UpdateMyStreamMutationHookResult = ReturnType<
-  typeof useUpdateMyStreamMutation
->
-export type UpdateMyStreamMutationResult =
-  Apollo.MutationResult<UpdateMyStreamMutation>
+export type UpdateMyStreamMutationHookResult = ReturnType<typeof useUpdateMyStreamMutation>
+export type UpdateMyStreamMutationResult = Apollo.MutationResult<UpdateMyStreamMutation>
 export type UpdateMyStreamMutationOptions = Apollo.BaseMutationOptions<
   UpdateMyStreamMutation,
   UpdateMyStreamMutationVariables
@@ -2384,22 +2135,16 @@ export type UploadDataToArMutationFn = Apollo.MutationFunction<
  * });
  */
 export function useUploadDataToArMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UploadDataToArMutation,
-    UploadDataToArMutationVariables
-  >
+  baseOptions?: Apollo.MutationHookOptions<UploadDataToArMutation, UploadDataToArMutationVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    UploadDataToArMutation,
-    UploadDataToArMutationVariables
-  >(UploadDataToArDocument, options)
+  return Apollo.useMutation<UploadDataToArMutation, UploadDataToArMutationVariables>(
+    UploadDataToArDocument,
+    options
+  )
 }
-export type UploadDataToArMutationHookResult = ReturnType<
-  typeof useUploadDataToArMutation
->
-export type UploadDataToArMutationResult =
-  Apollo.MutationResult<UploadDataToArMutation>
+export type UploadDataToArMutationHookResult = ReturnType<typeof useUploadDataToArMutation>
+export type UploadDataToArMutationResult = Apollo.MutationResult<UploadDataToArMutation>
 export type UploadDataToArMutationOptions = Apollo.BaseMutationOptions<
   UploadDataToArMutation,
   UploadDataToArMutationVariables
@@ -2441,16 +2186,13 @@ export function useUploadDataToIpfsMutation(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    UploadDataToIpfsMutation,
-    UploadDataToIpfsMutationVariables
-  >(UploadDataToIpfsDocument, options)
+  return Apollo.useMutation<UploadDataToIpfsMutation, UploadDataToIpfsMutationVariables>(
+    UploadDataToIpfsDocument,
+    options
+  )
 }
-export type UploadDataToIpfsMutationHookResult = ReturnType<
-  typeof useUploadDataToIpfsMutation
->
-export type UploadDataToIpfsMutationResult =
-  Apollo.MutationResult<UploadDataToIpfsMutation>
+export type UploadDataToIpfsMutationHookResult = ReturnType<typeof useUploadDataToIpfsMutation>
+export type UploadDataToIpfsMutationResult = Apollo.MutationResult<UploadDataToIpfsMutation>
 export type UploadDataToIpfsMutationOptions = Apollo.BaseMutationOptions<
   UploadDataToIpfsMutation,
   UploadDataToIpfsMutationVariables
@@ -2498,16 +2240,13 @@ export function useVerifyFarcasterAuthQuery(
     VerifyFarcasterAuthQuery,
     VerifyFarcasterAuthQueryVariables
   > &
-    (
-      | { variables: VerifyFarcasterAuthQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    )
+    ({ variables: VerifyFarcasterAuthQueryVariables; skip?: boolean } | { skip: boolean })
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<
-    VerifyFarcasterAuthQuery,
-    VerifyFarcasterAuthQueryVariables
-  >(VerifyFarcasterAuthDocument, options)
+  return Apollo.useQuery<VerifyFarcasterAuthQuery, VerifyFarcasterAuthQueryVariables>(
+    VerifyFarcasterAuthDocument,
+    options
+  )
 }
 export function useVerifyFarcasterAuthLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -2516,31 +2255,24 @@ export function useVerifyFarcasterAuthLazyQuery(
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<
-    VerifyFarcasterAuthQuery,
-    VerifyFarcasterAuthQueryVariables
-  >(VerifyFarcasterAuthDocument, options)
+  return Apollo.useLazyQuery<VerifyFarcasterAuthQuery, VerifyFarcasterAuthQueryVariables>(
+    VerifyFarcasterAuthDocument,
+    options
+  )
 }
 export function useVerifyFarcasterAuthSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        VerifyFarcasterAuthQuery,
-        VerifyFarcasterAuthQueryVariables
-      >
+    | Apollo.SuspenseQueryHookOptions<VerifyFarcasterAuthQuery, VerifyFarcasterAuthQueryVariables>
 ) {
   const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions }
-  return Apollo.useSuspenseQuery<
-    VerifyFarcasterAuthQuery,
-    VerifyFarcasterAuthQueryVariables
-  >(VerifyFarcasterAuthDocument, options)
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<VerifyFarcasterAuthQuery, VerifyFarcasterAuthQueryVariables>(
+    VerifyFarcasterAuthDocument,
+    options
+  )
 }
-export type VerifyFarcasterAuthQueryHookResult = ReturnType<
-  typeof useVerifyFarcasterAuthQuery
->
+export type VerifyFarcasterAuthQueryHookResult = ReturnType<typeof useVerifyFarcasterAuthQuery>
 export type VerifyFarcasterAuthLazyQueryHookResult = ReturnType<
   typeof useVerifyFarcasterAuthLazyQuery
 >

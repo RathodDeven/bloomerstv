@@ -1,14 +1,14 @@
-import React from 'react'
-import getAvatar from '../../../utils/lib/getAvatar'
-import formatHandle from '../../../utils/lib/formatHandle'
+import PermIdentityIcon from '@mui/icons-material/PermIdentity'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import Link from 'next/link'
+import React from 'react'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
+import Markup from '../../common/Lexical/Markup'
+import type { StreamerWithAccount } from '../../store/useStreamersWithAccounts'
 import LiveDiv from '../../ui/LiveDiv'
 import LoadingImage from '../../ui/LoadingImage'
-import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import VerifiedBadge from '../../ui/VerifiedBadge'
-import Markup from '../../common/Lexical/Markup'
-import { StreamerWithAccount } from '../../store/useStreamersWithAccounts'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 const StreamCard = ({ streamer }: { streamer: StreamerWithAccount }) => {
   return (
@@ -21,7 +21,7 @@ const StreamCard = ({ streamer }: { streamer: StreamerWithAccount }) => {
       <div className="w-full aspect-video relative mb-2 sm:rounded-xl overflow-hidden">
         {/* @ts-ignore */}
         <LoadingImage
-          // @ts-ignore
+          // @ts-expect-error
           src={streamer?.thumbnail}
           className="w-full object-cover aspect-video bg-p-hover sm:rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-105"
           alt="thumbnail"
@@ -44,11 +44,7 @@ const StreamCard = ({ streamer }: { streamer: StreamerWithAccount }) => {
         {/* <div className="absolute bottom-4 left-4 "></div> */}
       </div>
       <div className="sm:px-0 px-4 w-full start-row space-x-3">
-        <img
-          src={getAvatar(streamer?.account)}
-          className="w-10 h-10 rounded-full"
-          alt="avatar"
-        />
+        <img src={getAvatar(streamer?.account)} className="w-10 h-10 rounded-full" alt="avatar" />
         <div className="start-col">
           {/* @ts-ignore */}
           <Markup className="font-semibold">{streamer?.streamName}</Markup>

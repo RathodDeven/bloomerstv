@@ -1,6 +1,6 @@
 import { immutable, StorageClient } from '@lens-chain/storage-client'
-import { isMainnet } from '../../config'
 import { lens, lensTestnet } from 'wagmi/chains'
+import { isMainnet } from '../../config'
 
 export const storageClient = StorageClient.create()
 

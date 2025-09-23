@@ -61,7 +61,7 @@
 //         setIsLoading(true)
 //         await handleCollect(post)
 //       } catch (error) {
-//         // @ts-ignore
+//         // @ts-expect-error
 //         toast.error(error?.message)
 //       } finally {
 //         setIsLoading(false)
@@ -127,7 +127,7 @@
 //             )
 //             toast.error(
 //               'There was an error broadcasting the transaction',
-//               // @ts-ignore
+//               // @ts-expect-error
 //               String(error?.message)
 //             )
 //             break
@@ -171,12 +171,12 @@
 //           case 'WalletConnectionError':
 //             console.log(
 //               'There was an error connecting to your wallet',
-//               // @ts-ignore
+//               // @ts-expect-error
 //               error?.message
 //             )
 //             toast.error(
 //               'There was an error connecting to your wallet',
-//               // @ts-ignore
+//               // @ts-expect-error
 //               String(error?.message)
 //             )
 //             openConnectModal?.()
@@ -195,7 +195,7 @@
 //         setHasCollected(true)
 //       }
 //     } catch (error) {
-//       // @ts-ignore
+//       // @ts-expect-error
 //       toast.error(error?.message)
 //     }
 //   }
@@ -223,21 +223,21 @@
 //   )
 //     return null
 
-//   // @ts-ignore
+//   // @ts-expect-error
 //   const amount = collectModule?.amount as Amount<Erc20> | undefined
-//   // @ts-ignore
+//   // @ts-expect-error
 //   const collectLimit = collectModule?.collectLimit as number | undefined
-//   // @ts-ignore
+//   // @ts-expect-error
 //   const referalFee = collectModule?.referalFee as number | undefined
-//   // @ts-ignore
+//   // @ts-expect-error
 //   const timeRemaining = getRemainingTime(collectModule?.endsAt)
 
-//   // @ts-ignore
+//   // @ts-expect-error
 //   const followerOnly = collectModule?.followerOnly
 
-//   // @ts-ignore
+//   // @ts-expect-error
 //   if ((collectModule?.endsAt || collectLimit) && !hasCollected) {
-//     // @ts-ignore
+//     // @ts-expect-error
 //     if (!timeRemaining && collectModule?.endsAt) {
 //       return (
 //         <div className="centered-row px-3 text-p-text py-1 gap-x-1.5 cursor-pointer rounded-full bg-p-hover shrink-0">
@@ -276,9 +276,9 @@
 //           onTapStart={
 //             () => {
 //               if (
-//                 // @ts-ignore
+//                 // @ts-expect-error
 //                 amount?.value &&
-//                 // @ts-ignore
+//                 // @ts-expect-error
 //                 amount?.value !== '0'
 //               ) {
 //                 if (!isConnected) {
@@ -355,9 +355,9 @@
 
 //           <div className="centered-col" style={{ zIndex: 2 }}>
 //             <div className={'font-semibold text-base leading-6'}>
-//               {/* @ts-ignore */}
+//               {/* @ts-expect-error */}
 //               {amount?.value &&
-//               // @ts-ignore
+//               // @ts-expect-error
 //               amount?.value !== '0' &&
 //               !isConnected
 //                 ? 'Connect Wallet'
@@ -371,9 +371,9 @@
 //             </div>
 
 //             <div className="start-center-row space-x-2">
-//               {/* @ts-ignore */}
+//               {/* @ts-expect-error */}
 //               {amount?.value && amount?.value !== '0' && (
-//                 // @ts-ignore
+//                 // @ts-expect-error
 //                 <span>{`${amount?.value} ${amount.asset.symbol}`}</span>
 //               )}
 //               {collectLimit && (

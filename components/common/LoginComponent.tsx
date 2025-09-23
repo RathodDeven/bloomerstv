@@ -1,27 +1,23 @@
+import { type LoginParams, Role, useAccountsAvailable, useLogin } from '@lens-protocol/react'
+import { signMessageWith } from '@lens-protocol/react/viem'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import WalletIcon from '@mui/icons-material/Wallet'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { CircularProgress } from '@mui/material'
 import clsx from 'clsx'
+import { ConnectKitButton } from 'connectkit'
 import React from 'react'
-import { useAccount, useDisconnect, useWalletClient } from 'wagmi'
-import getAvatar from '../../utils/lib/getAvatar'
-import formatHandle from '../../utils/lib/formatHandle'
-import LoadingButton from '@mui/lab/LoadingButton'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import toast from 'react-hot-toast'
-import WalletIcon from '@mui/icons-material/Wallet'
-import useEns from '../../utils/hooks/useEns'
+import { useAccount, useDisconnect, useWalletClient } from 'wagmi'
+import { APP_ADDRESS } from '../../utils/config'
 import getStampFyiURL from '../../utils/getStampFyiURL'
+import useEns from '../../utils/hooks/useEns'
+import useSession from '../../utils/hooks/useSession'
+import formatHandle from '../../utils/lib/formatHandle'
+import getAvatar from '../../utils/lib/getAvatar'
 import { getShortAddress } from '../../utils/lib/getShortAddress'
 import LoadingImage from '../ui/LoadingImage'
-import {
-  LoginParams,
-  Role,
-  useAccountsAvailable,
-  useLogin
-} from '@lens-protocol/react'
-import { signMessageWith } from '@lens-protocol/react/viem'
-import useSession from '../../utils/hooks/useSession'
-import { APP_ADDRESS } from '../../utils/config'
-import { ConnectKitButton } from 'connectkit'
+
 // import useEnableSignless from '../../utils/hooks/useEnableSignless'
 
 const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
@@ -29,8 +25,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
   const { disconnectAsync } = useDisconnect()
   const { isConnected, address, isConnecting, isReconnecting } = useAccount()
 
-  const [selectedAccountAddress, setSelectedAccountAddress] =
-    React.useState<string>()
+  const [selectedAccountAddress, setSelectedAccountAddress] = React.useState<string>()
   const { data: profiles, loading: loadingProfiles } = useAccountsAvailable({
     managedBy: address,
     includeOwned: true
@@ -64,9 +59,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
         <>
           {!isAuthenticated ? (
             <>
-              <div className="text-2xl font-bold">
-                Login with your Lens Profile
-              </div>
+              <div className="text-2xl font-bold">Login with your Lens Profile</div>
 
               <div className="start-col my-4 w-full rounded-xl bg-s-bg border border-p-border">
                 {loadingProfiles && (
@@ -79,8 +72,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
                   <div
                     className={clsx(
                       'between-row w-full p-4',
-                      i < profiles?.items.length - 1 &&
-                        'border-b border-p-border '
+                      i < profiles?.items.length - 1 && 'border-b border-p-border '
                     )}
                     key={profile?.account?.address}
                   >
@@ -129,10 +121,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
                             toast.error('Error logging in')
                           }
                         }}
-                        loading={
-                          logging &&
-                          selectedAccountAddress === profile?.account.address
-                        }
+                        loading={logging && selectedAccountAddress === profile?.account.address}
                         loadingPosition="start"
                         startIcon={
                           <img
@@ -153,12 +142,10 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
 
                 {profiles?.items.length === 0 &&
                   !loadingProfiles &&
-                  (!authenticatedUser ||
-                    authenticatedUser?.role !== Role.OnboardingUser) && (
+                  (!authenticatedUser || authenticatedUser?.role !== Role.OnboardingUser) && (
                     <div className="centered-row w-full text-s-text p-4 text-sm">
-                      You don’t have any lens profiles linked to this wallet
-                      address. However, You can log in with your wallet and chat
-                      with streamers
+                      You don’t have any lens profiles linked to this wallet address. However, You
+                      can log in with your wallet and chat with streamers
                     </div>
                   )}
 
@@ -167,19 +154,15 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
                   authenticatedUser?.role === Role.OnboardingUser && (
                     <div className="p-4 space-y-4">
                       <div className="centered-row w-full text-s-text text-sm">
-                        You don’t have any lens profiles linked to this wallet
-                        address.
+                        You don’t have any lens profiles linked to this wallet address.
                       </div>
-                      <div className="text-xs sm:text-sm text-s-text font-semibold">
-                        {address}
-                      </div>
+                      <div className="text-xs sm:text-sm text-s-text font-semibold">{address}</div>
                     </div>
                   )}
 
                 {profiles?.items.length === 0 &&
                   !loadingProfiles &&
-                  (!authenticatedUser ||
-                    authenticatedUser?.role !== Role.OnboardingUser) && (
+                  (!authenticatedUser || authenticatedUser?.role !== Role.OnboardingUser) && (
                     <div className="px-4 pb-4 space-y-4">
                       <div className="start-center-row gap-x-3">
                         <LoadingImage
@@ -191,9 +174,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
                           <div className="text-xs sm:text-sm text-s-text font-semibold">
                             {getShortAddress(String(address), 30)}
                           </div>
-                          <div>
-                            {ensName ?? getShortAddress(String(address))}
-                          </div>
+                          <div>{ensName ?? getShortAddress(String(address))}</div>
                         </div>
                       </div>
                       <LoadingButton
@@ -232,8 +213,8 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
               </div>
 
               <div className="centered-row w-full text-s-text text-xs mb-2 px-2">
-                If you're unable to login, please try clearing this site's cache
-                and refreshing the page.
+                If you're unable to login, please try clearing this site's cache and refreshing the
+                page.
               </div>
               {/* // disconnect wallet */}
               <div
@@ -280,7 +261,7 @@ const LoginComponent = ({ onClose }: { onClose?: () => void }) => {
             //               onClose?.()
             //             }
             //           } catch (e) {
-            //             // @ts-ignore
+            //             // @ts-expect-error
             //             toast.error(e.message)
             //           }
             //         }}

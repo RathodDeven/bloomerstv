@@ -1,6 +1,6 @@
-import React from 'react'
-import useIsMobile from '../../utils/hooks/useIsMobile'
+import type React from 'react'
 import { Toaster } from 'react-hot-toast'
+import useIsMobile from '../../utils/hooks/useIsMobile'
 
 const ToastWrapper = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useIsMobile()

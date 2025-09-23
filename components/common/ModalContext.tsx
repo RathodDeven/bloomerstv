@@ -21,16 +21,14 @@ export const ModalProvider = ({ children }) => {
     type: null
   })
 
-  const openModal = (type) => setModal({ isOpen: true, type })
+  const openModal = type => setModal({ isOpen: true, type })
   const closeModal = () => setModal({ isOpen: false, type: null })
 
   const onOpen = () => setModal({ ...modal, isOpen: true })
   const onClose = () => setModal({ ...modal, isOpen: false })
 
   return (
-    <ModalContext.Provider
-      value={{ modal, openModal, closeModal, onOpen, onClose }}
-    >
+    <ModalContext.Provider value={{ modal, openModal, closeModal, onOpen, onClose }}>
       {children}
     </ModalContext.Provider>
   )

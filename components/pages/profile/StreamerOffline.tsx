@@ -1,32 +1,32 @@
+import { type Account, usePost } from '@lens-protocol/react'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import InsertLinkIcon from '@mui/icons-material/InsertLink'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import NotificationsIcon from '@mui/icons-material/Notifications'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import { Button } from '@mui/material'
+import clsx from 'clsx'
 import React from 'react'
+import Countdown from 'react-countdown'
+import toast from 'react-hot-toast'
 import {
-  StreamReplayRecording,
-  Streamer,
+  type Streamer,
+  type StreamReplayRecording,
   useAddNotificationSubscriberToStreamerMutation,
   useIsSubscribedNotificationForStreamerQuery
 } from '../../../graphql/generated'
-import { getBanner } from '../../../utils/lib/getBannner'
 import { timeAgo } from '../../../utils/helpers'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import useSession from '../../../utils/hooks/useSession'
 import formatHandle from '../../../utils/lib/formatHandle'
 import getAvatar from '../../../utils/lib/getAvatar'
+import { getBanner } from '../../../utils/lib/getBannner'
 import { getThumbnailFromRecordingUrl } from '../../../utils/lib/getThumbnailFromRecordingUrl'
 import Player from '../../common/Player/Player'
-import clsx from 'clsx'
-import { getWebsiteLinksFromProfile } from './getWebsiteLinksFromProfile'
-import InsertLinkIcon from '@mui/icons-material/InsertLink'
-import TwitterIcon from '@mui/icons-material/Twitter'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import { ProfileLink } from './AboutProfile'
-import toast from 'react-hot-toast'
-import { Button } from '@mui/material'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import Countdown from 'react-countdown'
-import { Account, usePost } from '@lens-protocol/react'
-import useSession from '../../../utils/hooks/useSession'
+import { getWebsiteLinksFromProfile } from './getWebsiteLinksFromProfile'
 
 const StreamerOffline = ({
   account,
@@ -47,13 +47,12 @@ const StreamerOffline = ({
   const { websiteLink, twitterLink, instagramLink, githubLink, linkedInLink } =
     getWebsiteLinksFromProfile(account)
 
-  const { data: isSubscribed, refetch } =
-    useIsSubscribedNotificationForStreamerQuery({
-      variables: {
-        accountAddress: account.address
-      },
-      skip: !isAuthenticated || !account.address
-    })
+  const { data: isSubscribed, refetch } = useIsSubscribedNotificationForStreamerQuery({
+    variables: {
+      accountAddress: account.address
+    },
+    skip: !isAuthenticated || !account.address
+  })
 
   const [addSubscriber] = useAddNotificationSubscriberToStreamerMutation({
     variables: {
@@ -61,9 +60,7 @@ const StreamerOffline = ({
     },
     onCompleted: async () => {
       await refetch()
-      toast.success(
-        `You will receive notification when ${formatHandle(account)} goes live!`
-      )
+      toast.success(`You will receive notification when ${formatHandle(account)} goes live!`)
     }
   })
 
@@ -96,34 +93,25 @@ const StreamerOffline = ({
               </div>
             )}
 
-            {streamer?.nextStreamTime &&
-              new Date(streamer?.nextStreamTime) > new Date() && (
-                <div className="text-s-text text-xs sm:text-base font-bold start-col">
-                  <Countdown
-                    renderer={({
-                      days,
-                      hours,
-                      minutes,
-                      seconds,
-                      completed
-                    }) => {
-                      if (completed) {
-                        return (
-                          <div>{`Waiting for ${formatHandle(account)} `}</div>
-                        )
-                      } else {
-                        return (
-                          <div>
-                            Next stream in{' '}
-                            <span className="text-brand">{`${days ? `${days}d ` : ''} ${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''} ${seconds ? `${seconds}s` : ''}`}</span>
-                          </div>
-                        )
-                      }
-                    }}
-                    date={streamer?.nextStreamTime}
-                  />
-                </div>
-              )}
+            {streamer?.nextStreamTime && new Date(streamer?.nextStreamTime) > new Date() && (
+              <div className="text-s-text text-xs sm:text-base font-bold start-col">
+                <Countdown
+                  renderer={({ days, hours, minutes, seconds, completed }) => {
+                    if (completed) {
+                      return <div>{`Waiting for ${formatHandle(account)} `}</div>
+                    } else {
+                      return (
+                        <div>
+                          Next stream in{' '}
+                          <span className="text-brand">{`${days ? `${days}d ` : ''} ${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''} ${seconds ? `${seconds}s` : ''}`}</span>
+                        </div>
+                      )
+                    }
+                  }}
+                  date={streamer?.nextStreamTime}
+                />
+              </div>
+            )}
 
             {!isMobile && (
               <div className="flex flex-col items-start gap-y-0.5">
@@ -166,53 +154,47 @@ const StreamerOffline = ({
                     className="pl-2 -ml-2"
                   />
                 )}
-                {isAuthenticated &&
-                  sessionAccount?.address !== account?.address && (
-                    <>
-                      {isSubscribed?.isSubscribedNotificationForStreamer ? (
-                        <div className="flex flex-row gap-x-1 py-1.5 -ml-0.5 text-s-text">
-                          <NotificationsIcon fontSize="medium" />
-                          <div className="text-left">
-                            You will be notified when {formatHandle(account)}{' '}
-                            goes live.
-                          </div>
+                {isAuthenticated && sessionAccount?.address !== account?.address && (
+                  <>
+                    {isSubscribed?.isSubscribedNotificationForStreamer ? (
+                      <div className="flex flex-row gap-x-1 py-1.5 -ml-0.5 text-s-text">
+                        <NotificationsIcon fontSize="medium" />
+                        <div className="text-left">
+                          You will be notified when {formatHandle(account)} goes live.
                         </div>
-                      ) : (
-                        <div className="-ml-1">
-                          <Button
-                            onClick={async () => {
-                              await addSubscriber()
-                            }}
-                            color="primary"
-                            variant="text"
-                            startIcon={<NotificationsNoneIcon />}
-                            sx={{
-                              textTransform: 'none',
-                              borderRadius: '20px'
-                            }}
-                          >
-                            <div className="text-base -ml-1">
-                              Turn on notifications
-                            </div>
-                          </Button>
-                        </div>
-                      )}
-                    </>
-                  )}
+                      </div>
+                    ) : (
+                      <div className="-ml-1">
+                        <Button
+                          onClick={async () => {
+                            await addSubscriber()
+                          }}
+                          color="primary"
+                          variant="text"
+                          startIcon={<NotificationsNoneIcon />}
+                          sx={{
+                            textTransform: 'none',
+                            borderRadius: '20px'
+                          }}
+                        >
+                          <div className="text-base -ml-1">Turn on notifications</div>
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             )}
           </div>
           {streamReplayRecording?.recordingUrl && (
             <div className="sm:rounded-xl rounded-md overflow-hidden w-full">
               <Player
-                // @ts-ignore
+                // @ts-expect-error
                 src={streamReplayRecording?.recordingUrl}
-                poster={getThumbnailFromRecordingUrl(
-                  streamReplayRecording?.recordingUrl
-                )}
-                // @ts-ignore
+                poster={getThumbnailFromRecordingUrl(streamReplayRecording?.recordingUrl)}
+                // @ts-expect-error
                 title={
-                  // @ts-ignore
+                  // @ts-expect-error
                   data?.metadata?.title ?? 'Untitled'
                 }
               />
@@ -224,11 +206,7 @@ const StreamerOffline = ({
       <div className="absolute bottom-0 right-0 bg-black left-0 h-full w-full">
         {banner ? (
           <>
-            <img
-              className="h-full w-full object-cover"
-              src={banner}
-              alt="logo"
-            />
+            <img className="h-full w-full object-cover" src={banner} alt="logo" />
             <div className="absolute inset-0 bg-black bg-opacity-70" />
           </>
         ) : (

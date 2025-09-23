@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import useIsMobile from '../../utils/hooks/useIsMobile'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import React, { useState } from 'react'
 import { SuperFluidInfo } from '../../utils/config'
+import useIsMobile from '../../utils/hooks/useIsMobile'
 import VerifiedBadge from '../ui/VerifiedBadge'
 
 const SubscribeToSuperBloomers = () => {
@@ -41,8 +41,7 @@ const SubscribeToSuperBloomers = () => {
         </motion.div>
       </div>
       <div className="font-semibold text-xs">
-        Subscribe at just $5~ per month using Bonsai, WMATIC, or USDC to support
-        this project
+        Subscribe at just $5~ per month using Bonsai, WMATIC, or USDC to support this project
       </div>
     </motion.a>
   )

@@ -1,3 +1,4 @@
+import type { ClipLength, Src } from '@livepeer/react'
 import {
   ClipIcon,
   EnterFullscreenIcon,
@@ -12,16 +13,12 @@ import {
 } from '@livepeer/react/assets'
 import * as Player from '@livepeer/react/player'
 import * as Popover from '@radix-ui/react-popover'
+import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
-import * as Select from '@radix-ui/react-select'
-import { ClipLength, Src } from '@livepeer/react'
 import cn from '../../../utils/ui/cn'
 import VideoClipper from '../../pages/dashboard/content/VideoClipper'
-import {
-  PlayerStreamingMode,
-  useMyPreferences
-} from '../../store/useMyPreferences'
+import { PlayerStreamingMode, useMyPreferences } from '../../store/useMyPreferences'
 
 const PlayerWithControls = ({
   src,
@@ -45,11 +42,7 @@ const PlayerWithControls = ({
   poster?: string | null | undefined
   muted?: boolean
   className?: string
-  createClip?: (
-    playbackId: string,
-    startTime: number,
-    endTime: number
-  ) => Promise<void>
+  createClip?: (playbackId: string, startTime: number, endTime: number) => Promise<void>
   streamOfflineErrorComponent?: React.ReactNode
   onStreamStatusChange?: (isLive: boolean) => void
   autoPlay?: boolean
@@ -68,9 +61,9 @@ const PlayerWithControls = ({
 
     const resetTimer = () => {
       setHidden(false)
-      // @ts-ignore
+      // @ts-expect-error
       clearTimeout(timerRef.current)
-      // @ts-ignore
+      // @ts-expect-error
       timerRef.current = setTimeout(() => setHidden(true), autoHide)
     }
 
@@ -81,7 +74,7 @@ const PlayerWithControls = ({
 
     return () => {
       // Clean up when the component is unmounted
-      // @ts-ignore
+      // @ts-expect-error
       clearTimeout(timerRef.current)
       window.removeEventListener('mousemove', resetTimer)
       window.removeEventListener('mousedown', resetTimer)
@@ -99,7 +92,7 @@ const PlayerWithControls = ({
 
   return (
     <Player.Root
-      // @ts-ignore
+      // @ts-expect-error
       src={src}
       clipLength={clipLength}
       autoPlay={autoPlay}
@@ -154,12 +147,9 @@ const PlayerWithControls = ({
             <>
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-1">
-                  <div className="text-lg sm:text-2xl font-bold">
-                    Stream is offline
-                  </div>
+                  <div className="text-lg sm:text-2xl font-bold">Stream is offline</div>
                   <div className="text-xs sm:text-sm text-gray-100">
-                    Playback will start automatically once the stream has
-                    started
+                    Playback will start automatically once the stream has started
                   </div>
                 </div>
                 <LoadingIcon className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin text-[#7a7a81]" />
@@ -174,9 +164,7 @@ const PlayerWithControls = ({
         >
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-1">
-              <div className="text-lg sm:text-2xl font-bold">
-                Stream is private
-              </div>
+              <div className="text-lg sm:text-2xl font-bold">Stream is private</div>
               <div className="text-xs sm:text-sm text-gray-100">
                 It looks like you don't have permission to view this content
               </div>
@@ -205,10 +193,7 @@ const PlayerWithControls = ({
                 <div className="bg-red-600 h-1.5 w-1.5 rounded-full" />
                 <span className="text-sm select-none">LIVE</span>
               </Player.LiveIndicator> */}
-                <Player.LiveIndicator
-                  matcher={false}
-                  className="flex gap-2 items-center"
-                >
+                <Player.LiveIndicator matcher={false} className="flex gap-2 items-center">
                   <Player.Time className="text-sm tabular-nums select-none" />
                 </Player.LiveIndicator>
 
@@ -265,24 +250,19 @@ const PlayerWithControls = ({
           </Player.Portal>
         )}
       </Player.Container>
-      {onStreamStatusChange && (
-        <ContextComponent onStreamStatusChange={onStreamStatusChange} />
-      )}
+      {onStreamStatusChange && <ContextComponent onStreamStatusChange={onStreamStatusChange} />}
     </Player.Root>
   )
 }
 
 export default memo(PlayerWithControls)
 
-const ContextComponent = ({
-  onStreamStatusChange,
-  __scopeMedia
-}: Player.MediaScopedProps<any>) => {
+const ContextComponent = ({ onStreamStatusChange, __scopeMedia }: Player.MediaScopedProps<any>) => {
   const context = Player.useMediaContext('CurrentSource', __scopeMedia)
 
   const { progress } = Player.useStore(
     context.store,
-    // @ts-ignore
+    // @ts-expect-error
     ({ progress }) => ({ progress: Boolean(progress) })
   )
 
@@ -317,9 +297,7 @@ const PlayerLoading = ({
     {title && (
       <div className="absolute flex flex-col gap-1 inset-10 text-center justify-center items-center">
         <span className="text-white text-lg font-medium">{title}</span>
-        {description && (
-          <span className="text-sm text-white/80">{description}</span>
-        )}
+        {description && <span className="text-sm text-white/80">{description}</span>}
       </div>
     )}
   </div>
@@ -330,11 +308,7 @@ function Clip({
   createClip
 }: {
   className?: string
-  createClip: (
-    playbackId: string,
-    startTime: number,
-    endTime: number
-  ) => Promise<void>
+  createClip: (playbackId: string, startTime: number, endTime: number) => Promise<void>
 }) {
   const [isPending, setIsPending] = React.useState(false)
 
@@ -367,16 +341,11 @@ function Clip({
 }
 
 const Settings = React.forwardRef(
-  (
-    { className }: { className?: string },
-    ref: React.Ref<HTMLButtonElement> | undefined
-  ) => {
-    const { playerStreamingMode, setPlayerStreamingMode } = useMyPreferences(
-      (state) => ({
-        playerStreamingMode: state.playerStreamingMode,
-        setPlayerStreamingMode: state.setPlayerStreamingMode
-      })
-    )
+  ({ className }: { className?: string }, ref: React.Ref<HTMLButtonElement> | undefined) => {
+    const { playerStreamingMode, setPlayerStreamingMode } = useMyPreferences(state => ({
+      playerStreamingMode: state.playerStreamingMode,
+      setPlayerStreamingMode: state.setPlayerStreamingMode
+    }))
 
     return (
       <Popover.Root>
@@ -385,7 +354,7 @@ const Settings = React.forwardRef(
             type="button"
             className={className}
             aria-label="Playback settings"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <SettingsIcon className="text-white w-5 h-5" />
           </button>
@@ -396,20 +365,12 @@ const Settings = React.forwardRef(
             side="top"
             alignOffset={-50}
             align="end"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className="flex flex-col gap-2">
-              <Player.LiveIndicator
-                matcher={true}
-                className="gap-2 flex-col flex"
-              >
-                <label className="text-xs text-white font-bold">
-                  Watch Mode
-                </label>
-                <Select.Root
-                  value={playerStreamingMode}
-                  onValueChange={setPlayerStreamingMode}
-                >
+              <Player.LiveIndicator matcher={true} className="gap-2 flex-col flex">
+                <label className="text-xs text-white font-bold">Watch Mode</label>
+                <Select.Root value={playerStreamingMode} onValueChange={setPlayerStreamingMode}>
                   <Select.Trigger className="inline-flex items-center bg-white/30 text-white backdrop-blur-md justify-between rounded-lg px-2 text-xs leading-none h-7 gap-1 outline-none border-none">
                     <Select.Value aria-label={playerStreamingMode}>
                       {playerStreamingMode}
@@ -426,9 +387,7 @@ const Settings = React.forwardRef(
                           className="text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20"
                           value={PlayerStreamingMode.Quality}
                         >
-                          <Select.ItemText>
-                            {PlayerStreamingMode.Quality}
-                          </Select.ItemText>
+                          <Select.ItemText>{PlayerStreamingMode.Quality}</Select.ItemText>
                           <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
                             <CheckIcon className="w-4 h-4" />
                           </Player.SelectItemIndicator>
@@ -437,9 +396,7 @@ const Settings = React.forwardRef(
                           className="text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20"
                           value={PlayerStreamingMode.LowLatency}
                         >
-                          <Select.ItemText>
-                            {PlayerStreamingMode.LowLatency}
-                          </Select.ItemText>
+                          <Select.ItemText>{PlayerStreamingMode.LowLatency}</Select.ItemText>
                           <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
                             <CheckIcon className="w-4 h-4" />
                           </Player.SelectItemIndicator>
@@ -449,14 +406,8 @@ const Settings = React.forwardRef(
                   </Select.Portal>
                 </Select.Root>
               </Player.LiveIndicator>
-              <Player.LiveIndicator
-                matcher={false}
-                className="gap-2 flex-col flex"
-              >
-                <label
-                  className="text-xs text-white font-bold"
-                  htmlFor="speedSelect"
-                >
+              <Player.LiveIndicator matcher={false} className="gap-2 flex-col flex">
+                <label className="text-xs text-white font-bold" htmlFor="speedSelect">
                   Playback speed
                 </label>
                 <Player.RateSelect name="speedSelect">
@@ -502,16 +453,10 @@ const Settings = React.forwardRef(
               </Player.LiveIndicator>
               <Player.LiveIndicator matcher={false}>
                 <div className="gap-2 flex-col flex">
-                  <label
-                    className="text-xs text-white font-bold"
-                    htmlFor="qualitySelect"
-                  >
+                  <label className="text-xs text-white font-bold" htmlFor="qualitySelect">
                     Quality
                   </label>
-                  <Player.VideoQualitySelect
-                    name="qualitySelect"
-                    defaultValue="1.0"
-                  >
+                  <Player.VideoQualitySelect name="qualitySelect" defaultValue="1.0">
                     <Player.SelectTrigger
                       className="inline-flex items-center justify-between rounded-lg px-2 text-xs leading-none h-7 gap-1 outline-none border-none text-white bg-white/30 backdrop-blur-md"
                       aria-label="Playback quality"
@@ -525,34 +470,19 @@ const Settings = React.forwardRef(
                       <Player.SelectContent className="overflow-hidden bg-black/70 backdrop-blur-sm  text-white rounded-xl">
                         <Player.SelectViewport className="p-1 rounded-lg">
                           <Player.SelectGroup>
-                            <VideoQualitySelectItem
-                              className="rounded-lg"
-                              value="auto"
-                            >
+                            <VideoQualitySelectItem className="rounded-lg" value="auto">
                               Auto (HD+)
                             </VideoQualitySelectItem>
-                            <VideoQualitySelectItem
-                              className="rounded-lg"
-                              value="1080p"
-                            >
+                            <VideoQualitySelectItem className="rounded-lg" value="1080p">
                               1080p (HD)
                             </VideoQualitySelectItem>
-                            <VideoQualitySelectItem
-                              className="rounded-lg"
-                              value="720p"
-                            >
+                            <VideoQualitySelectItem className="rounded-lg" value="720p">
                               720p
                             </VideoQualitySelectItem>
-                            <VideoQualitySelectItem
-                              className="rounded-lg"
-                              value="480p"
-                            >
+                            <VideoQualitySelectItem className="rounded-lg" value="480p">
                               480p
                             </VideoQualitySelectItem>
-                            <VideoQualitySelectItem
-                              className="rounded-lg"
-                              value="360p"
-                            >
+                            <VideoQualitySelectItem className="rounded-lg" value="360p">
                               360p
                             </VideoQualitySelectItem>
                           </Player.SelectGroup>
@@ -577,44 +507,42 @@ const Settings = React.forwardRef(
   }
 )
 
-const RateSelectItem = React.forwardRef<
-  HTMLDivElement,
-  Player.RateSelectItemProps
->(({ children, className, ...props }, forwardedRef) => {
-  return (
-    <Player.RateSelectItem
-      className={cn(
-        'text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20',
-        className
-      )}
-      {...props}
-      ref={forwardedRef}
-    >
-      <Player.SelectItemText>{children}</Player.SelectItemText>
-      <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
-        <CheckIcon className="w-4 h-4" />
-      </Player.SelectItemIndicator>
-    </Player.RateSelectItem>
-  )
-})
+const RateSelectItem = React.forwardRef<HTMLDivElement, Player.RateSelectItemProps>(
+  ({ children, className, ...props }, forwardedRef) => {
+    return (
+      <Player.RateSelectItem
+        className={cn(
+          'text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20',
+          className
+        )}
+        {...props}
+        ref={forwardedRef}
+      >
+        <Player.SelectItemText>{children}</Player.SelectItemText>
+        <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
+          <CheckIcon className="w-4 h-4" />
+        </Player.SelectItemIndicator>
+      </Player.RateSelectItem>
+    )
+  }
+)
 
-const VideoQualitySelectItem = React.forwardRef<
-  HTMLDivElement,
-  Player.VideoQualitySelectItemProps
->(({ children, className, ...props }, forwardedRef) => {
-  return (
-    <Player.VideoQualitySelectItem
-      className={cn(
-        'text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20',
-        className
-      )}
-      {...props}
-      ref={forwardedRef}
-    >
-      <Player.SelectItemText>{children}</Player.SelectItemText>
-      <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
-        <CheckIcon className="w-4 h-4" />
-      </Player.SelectItemIndicator>
-    </Player.VideoQualitySelectItem>
-  )
-})
+const VideoQualitySelectItem = React.forwardRef<HTMLDivElement, Player.VideoQualitySelectItemProps>(
+  ({ children, className, ...props }, forwardedRef) => {
+    return (
+      <Player.VideoQualitySelectItem
+        className={cn(
+          'text-xs leading-none rounded-sm flex items-center h-7 pr-[35px] pl-[25px] relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-white/20',
+          className
+        )}
+        {...props}
+        ref={forwardedRef}
+      >
+        <Player.SelectItemText>{children}</Player.SelectItemText>
+        <Player.SelectItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
+          <CheckIcon className="w-4 h-4" />
+        </Player.SelectItemIndicator>
+      </Player.VideoQualitySelectItem>
+    )
+  }
+)

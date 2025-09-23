@@ -15,7 +15,7 @@ const VideoWithEditors = ({ recordingUrl }: { recordingUrl: string }) => {
     <>
       {isMounted && (
         <Player
-          // @ts-ignore
+          // @ts-expect-error
           src={recordingUrl}
           showPipButton={false}
           autoHide={0}

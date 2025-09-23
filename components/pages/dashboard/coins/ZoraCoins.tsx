@@ -1,31 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Card,
-  CardContent,
-  Grid
-} from '@mui/material'
-import { MonetizationOn, AddCircleOutline } from '@mui/icons-material'
-import CoinTable from './CoinTable'
-import FeaturedCoin from './FeaturedCoin'
-import { ProfileCoinBalances, CoinBalance } from '../../../../utils/types/zora'
+import { AddCircleOutline, MonetizationOn } from '@mui/icons-material'
+import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material'
 import { getProfileBalances } from '@zoralabs/coins-sdk'
-import useSession from '../../../../utils/hooks/useSession'
-import {
-  useMyStreamQuery,
-  useUpdateMyStreamMutation
-} from '../../../../graphql/generated'
-import { base } from 'viem/chains'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { base } from 'viem/chains'
+import { useMyStreamQuery, useUpdateMyStreamMutation } from '../../../../graphql/generated'
+import useSession from '../../../../utils/hooks/useSession'
+import type { CoinBalance, ProfileCoinBalances } from '../../../../utils/types/zora'
+import CoinTable from './CoinTable'
 import CreateCoinModal from './CreateCoinModal'
+import FeaturedCoin from './FeaturedCoin'
 
 export default function ZoraCoins() {
-  const [coinBalances, setCoinBalances] = useState<ProfileCoinBalances | null>(
-    null
-  )
+  const [coinBalances, setCoinBalances] = useState<ProfileCoinBalances | null>(null)
   const [featuredCoin, setFeaturedCoin] = useState<CoinBalance | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { isAuthenticated, authenticatedUser } = useSession()
@@ -38,8 +25,7 @@ export default function ZoraCoins() {
   const handleFeatureCoin = async (coin: CoinBalance) => {
     // Check if this coin is already featured - if so, we'll unfeature it
     const isAlreadyFeatured =
-      featuredCoin?.coin.address.toLowerCase() ===
-      coin.coin.address.toLowerCase()
+      featuredCoin?.coin.address.toLowerCase() === coin.coin.address.toLowerCase()
 
     try {
       const { data } = await updateMyStream({
@@ -74,9 +60,7 @@ export default function ZoraCoins() {
       refetchMyStream()
     } catch (error: any) {
       console.error('Error updating featured coin:', error)
-      toast.error(
-        error?.toString() ?? 'Failed to update featured coin. Please try again.'
-      )
+      toast.error(error?.toString() ?? 'Failed to update featured coin. Please try again.')
     }
   }
 
@@ -110,12 +94,10 @@ export default function ZoraCoins() {
         setCoinBalances(formattedData)
 
         // Only set the featured coin on initial load or if requested
-        const featuredCoinAddress =
-          myStream?.myStream?.featuredCoin?.coinAddress?.toLowerCase()
+        const featuredCoinAddress = myStream?.myStream?.featuredCoin?.coinAddress?.toLowerCase()
         if (featuredCoinAddress) {
           const featuredCoinData = formattedData.edges.find(
-            (edge) =>
-              edge.node.coin.address.toLowerCase() === featuredCoinAddress
+            edge => edge.node.coin.address.toLowerCase() === featuredCoinAddress
           )
 
           if (featuredCoinData) {
@@ -149,16 +131,14 @@ export default function ZoraCoins() {
   useEffect(() => {
     if (!coinBalances || !myStream?.myStream?.featuredCoin?.coinAddress) return
 
-    const featuredCoinAddress =
-      myStream.myStream.featuredCoin.coinAddress.toLowerCase()
+    const featuredCoinAddress = myStream.myStream.featuredCoin.coinAddress.toLowerCase()
     const featuredCoinData = coinBalances.edges.find(
-      (edge) => edge.node.coin.address.toLowerCase() === featuredCoinAddress
+      edge => edge.node.coin.address.toLowerCase() === featuredCoinAddress
     )
 
     if (
       featuredCoinData &&
-      (!featuredCoin ||
-        featuredCoin.coin.address.toLowerCase() !== featuredCoinAddress)
+      (!featuredCoin || featuredCoin.coin.address.toLowerCase() !== featuredCoinAddress)
     ) {
       setFeaturedCoin(featuredCoinData.node)
     } else if (!featuredCoinData && myStream?.myStream?.featuredCoin) {
@@ -177,12 +157,7 @@ export default function ZoraCoins() {
     <Container maxWidth="lg" className="py-6">
       <Box className="flex justify-between items-center mb-6">
         <Box>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            gutterBottom
-            className="flex items-center"
-          >
+          <Typography variant="h4" fontWeight="bold" gutterBottom className="flex items-center">
             <MonetizationOn fontSize="large" className="mr-2" /> Zora Coins
           </Typography>
           <Typography variant="body1" color="text.secondary">
@@ -249,14 +224,8 @@ export default function ZoraCoins() {
             ) : (
               <Card className="border border-gray-200 text-center p-8 rounded-xl">
                 <CardContent>
-                  <Typography variant="h6">
-                    No coins in your portfolio
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    className="mt-1 mb-4"
-                  >
+                  <Typography variant="h6">No coins in your portfolio</Typography>
+                  <Typography variant="body2" color="text.secondary" className="mt-1 mb-4">
                     Get started by creating your own coin
                   </Typography>
                   <Button

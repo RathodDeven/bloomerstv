@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { SingleStreamer } from '../../../graphql/generated'
-import getAvatar from '../../../utils/lib/getAvatar'
-import formatHandle from '../../../utils/lib/formatHandle'
-
-import {
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  MenuList
-} from '@mui/material'
-import { APP_LINK, APP_NAME } from '../../../utils/config'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import MobileChatButton from './MobileChatButton'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { type Account, type Post, usePost } from '@lens-protocol/react'
 import IosShareIcon from '@mui/icons-material/IosShare'
-import Markup from '../../common/Lexical/Markup'
-import MobileCommentButton from '../watch/MobileCommentButton'
-import LiveCount from './LiveCount'
-import toast from 'react-hot-toast'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { IconButton, ListItemIcon, Menu, MenuItem, MenuList } from '@mui/material'
 import Link from 'next/link'
-// import CollectButton from './CollectButton'
-import FollowingButton from './FollowingButton'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import type { SingleStreamer } from '../../../graphql/generated'
+import { APP_LINK, APP_NAME } from '../../../utils/config'
 import { humanReadableNumber } from '../../../utils/helpers'
-import VerifiedBadge from '../../ui/VerifiedBadge'
-import QuoteButton from './QuoteButton'
-import { useModal } from '../../common/ModalContext'
-import LikeButton from './LikeButton'
-import MirrorButton from './MirrorButton'
-// import { createClient } from 'graphql-ws'
-import Timer from '../../common/Timer'
-import { Account, Post, usePost } from '@lens-protocol/react'
+import useAccountStats from '../../../utils/hooks/lens/useAccountStats'
 import useFollow from '../../../utils/hooks/lens/useFollow'
 import useUnFollow from '../../../utils/hooks/lens/useUnFollow'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
 import useSession from '../../../utils/hooks/useSession'
-import useAccountStats from '../../../utils/hooks/lens/useAccountStats'
+import formatHandle from '../../../utils/lib/formatHandle'
+import getAvatar from '../../../utils/lib/getAvatar'
+import Markup from '../../common/Lexical/Markup'
+import { useModal } from '../../common/ModalContext'
+// import { createClient } from 'graphql-ws'
+import Timer from '../../common/Timer'
+import VerifiedBadge from '../../ui/VerifiedBadge'
+import MobileCommentButton from '../watch/MobileCommentButton'
+// import CollectButton from './CollectButton'
+import FollowingButton from './FollowingButton'
+import LikeButton from './LikeButton'
+import LiveCount from './LiveCount'
+import MirrorButton from './MirrorButton'
+import MobileChatButton from './MobileChatButton'
+import QuoteButton from './QuoteButton'
 
 // const client = createClient({
 //   url: wsLensGraphEndpoint
@@ -103,7 +96,7 @@ const ProfileBar = ({
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
-  const handleMenuClick = (event) => {
+  const handleMenuClick = event => {
     setAnchorEl(event.currentTarget)
   }
   const handleMenuClose = () => {
@@ -132,9 +125,9 @@ const ProfileBar = ({
   //     },
   //     {
   //       next: ({ data }) => {
-  //         // @ts-ignore
+  //         // @ts-expect-error
   //         if (!data?.newPublicationStats) return
-  //         // @ts-ignore
+  //         // @ts-expect-error
   //         setNewPublicationStats(data?.newPublicationStats)
   //       },
   //       complete: () => {},
@@ -197,12 +190,12 @@ const ProfileBar = ({
       }
     } catch (e) {
       console.log(e)
-      // @ts-ignore
+      // @ts-expect-error
       toast.error(String(e))
     }
   }
 
-  const mustLogin = (infoMsg: string = 'Must Login'): Boolean => {
+  const mustLogin = (infoMsg: string = 'Must Login'): boolean => {
     if (!isAuthenticated) {
       openModal('login')
       toast.error(infoMsg)
@@ -218,11 +211,11 @@ const ProfileBar = ({
         navigator
           .share({
             title: APP_NAME,
-            // @ts-ignore
+            // @ts-expect-error
             text: publication?.metadata?.title,
             url: `${APP_LINK}/watch/${publication?.slug}`
           })
-          .catch((error) => console.log('Error sharing', error))
+          .catch(error => console.log('Error sharing', error))
         return
       }
 
@@ -232,7 +225,7 @@ const ProfileBar = ({
           text: `Check out ${formatHandle(account)} on ${APP_NAME}`,
           url: `${APP_LINK}/${formatHandle(account)}`
         })
-        .catch((error) => console.log('Error sharing', error))
+        .catch(error => console.log('Error sharing', error))
     }
   }
 
@@ -285,7 +278,7 @@ const ProfileBar = ({
       <div className="m-2 sm:mx-8 sm:mt-6 sm:hidden">
         <Markup className="font-bold text-lg sm:text-xl break-words whitespace-pre-wrap">
           {streamer?.streamName ||
-            // @ts-ignore
+            // @ts-expect-error
             publication?.metadata?.title ||
             'Untitled Stream'}
         </Markup>
@@ -297,17 +290,14 @@ const ProfileBar = ({
             prefetch
             className="no-underline text-p-text centered-col"
           >
-            <img
-              src={getAvatar(account)}
-              className="sm:w-16 sm:h-16 w-8 h-8 rounded-full"
-            />
+            <img src={getAvatar(account)} className="sm:w-16 sm:h-16 w-8 h-8 rounded-full" />
           </Link>
           <div className="sm:pr-3 w-full">
             {/* @ts-ignore   */}
             {!isMobile && (
               <Markup className="font-bold text-lg break-words whitespace-pre-wrap">
                 {streamer?.streamName ||
-                  // @ts-ignore
+                  // @ts-expect-error
                   publication?.metadata?.title ||
                   'Untitled Stream'}
               </Markup>
@@ -323,18 +313,14 @@ const ProfileBar = ({
                     className="no-underline text-p-text"
                   >
                     <div className="start-center-row gap-x-1">
-                      <div className="font-semibold sm:text-sm">
-                        {formatHandle(account)}
-                      </div>
+                      <div className="font-semibold sm:text-sm">{formatHandle(account)}</div>
                       {(premium || streamer?.premium) && <VerifiedBadge />}
                     </div>
                   </Link>
 
                   <div className="start-center-row space-x-1 sm:text-sm text-xs">
                     <div className="">
-                      {humanReadableNumber(
-                        accountStats?.graphFollowStats?.followers
-                      )}
+                      {humanReadableNumber(accountStats?.graphFollowStats?.followers)}
                     </div>
                     <div className="text-s-text">followers</div>
                   </div>
@@ -396,26 +382,20 @@ const ProfileBar = ({
 
             {/* like button  */}
             {publication?.id && (
-              <LikeButton
-                post={publication}
-                likeCount={publication?.stats?.upvotes}
-              />
+              <LikeButton post={publication} likeCount={publication?.stats?.upvotes} />
             )}
 
             {/* mirror button */}
 
             {publication?.id && (
-              <MirrorButton
-                repostsCount={publication?.stats?.reposts}
-                post={publication}
-              />
+              <MirrorButton repostsCount={publication?.stats?.reposts} post={publication} />
             )}
 
             {publication && (
               <QuoteButton
                 quoteOn={publication.id}
                 quotingOnProfileHandle={formatHandle(publication?.author)}
-                // @ts-ignore
+                // @ts-expect-error
                 quotingTitle={
                   streamer?.streamName
                     ? streamer?.streamName
@@ -424,9 +404,7 @@ const ProfileBar = ({
                       publication?.metadata?.content)
                 }
                 numberOfQuotes={publication?.stats?.quotes}
-                hasQuoted={
-                  publication?.operations?.hasQuoted?.optimistic ?? false
-                }
+                hasQuoted={publication?.operations?.hasQuoted?.optimistic ?? false}
               />
             )}
 
@@ -461,25 +439,19 @@ const ProfileBar = ({
             )} */}
             {/* like button */}
             {publication?.id && (
-              <LikeButton
-                likeCount={publication?.stats?.upvotes}
-                post={publication}
-              />
+              <LikeButton likeCount={publication?.stats?.upvotes} post={publication} />
             )}
             {/* mirror button */}
 
             {publication?.id && (
-              <MirrorButton
-                repostsCount={publication?.stats?.reposts}
-                post={publication}
-              />
+              <MirrorButton repostsCount={publication?.stats?.reposts} post={publication} />
             )}
 
             {publication && (
               <QuoteButton
                 quoteOn={publication.id}
                 quotingOnProfileHandle={formatHandle(publication?.author)}
-                // @ts-ignore
+                // @ts-expect-error
                 quotingTitle={
                   streamer?.streamName
                     ? streamer?.streamName
@@ -488,9 +460,7 @@ const ProfileBar = ({
                       publication?.metadata?.content)
                 }
                 numberOfQuotes={publication?.stats?.quotes}
-                hasQuoted={
-                  publication?.operations?.hasQuoted?.optimistic ?? false
-                }
+                hasQuoted={publication?.operations?.hasQuoted?.optimistic ?? false}
               />
             )}
 
@@ -501,9 +471,7 @@ const ProfileBar = ({
               </div>
             )}
 
-            {publication?.id && !streamer?.isActive && (
-              <MobileCommentButton post={publication} />
-            )}
+            {publication?.id && !streamer?.isActive && <MobileCommentButton post={publication} />}
           </div>
         </div>
       )}

@@ -1,16 +1,10 @@
+import CloseIcon from '@mui/icons-material/Close'
+import { Backdrop, Box, Fade, IconButton, Modal, SwipeableDrawer } from '@mui/material'
+import clsx from 'clsx'
 import React from 'react'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
-import {
-  Backdrop,
-  Box,
-  Fade,
-  IconButton,
-  Modal,
-  SwipeableDrawer
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import clsx from 'clsx'
 import { useTheme } from '../../wrappers/TailwindThemeProvider'
+
 // todo: show available profiles modal and allow user to select profile to login
 const style = {
   position: 'absolute',
@@ -51,7 +45,7 @@ const ModalWrapper = ({
         hideBackdrop={hideBackdrop}
         anchor="bottom"
         open={open}
-        onClose={(e) => {
+        onClose={e => {
           if (keepOpenOnBgClick && Boolean(e)) return
           onClose()
         }}
@@ -70,14 +64,10 @@ const ModalWrapper = ({
         <div className="centered-row w-full p-3">
           <div className="w-16 h-1.5 bg-s-text rounded-full"></div>
         </div>
-        <div className={clsx('max-h-[700px] overflow-auto w-full', classname)}>
-          {children}
-        </div>
+        <div className={clsx('max-h-[700px] overflow-auto w-full', classname)}>{children}</div>
 
         {/* show a bottom component here */}
-        {BotttomComponent && (
-          <div className="p-4 rounded-t-lg">{BotttomComponent}</div>
-        )}
+        {BotttomComponent && <div className="p-4 rounded-t-lg">{BotttomComponent}</div>}
       </SwipeableDrawer>
     )
   }

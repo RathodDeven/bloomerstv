@@ -1,24 +1,15 @@
 'use client'
-import React from 'react'
-
-import { ConnectKitProvider, getDefaultConfig } from 'connectkit'
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector'
-import { base } from 'wagmi/chains'
-import { lens, lensTestnet } from 'wagmi/chains'
-// import { alchemyProvider } from 'wagmi/providers/alchemy'
-import {
-  APP_DESCRIPTION,
-  APP_ICON_LINK,
-  APP_LINK,
-  APP_NAME,
-  isMainnet
-} from '@/utils/config'
-import { WagmiProvider, http, createConfig } from 'wagmi'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { PublicClient, testnet, mainnet } from '@lens-protocol/react'
-import { LensProvider } from '@lens-protocol/react'
-import { cookieStorage } from '../../utils/lib/lens/storage'
+import { LensProvider, mainnet, PublicClient, testnet } from '@lens-protocol/react'
 import { MiniAppProvider } from '@neynar/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit'
+import React from 'react'
+import { createConfig, http, WagmiProvider } from 'wagmi'
+import { base, lens, lensTestnet } from 'wagmi/chains'
+// import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { APP_DESCRIPTION, APP_ICON_LINK, APP_LINK, APP_NAME, isMainnet } from '@/utils/config'
+import { cookieStorage } from '../../utils/lib/lens/storage'
 
 const defaultChains = isMainnet ? [lens, base] : [lensTestnet, base]
 
@@ -31,7 +22,7 @@ const defaultTransports = {
 const config = createConfig(
   getDefaultConfig({
     // Your dApps chains
-    // @ts-ignore
+    // @ts-expect-error
     chains: defaultChains,
     transports: defaultTransports,
     // Include both default connectors (for QR code) and farcasterMiniApp (for in-app)

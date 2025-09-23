@@ -177,9 +177,7 @@ export const secondsToTime = (seconds?: number) => {
   }${secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft}`
 }
 
-export const getRemainingTime = (
-  endsAt: Date | null | string
-): string | null => {
+export const getRemainingTime = (endsAt: Date | null | string): string | null => {
   if (!endsAt) {
     return null
   }
@@ -209,5 +207,5 @@ export const getRemainingTime = (
 }
 
 export const sleep = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms))
 }

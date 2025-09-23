@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+
 interface MyStreamStore {
   addLiveChatAt: boolean
   setAddLiveChatAt: (addLiveChatAt: boolean) => void
@@ -7,9 +8,9 @@ interface MyStreamStore {
 
 export const useMyStreamInfo = create<MyStreamStore>(
   persist(
-    (set) => ({
+    set => ({
       addLiveChatAt: true,
-      setAddLiveChatAt: (addLiveChatAt) => set(() => ({ addLiveChatAt }))
+      setAddLiveChatAt: addLiveChatAt => set(() => ({ addLiveChatAt }))
     }),
     {
       name: 'myStreamInfo',

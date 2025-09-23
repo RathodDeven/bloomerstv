@@ -1,14 +1,11 @@
-import { useState } from 'react'
+import { createAccountWithUsername, fetchAccount } from '@lens-protocol/client/actions'
 import {
-  CreateAccountWithUsernameRequest,
+  type CreateAccountWithUsernameRequest,
   never,
   useSessionClient
 } from '@lens-protocol/react'
-import {
-  createAccountWithUsername,
-  fetchAccount
-} from '@lens-protocol/client/actions'
 import { handleOperationWith } from '@lens-protocol/react/viem'
+import { useState } from 'react'
 import { useWalletClient } from 'wagmi'
 
 interface UseCreateAccountReturn {
@@ -21,21 +18,19 @@ const useCreateAccount = (): UseCreateAccountReturn => {
   const [loading, setLoading] = useState(false)
   const { data: walletClient } = useWalletClient()
 
-  const execute = async (
-    request: CreateAccountWithUsernameRequest
-  ): Promise<void> => {
+  const execute = async (request: CreateAccountWithUsernameRequest): Promise<void> => {
     if (!sessionClient) {
       throw new Error('Session client is not available')
     }
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await createAccountWithUsername(sessionClient, request)
       .andThen(handleOperationWith(walletClient))
       .andThen(sessionClient.waitForTransaction)
-      // @ts-ignore
-      .andThen((txHash) => fetchAccount(sessionClient, { txHash }))
-      .andThen((account) =>
+      // @ts-expect-error
+      .andThen(txHash => fetchAccount(sessionClient, { txHash }))
+      .andThen(account =>
         sessionClient.switchAccount({
           account: account?.address ?? never('Account not found')
         })

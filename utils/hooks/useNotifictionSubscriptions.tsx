@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { subscribeUserToPush } from '../lib/notification'
 import { useAddSubscriptionMutation } from '../../graphql/generated'
+import { subscribeUserToPush } from '../lib/notification'
 import useSession from './useSession'
 
 const useNotifictionSubscriptions = () => {
@@ -9,7 +9,7 @@ const useNotifictionSubscriptions = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return
-    subscribeUserToPush(async (subscription) => {
+    subscribeUserToPush(async subscription => {
       await addSubscription({
         variables: {
           subscription: subscription

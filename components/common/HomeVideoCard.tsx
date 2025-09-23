@@ -1,18 +1,19 @@
-import React from 'react'
-import getAvatar from '../../utils/lib/getAvatar'
-import formatHandle from '../../utils/lib/formatHandle'
-import getPublicationData from '../../utils/lib/getPublicationData'
-import { secondsToTime, timeAgo } from '../../utils/helpers'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import Markup from './Lexical/Markup'
-import { usePathname, useRouter } from 'next/navigation'
-import clsx from 'clsx'
-import VerifiedBadge from '../ui/VerifiedBadge'
-import LoadingImage from '../ui/LoadingImage'
-import { IconButton, Tooltip } from '@mui/material'
+import type { Account, Post } from '@lens-protocol/react'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { IconButton, Tooltip } from '@mui/material'
+import clsx from 'clsx'
+import { usePathname, useRouter } from 'next/navigation'
+import React from 'react'
+import { secondsToTime, timeAgo } from '../../utils/helpers'
 import useSession from '../../utils/hooks/useSession'
-import { Account, Post } from '@lens-protocol/react'
+import formatHandle from '../../utils/lib/formatHandle'
+import getAvatar from '../../utils/lib/getAvatar'
+import getPublicationData from '../../utils/lib/getPublicationData'
+import LoadingImage from '../ui/LoadingImage'
+import VerifiedBadge from '../ui/VerifiedBadge'
+import Markup from './Lexical/Markup'
+
 const HomeVideoCard = ({
   post,
   cover,
@@ -43,12 +44,10 @@ const HomeVideoCard = ({
         'no-underline text-p-text group w-full sm:px-2 unselectable',
         pathname === '/' ? 'lg:w-1/3 2xl:w-1/4' : 'lg:w-1/3'
       )}
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault()
         e.stopPropagation()
-        push(
-          post ? `/watch/${post?.slug}` : `/watch/session/${session?.sessionId}`
-        )
+        push(post ? `/watch/${post?.slug}` : `/watch/session/${session?.sessionId}`)
       }}
     >
       <div className="w-full aspect-video relative mb-2 overflow-hidden sm:rounded-xl">
@@ -75,7 +74,7 @@ const HomeVideoCard = ({
       <div className="sm:px-0 px-4 w-full start-row space-x-3">
         <div
           className="no-underline text-s-text group font-semibold cursor-pointer"
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             push(formatHandle(post?.author ?? session?.account))
           }}
@@ -98,28 +97,22 @@ const HomeVideoCard = ({
               <div className="flex flex-row items-center gap-x-1">
                 <div
                   className="no-underline group text-s-text font-semibold cursor-pointer"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation()
                     push(formatHandle(post?.author ?? session?.account))
                   }}
                 >
-                  <div className="">
-                    {formatHandle(post?.author ?? session?.account)}
-                  </div>
+                  <div className="">{formatHandle(post?.author ?? session?.account)}</div>
                 </div>
                 {premium && <VerifiedBadge />}
               </div>
               {/* dot */}
-              <div className={clsx(!post?.stats?.upvotes && 'hidden')}>
-                &middot;
-              </div>
+              <div className={clsx(!post?.stats?.upvotes && 'hidden')}>&middot;</div>
               <div className={clsx(!post?.stats?.upvotes && 'hidden')}>
                 {post?.stats?.upvotes} likes
               </div>
               <div className="">&middot;</div>
-              <div className="">
-                {timeAgo(post?.timestamp ?? session?.createdAt)}
-              </div>
+              <div className="">{timeAgo(post?.timestamp ?? session?.createdAt)}</div>
             </div>
           </div>
 
@@ -130,7 +123,7 @@ const HomeVideoCard = ({
               <Tooltip
                 title="You can create a lens post for your untitled streams from content page"
                 arrow
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault()
                   e.stopPropagation()
                   push('/dashboard/content')

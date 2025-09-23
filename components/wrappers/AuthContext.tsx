@@ -1,23 +1,17 @@
 'use client'
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-  useCallback
-} from 'react'
+import { sdk } from '@farcaster/miniapp-sdk'
 import { fetchAccount } from '@lens-protocol/client/actions'
 import {
-  Account,
-  AuthenticatedUser,
+  type Account,
+  type AuthenticatedUser,
   Role,
   useAuthenticatedUser,
   usePublicClient
 } from '@lens-protocol/react'
-import { sdk } from '@farcaster/miniapp-sdk'
-import { useVerifyFarcasterAuthQuery } from '../../graphql/generated'
 import { useMiniApp } from '@neynar/react'
+import type React from 'react'
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+import { useVerifyFarcasterAuthQuery } from '../../graphql/generated'
 
 export interface FarcasterUser {
   fid: number
@@ -48,9 +42,7 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { isInMiniApp } = useMiniApp()
   const { data, error, loading } = useAuthenticatedUser()
   const { currentSession } = usePublicClient()
@@ -64,12 +56,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [farcasterToken, setFarcasterToken] = useState<string | null>(null)
 
   // Query to verify Farcaster auth when we have a token
-  const { data: farcasterAuthData, loading: fcAuthLoading } =
-    useVerifyFarcasterAuthQuery({
-      variables: { token: farcasterToken || '' },
-      skip: !farcasterToken,
-      fetchPolicy: 'no-cache'
-    })
+  const { data: farcasterAuthData, loading: fcAuthLoading } = useVerifyFarcasterAuthQuery({
+    variables: { token: farcasterToken || '' },
+    skip: !farcasterToken,
+    fetchPolicy: 'no-cache'
+  })
 
   // Check for Farcaster mini app authentication on mount
   useEffect(() => {
@@ -84,10 +75,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           setFarcasterToken(result?.token)
 
           // just for debugging - remove later
-          console.log(
-            'Farcaster token obtained from mini app SDK',
-            result?.token
-          )
+          console.log('Farcaster token obtained from mini app SDK', result?.token)
         }
       } catch {
         console.log('Farcaster mini app SDK getToken failed')
@@ -125,7 +113,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     const getAccountData = async () => {
       try {
-        // @ts-ignore
+        // @ts-expect-error
         const accountResult = await fetchAccount(currentSession, {
           address: data.address
         })
@@ -150,9 +138,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const value = {
     authenticatedUser: data,
     account,
-    isAuthenticated:
-      Boolean(data && data.role !== Role.OnboardingUser) ||
-      Boolean(farcasterUser),
+    isAuthenticated: Boolean(data && data.role !== Role.OnboardingUser) || Boolean(farcasterUser),
     authenticatedFarcasterUser: farcasterUser,
     isFarcasterAuthenticated: Boolean(farcasterUser),
     isLensAuthenticated: Boolean(data && data.role !== Role.OnboardingUser),

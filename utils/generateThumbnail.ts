@@ -1,10 +1,7 @@
 import { getFileFromDataURL } from './getImageFileFromDataURL'
 
-const canvasImageFromVideo = (
-  file: File,
-  currentTime: number
-): Promise<string> => {
-  return new Promise((resolve) => {
+const canvasImageFromVideo = (file: File, currentTime: number): Promise<string> => {
+  return new Promise(resolve => {
     const video = document.createElement('video')
     const canvas = document.createElement('canvas')
     video.autoplay = true
@@ -25,11 +22,8 @@ const canvasImageFromVideo = (
   })
 }
 
-export const generateVideoThumbnails = (
-  file: File,
-  count: number
-): Promise<string[]> => {
-  return new Promise((resolve) => {
+export const generateVideoThumbnails = (file: File, count: number): Promise<string[]> => {
+  return new Promise(resolve => {
     try {
       if (!file.size) {
         return []
@@ -56,7 +50,7 @@ export const generateVideoThumbnails = (
 }
 
 export const generateVideoThumbnail = (url: string): Promise<string> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     try {
       const video = document.createElement('video')
       video.src = url
@@ -84,9 +78,7 @@ export const generateVideoThumbnail = (url: string): Promise<string> => {
 }
 
 // generate a thumbnail image file from a video url
-export const getThumbnailFromVideoUrl = async (
-  url: string
-): Promise<File | null> => {
+export const getThumbnailFromVideoUrl = async (url: string): Promise<File | null> => {
   const thumbnail = await generateVideoThumbnail(url)
   const file = await getFileFromDataURL(thumbnail, 'thumbnail.png')
   return file

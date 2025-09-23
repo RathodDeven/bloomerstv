@@ -92,9 +92,7 @@ export const $createMentionNode = (mentionName: string): MentionNode => {
   return mentionNode
 }
 
-const convertMentionElement = (
-  domNode: HTMLElement
-): DOMConversionOutput | null => {
+const convertMentionElement = (domNode: HTMLElement): DOMConversionOutput | null => {
   const { textContent } = domNode
 
   if (textContent !== null) {
@@ -105,8 +103,6 @@ const convertMentionElement = (
   return null
 }
 
-export const $isMentionNode = (
-  node: LexicalNode | null | undefined
-): node is MentionNode => {
+export const $isMentionNode = (node: LexicalNode | null | undefined): node is MentionNode => {
   return node instanceof MentionNode
 }

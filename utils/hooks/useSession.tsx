@@ -1,4 +1,4 @@
-import { useAuth, AuthContextType } from '../../components/wrappers/AuthContext'
+import { type AuthContextType, useAuth } from '../../components/wrappers/AuthContext'
 
 /**
  * Custom hook that provides authentication session data from the global context.

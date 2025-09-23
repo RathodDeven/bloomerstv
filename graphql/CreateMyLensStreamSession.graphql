@@ -1,11 +1,3 @@
-mutation CreateMyLensStreamSession(
-  $postId: String!
-  $viewType: ViewType
-  $sessionId: String
-) {
-  createMyLensStreamSession(
-    postId: $postId
-    viewType: $viewType
-    sessionId: $sessionId
-  )
+mutation CreateMyLensStreamSession($postId: String!, $viewType: ViewType, $sessionId: String) {
+  createMyLensStreamSession(postId: $postId, viewType: $viewType, sessionId: $sessionId)
 }

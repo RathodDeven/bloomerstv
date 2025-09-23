@@ -1,9 +1,9 @@
+import type { Post } from '@lens-protocol/react'
 import React from 'react'
 import useIsMobile from '../../utils/hooks/useIsMobile'
-import HomeVideoCard from './HomeVideoCard'
 import getPublicationData from '../../utils/lib/getPublicationData'
+import HomeVideoCard from './HomeVideoCard'
 import RecommendedCardLayout from './RecommendedCardLayout'
-import { Post } from '@lens-protocol/react'
 
 const RecommendedVideoCard = ({ post }: { post: Post }) => {
   const isMobile = useIsMobile()
@@ -16,7 +16,7 @@ const RecommendedVideoCard = ({ post }: { post: Post }) => {
 
   return (
     <RecommendedCardLayout
-      // @ts-ignore
+      // @ts-expect-error
       title={post?.metadata?.title}
       postLink={`/watch/${post?.slug}`}
       coverUrl={asset?.cover}

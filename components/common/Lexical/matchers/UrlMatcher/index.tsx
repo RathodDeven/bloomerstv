@@ -1,9 +1,8 @@
 import type { ChildrenNode, MatchResponse, Node } from 'interweave'
 import { Matcher } from 'interweave'
 import { createElement } from 'react'
-
-import { BLOCKED_TLDS, URL_PATTERN } from './constants'
 import { shortFormOfLink } from '../../../../../utils/helpers'
+import { BLOCKED_TLDS, URL_PATTERN } from './constants'
 
 interface UrlProps {
   children: ChildrenNode
@@ -22,7 +21,7 @@ const Url = ({ children, url }: UrlProps) => {
     <a
       href={href}
       target="_blank"
-      onClick={(event) => event.stopPropagation()}
+      onClick={event => event.stopPropagation()}
       className="text-blue-400 hover:underline"
       rel="noopener"
     >

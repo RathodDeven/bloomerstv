@@ -1,33 +1,34 @@
-import React, { useState } from 'react'
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  Typography,
-  TextField,
-  Card,
-  CardContent,
-  InputAdornment,
-  Grid,
-  Divider,
-  Paper,
-  Avatar,
-  IconButton,
-  Tooltip
-} from '@mui/material'
 import {
   AttachMoney,
-  Info,
-  Image,
-  Movie,
-  Upload,
+  Check,
   Help,
+  Image,
+  Info,
   MonetizationOn,
-  Check
+  Movie,
+  Upload
 } from '@mui/icons-material'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  TextField,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
+import type React from 'react'
+import { useState } from 'react'
 
 const steps = ['Basic Info', 'Media Content', 'Economics', 'Review']
 
@@ -56,11 +57,11 @@ export default function CreateCoin() {
   })
 
   const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1)
+    setActiveStep(prevStep => prevStep + 1)
   }
 
   const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1)
+    setActiveStep(prevStep => prevStep - 1)
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,8 +149,8 @@ export default function CreateCoin() {
               Media Content
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={3}>
-              Upload an image or video that represents your coin. This will be
-              displayed in listings and your coin's page.
+              Upload an image or video that represents your coin. This will be displayed in listings
+              and your coin's page.
             </Typography>
 
             <Box className="flex justify-center mb-4">
@@ -191,11 +192,7 @@ export default function CreateCoin() {
                   </Box>
                 ) : (
                   <>
-                    <Button
-                      component="label"
-                      variant="contained"
-                      startIcon={<Upload />}
-                    >
+                    <Button component="label" variant="contained" startIcon={<Upload />}>
                       Upload Media
                       <VisuallyHiddenInput
                         type="file"
@@ -228,14 +225,10 @@ export default function CreateCoin() {
             </Typography>
 
             <Paper className="p-4 mb-4 border border-gray-200">
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                className="mb-3"
-              >
+              <Typography variant="body2" color="text.secondary" className="mb-3">
                 <Info fontSize="small" className="mr-1" />
-                Configure the economic parameters of your coin. These settings
-                will determine how your coin behaves in the market.
+                Configure the economic parameters of your coin. These settings will determine how
+                your coin behaves in the market.
               </Typography>
 
               <Grid container spacing={3}>
@@ -278,22 +271,14 @@ export default function CreateCoin() {
               </Grid>
             </Paper>
 
-            <Typography
-              variant="subtitle2"
-              fontWeight="medium"
-              className="mb-2"
-            >
+            <Typography variant="subtitle2" fontWeight="medium" className="mb-2">
               Economic Model Explanation
             </Typography>
             <Typography variant="body2" className="text-gray-600">
-              Your coin will follow a bonding curve model, where price increases
-              as more tokens are purchased. The initial price sets the starting
-              point for this curve. Creator earnings are 5% of all trades.
-              <Button
-                size="small"
-                startIcon={<Help fontSize="small" />}
-                className="ml-2"
-              >
+              Your coin will follow a bonding curve model, where price increases as more tokens are
+              purchased. The initial price sets the starting point for this curve. Creator earnings
+              are 5% of all trades.
+              <Button size="small" startIcon={<Help fontSize="small" />} className="ml-2">
                 Learn More
               </Button>
             </Typography>
@@ -312,10 +297,7 @@ export default function CreateCoin() {
                   <CardContent>
                     <Box display="flex" alignItems="center" gap={2} mb={3}>
                       {formData.mediaPreview && (
-                        <Avatar
-                          src={formData.mediaPreview}
-                          sx={{ width: 60, height: 60 }}
-                        />
+                        <Avatar src={formData.mediaPreview} sx={{ width: 60, height: 60 }} />
                       )}
                       <Box>
                         <Typography variant="h5" fontWeight="bold">
@@ -360,54 +342,36 @@ export default function CreateCoin() {
 
               <Grid item xs={12} md={6}>
                 <Paper className="p-4 border border-gray-200 h-full">
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="medium"
-                    className="mb-2"
-                  >
+                  <Typography variant="subtitle1" fontWeight="medium" className="mb-2">
                     <Check className="text-green-500 mr-1" />
                     Ready to Launch
                   </Typography>
                   <Typography variant="body2" className="mb-3">
-                    Your coin will be deployed on the Base blockchain. This
-                    action cannot be undone.
+                    Your coin will be deployed on the Base blockchain. This action cannot be undone.
                   </Typography>
 
                   <Box className="mb-4">
                     <Typography variant="subtitle2" className="mb-1">
                       Fees:
                     </Typography>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      className="text-gray-600"
-                    >
+                    <Box display="flex" justifyContent="space-between" className="text-gray-600">
                       <Typography variant="body2">Deployment Gas</Typography>
                       <Typography variant="body2">~0.001 ETH</Typography>
                     </Box>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      className="text-gray-600"
-                    >
+                    <Box display="flex" justifyContent="space-between" className="text-gray-600">
                       <Typography variant="body2">Platform Fee</Typography>
                       <Typography variant="body2">0.005 ETH</Typography>
                     </Box>
                     <Divider className="my-2" />
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      fontWeight="medium"
-                    >
+                    <Box display="flex" justifyContent="space-between" fontWeight="medium">
                       <Typography variant="body2">Total</Typography>
                       <Typography variant="body2">~0.006 ETH</Typography>
                     </Box>
                   </Box>
 
                   <Typography variant="caption" color="text.secondary">
-                    By creating this coin, you agree to our Terms of Service and
-                    acknowledge that you are responsible for this token's
-                    creation.
+                    By creating this coin, you agree to our Terms of Service and acknowledge that
+                    you are responsible for this token's creation.
                   </Typography>
                 </Paper>
               </Grid>
@@ -430,14 +394,14 @@ export default function CreateCoin() {
             </Typography>
           </Box>
           <Typography variant="body2" color="text.secondary">
-            Launch your own token on the Zora protocol. Create social tokens,
-            community currencies, or rewards for your audience.
+            Launch your own token on the Zora protocol. Create social tokens, community currencies,
+            or rewards for your audience.
           </Typography>
         </CardContent>
       </Card>
 
       <Stepper activeStep={activeStep} className="mb-6">
-        {steps.map((label) => (
+        {steps.map(label => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
@@ -449,11 +413,7 @@ export default function CreateCoin() {
           {renderStepContent(activeStep)}
 
           <Box mt={4} display="flex" justifyContent="space-between">
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              variant="outlined"
-            >
+            <Button disabled={activeStep === 0} onClick={handleBack} variant="outlined">
               Back
             </Button>
             <Box>
@@ -467,11 +427,7 @@ export default function CreateCoin() {
                   Create Coin
                 </Button>
               ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                >
+                <Button variant="contained" color="primary" onClick={handleNext}>
                   Next
                 </Button>
               )}

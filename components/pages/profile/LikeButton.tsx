@@ -1,23 +1,17 @@
+import { type AnyPost, PostReactionType } from '@lens-protocol/react'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { Button, Tooltip } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useModal } from '../../common/ModalContext'
-import toast from 'react-hot-toast'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import FavoriteIcon from '@mui/icons-material/Favorite'
 import { AnimatedCounter } from 'react-animated-counter'
-import { useTheme } from '../../wrappers/TailwindThemeProvider'
-import { AnyPost, PostReactionType } from '@lens-protocol/react'
-import useSession from '../../../utils/hooks/useSession'
+import toast from 'react-hot-toast'
 import useAddReaction from '../../../utils/hooks/lens/useAddReaction'
 import useUndoReaction from '../../../utils/hooks/lens/useUndoReaction'
+import useSession from '../../../utils/hooks/useSession'
+import { useModal } from '../../common/ModalContext'
+import { useTheme } from '../../wrappers/TailwindThemeProvider'
 
-const LikeButton = ({
-  post,
-  likeCount
-}: {
-  post: AnyPost
-  likeCount: number
-}) => {
+const LikeButton = ({ post, likeCount }: { post: AnyPost; likeCount: number }) => {
   const { theme } = useTheme()
   const [liked, setLiked] = React.useState(false)
   const { isAuthenticated } = useSession()
@@ -48,7 +42,7 @@ const LikeButton = ({
       }
     } catch (error) {
       console.log(error)
-      // @ts-ignore
+      // @ts-expect-error
       toast.error(error?.message ?? error)
     }
   }
@@ -63,7 +57,7 @@ const LikeButton = ({
     }
   }, [post?.__typename !== 'Repost' && post])
 
-  const mustLogin = (infoMsg: string = 'Must Login'): Boolean => {
+  const mustLogin = (infoMsg: string = 'Must Login'): boolean => {
     if (!isAuthenticated) {
       openModal('login')
       toast.error(infoMsg)

@@ -1,11 +1,12 @@
+import type { AnyPost } from '@lens-protocol/react'
 import React from 'react'
-import TextAndImagePostCard from './TextAndImagePostCard'
+import { useIsVerifiedQuery } from '../../../graphql/generated'
 // import CollectButton from '../profile/CollectButton'
 // import toast from 'react-hot-toast'
 // import formatHandle from '../../../utils/lib/formatHandle'
 import CommentSection from '../watch/CommentSection'
-import { useIsVerifiedQuery } from '../../../graphql/generated'
-import { AnyPost } from '@lens-protocol/react'
+import TextAndImagePostCard from './TextAndImagePostCard'
+
 // import useSession from '../../../utils/hooks/useSession'
 // import useFollow from '../../../utils/hooks/lens/useFollow'
 
@@ -50,11 +51,7 @@ const TextAndImagePostPage = ({
   //   }
   // }
 
-  if (
-    (post?.__typename === 'Post' && post?.commentOn) ||
-    post?.__typename === 'Repost'
-  )
-    return null
+  if ((post?.__typename === 'Post' && post?.commentOn) || post?.__typename === 'Repost') return null
 
   return (
     <div className="w-full">

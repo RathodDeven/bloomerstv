@@ -1,4 +1,4 @@
-import { GifsResult, GiphyFetch } from '@giphy/js-fetch-api'
+import { type GifsResult, GiphyFetch } from '@giphy/js-fetch-api'
 import { Button, Input } from '@mui/material'
 import clsx from 'clsx'
 import React, { useCallback, useEffect } from 'react'
@@ -17,45 +17,36 @@ const GifAndStickerSelector = ({
   const [result, setResult] = React.useState<GifsResult | null>(null)
   const [searchTerm, setSearchTerm] = React.useState<string>('')
 
-  const fetchNewResults = useCallback(
-    async (searchTerm: string, isStickersActive: boolean) => {
-      let newResult: GifsResult
-      if (searchTerm) {
-        newResult = await gf.search(searchTerm, {
-          limit: 6,
-          type: isStickersActive ? 'stickers' : 'gifs',
-          sort: 'relevant'
-        })
-      } else {
-        newResult = await gf.trending({
-          limit: 6,
-          type: isStickersActive ? 'stickers' : 'gifs'
-        })
-      }
+  const fetchNewResults = useCallback(async (searchTerm: string, isStickersActive: boolean) => {
+    let newResult: GifsResult
+    if (searchTerm) {
+      newResult = await gf.search(searchTerm, {
+        limit: 6,
+        type: isStickersActive ? 'stickers' : 'gifs',
+        sort: 'relevant'
+      })
+    } else {
+      newResult = await gf.trending({
+        limit: 6,
+        type: isStickersActive ? 'stickers' : 'gifs'
+      })
+    }
 
-      console.log('newResult', newResult)
-      setResult(newResult)
-    },
-    []
-  )
+    console.log('newResult', newResult)
+    setResult(newResult)
+  }, [])
 
   useEffect(() => {
     fetchNewResults(searchTerm, isStickersActive)
   }, [searchTerm, isStickersActive])
 
   return (
-    <div
-      className={clsx(
-        className,
-        'w-full box-border flex flex-col gap-y-3 py-2'
-      )}
-      {...props}
-    >
+    <div className={clsx(className, 'w-full box-border flex flex-col gap-y-3 py-2')} {...props}>
       {/* input */}
       <Input
         placeholder="Search stickers and gifs"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={e => setSearchTerm(e.target.value)}
         fullWidth
       />
 
@@ -63,10 +54,7 @@ const GifAndStickerSelector = ({
 
       <div className="grid grid-cols-2 gap-2 text-s-text">
         <Button
-          className={clsx(
-            'rounded-full cursor-pointer',
-            isStickersActive && 'bg-brand'
-          )}
+          className={clsx('rounded-full cursor-pointer', isStickersActive && 'bg-brand')}
           color={isStickersActive ? 'secondary' : 'inherit'}
           variant={isStickersActive ? 'contained' : 'outlined'}
           disabled={isStickersActive}
@@ -76,10 +64,7 @@ const GifAndStickerSelector = ({
           Stickers
         </Button>
         <Button
-          className={clsx(
-            'rounded-full cursor-pointer',
-            !isStickersActive && 'bg-brand'
-          )}
+          className={clsx('rounded-full cursor-pointer', !isStickersActive && 'bg-brand')}
           color={!isStickersActive ? 'secondary' : 'inherit'}
           variant={!isStickersActive ? 'contained' : 'outlined'}
           disabled={!isStickersActive}
@@ -94,7 +79,7 @@ const GifAndStickerSelector = ({
       {/* show 3 on 2 columns */}
 
       <div className="grid grid-cols-2 gap-2 h-full overflow-y-auto ">
-        {result?.data?.map((gif) => (
+        {result?.data?.map(gif => (
           <div
             key={gif.id}
             className="w-full h-full cursor-pointer"

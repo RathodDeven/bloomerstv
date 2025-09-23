@@ -1,34 +1,26 @@
+import type { AnyPost, Post } from '@lens-protocol/react'
 import { useEffect, useRef, useState } from 'react'
+import type { StreamReplayPost } from '../../../graphql/generated'
 import { useStreamReplayPostsOfAccount } from '../../../utils/hooks/useStreamReplayPosts'
-import { StreamReplayPost } from '../../../graphql/generated'
-import { AnyPost, Post } from '@lens-protocol/react'
 import HomeVideoCard from '../../common/HomeVideoCard'
 import LoadingVideoCard from '../../ui/LoadingVideoCard'
 
-export const AccountsStreamsFeed = ({
-  accountAddress
-}: {
-  accountAddress: string
-}) => {
+export const AccountsStreamsFeed = ({ accountAddress }: { accountAddress: string }) => {
   const [skip, setSkip] = useState(0)
   const { loading, posts, streamReplayPosts } = useStreamReplayPostsOfAccount({
     accountAddress,
     skip: skip
   })
 
-  const [allStreamReplayPosts, setAllStreamReplayPosts] = useState<
-    StreamReplayPost[]
-  >([])
+  const [allStreamReplayPosts, setAllStreamReplayPosts] = useState<StreamReplayPost[]>([])
 
   const [allPosts, setAllPosts] = useState<AnyPost[]>([])
 
   useEffect(() => {
     // add it to allPosts if it isn't already added
 
-    setAllPosts((prev) => {
-      const newPosts = posts?.filter(
-        (p) => !prev?.some((prevP) => prevP?.id === p?.id)
-      )
+    setAllPosts(prev => {
+      const newPosts = posts?.filter(p => !prev?.some(prevP => prevP?.id === p?.id))
 
       if (!newPosts || newPosts?.length === 0) return prev
 
@@ -37,29 +29,25 @@ export const AccountsStreamsFeed = ({
   }, [posts])
 
   useEffect(() => {
-    // @ts-ignore
-    setAllStreamReplayPosts((prev) => {
-      const newStreamReplayPosts =
-        streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.filter(
-          (p) => !prev?.some((prevP) => prevP?.postId === p?.postId)
-        )
+    // @ts-expect-error
+    setAllStreamReplayPosts(prev => {
+      const newStreamReplayPosts = streamReplayPosts?.streamReplayPosts?.streamReplayPosts?.filter(
+        p => !prev?.some(prevP => prevP?.postId === p?.postId)
+      )
 
-      if (!newStreamReplayPosts || newStreamReplayPosts?.length === 0)
-        return prev
+      if (!newStreamReplayPosts || newStreamReplayPosts?.length === 0) return prev
 
       return [...prev, ...newStreamReplayPosts!]
     })
   }, [streamReplayPosts?.streamReplayPosts?.streamReplayPosts])
 
-  const streamReplayMap = new Map(
-    allStreamReplayPosts?.map((p) => [p?.postId, p])
-  )
+  const streamReplayMap = new Map(allStreamReplayPosts?.map(p => [p?.postId, p]))
 
   const loadMoreRef = useRef(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         if (
           entries[0].isIntersecting &&
           streamReplayPosts?.streamReplayPosts?.hasMore &&
@@ -90,12 +78,12 @@ export const AccountsStreamsFeed = ({
     <div className="w-full">
       {/* @ts-ignore */}
       <div className="flex flex-row flex-wrap w-full gap-y-6">
-        {allPosts?.map((post) => {
+        {allPosts?.map(post => {
           return (
             <HomeVideoCard
-              // @ts-ignore
+              // @ts-expect-error
               cover={streamReplayMap.get(post?.id)?.thumbnail}
-              // @ts-ignore
+              // @ts-expect-error
               duration={streamReplayMap.get(post?.id)?.sourceSegmentsDuration}
               premium={!!streamReplayMap.get(post?.id)?.premium}
               key={post?.id}
@@ -104,8 +92,7 @@ export const AccountsStreamsFeed = ({
           )
         })}
 
-        {(streamReplayPosts?.streamReplayPosts?.hasMore ||
-          (!allPosts?.length && loading)) &&
+        {(streamReplayPosts?.streamReplayPosts?.hasMore || (!allPosts?.length && loading)) &&
           Array.from({ length: 3 }, (_, i) => <LoadingVideoCard key={i} />)}
       </div>
       <div ref={loadMoreRef} className="h-1" />

@@ -1,21 +1,18 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Button, TextField, InputAdornment } from '@mui/material'
+import { Button, InputAdornment, TextField } from '@mui/material'
+import { type TradeParameters, tradeCoin } from '@zoralabs/coins-sdk'
 import { ConnectKitButton } from 'connectkit'
+import { motion } from 'framer-motion'
+import type React from 'react'
 import { toast } from 'react-hot-toast'
-import { parseEther, Address } from 'viem'
-import { useWalletClient, useBalance, usePublicClient } from 'wagmi'
 import { v4 as uuid } from 'uuid'
+import { type Address, parseEther } from 'viem'
 import { base } from 'viem/chains'
-import { tradeCoin, TradeParameters } from '@zoralabs/coins-sdk'
-import {
-  ContentType,
-  SendMessageTradeType
-} from '@/components/common/LiveChat/LiveChatType'
+import { useBalance, usePublicClient, useWalletClient } from 'wagmi'
+import { ContentType, type SendMessageTradeType } from '@/components/common/LiveChat/LiveChatType'
 import { useChatInteractions } from '@/components/store/useChatInteractions'
 import useHandleWrongNetwork from '@/utils/hooks/useHandleWrongNetwork'
-import { ZoraCoin } from './types'
-import { formatEthBalance, calculateTokenPrice } from './utils'
+import type { ZoraCoin } from './types'
+import { calculateTokenPrice, formatEthBalance } from './utils'
 
 interface BuyModeProps {
   coin: ZoraCoin
@@ -43,16 +40,13 @@ const BuyMode: React.FC<BuyModeProps> = ({
   const publicClient = usePublicClient()
   const handleWrongNetwork = useHandleWrongNetwork(base.id)
 
-  const sendMessagePayload = useChatInteractions(
-    (state) => state.sendMessagePayload
-  )
+  const sendMessagePayload = useChatInteractions(state => state.sendMessagePayload)
 
   // Handle using maximum ETH balance
   const useMaxEthBalance = () => {
     if (ethBalanceData && ethBalanceData.value > 0n) {
       // Leave a small amount for gas
-      const maxAmount =
-        parseFloat(formatEthBalance(ethBalanceData.value)) - 0.001
+      const maxAmount = parseFloat(formatEthBalance(ethBalanceData.value)) - 0.001
       if (maxAmount > 0) {
         const event = {
           target: { value: maxAmount.toFixed(4) }
@@ -93,7 +87,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
       const result = await tradeCoin({
         tradeParameters,
         walletClient,
-        // @ts-ignore
+        // @ts-expect-error
         publicClient,
         account: address as Address
       })
@@ -105,10 +99,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
       } else if (result && typeof result === 'object') {
         // Extract hash from various possible response formats
         txHash =
-          result.hash ||
-          result.transactionHash ||
-          (result.response && result.response.hash) ||
-          ''
+          result.hash || result.transactionHash || (result.response && result.response.hash) || ''
       }
 
       if (!txHash) {
@@ -119,10 +110,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
 
       toast.success('Transaction sent!')
 
-      const formatterCurrentPrice = calculateTokenPrice(
-        coin.marketCap,
-        coin.totalSupply
-      )
+      const formatterCurrentPrice = calculateTokenPrice(coin.marketCap, coin.totalSupply)
 
       const messagePayload: SendMessageTradeType = {
         id: uuid(),
@@ -169,32 +157,22 @@ const BuyMode: React.FC<BuyModeProps> = ({
           size="small"
         />
         {ethBalanceData && ethBalanceData.value > 0n && (
-          <Button
-            size="small"
-            onClick={useMaxEthBalance}
-            sx={{ ml: 1, minWidth: 'auto' }}
-          >
+          <Button size="small" onClick={useMaxEthBalance} sx={{ ml: 1, minWidth: 'auto' }}>
             Max
           </Button>
         )}
       </div>
       <div className="flex justify-between text-xs text-s-text mt-1">
-        {ethBalanceData && (
-          <div>Balance: {formatEthBalance(ethBalanceData.value)} ETH</div>
-        )}
+        {ethBalanceData && <div>Balance: {formatEthBalance(ethBalanceData.value)} ETH</div>}
       </div>
 
       <div className="flex space-x-2 mt-4">
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1"
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
           <Button
             variant="outlined"
             size="small"
             fullWidth
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               onCancel()
             }}
@@ -208,11 +186,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
           </Button>
         </motion.div>
 
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1"
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
           <ConnectKitButton.Custom>
             {({ show, isConnected }) => (
               <Button
@@ -220,7 +194,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
                 size="small"
                 fullWidth
                 disabled={isPending || !ethAmount || parseFloat(ethAmount) <= 0}
-                onClick={async (e) => {
+                onClick={async e => {
                   e.stopPropagation()
                   if (!isConnected) {
                     show?.()
@@ -238,11 +212,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
                   }
                 }}
               >
-                {isPending
-                  ? 'Processing...'
-                  : isConnected
-                    ? 'Buy'
-                    : 'Connect Wallet'}
+                {isPending ? 'Processing...' : isConnected ? 'Buy' : 'Connect Wallet'}
               </Button>
             )}
           </ConnectKitButton.Custom>

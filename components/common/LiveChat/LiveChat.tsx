@@ -1,52 +1,47 @@
-import { Button, IconButton } from '@mui/material'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { APP_LINK, LIVE_CHAT_WEB_SOCKET_URL } from '../../../utils/config'
-import io from 'socket.io-client'
-import {
-  image,
-  textOnly,
-  MediaImageMimeType,
-  MetadataLicenseType
-} from '@lens-protocol/metadata'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
-import LoginComponent from '../LoginComponent'
-import LoginIcon from '@mui/icons-material/Login'
-import Markup from '../Lexical/Markup'
-import useIsMobile from '../../../utils/hooks/useIsMobile'
-import CloseIcon from '@mui/icons-material/Close'
-import { useMyPreferences } from '../../store/useMyPreferences'
-import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-import VolumeOffIcon from '@mui/icons-material/VolumeOff'
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
-import { useStreamChatsQuery } from '../../../graphql/generated'
-import LiveCount from '../../pages/profile/LiveCount'
-import getUserLocale from '../../../utils/getUserLocale'
-import { v4 as uuid } from 'uuid'
-import { getLastStreamPostId } from '../../../utils/lib/lensApi'
-import toast from 'react-hot-toast'
-import clsx from 'clsx'
-import { getIdentityTokenAsync } from '../../../utils/lib/getIdentityTokenAsync'
-import {
-  ContentType,
-  Message,
-  AccountMessage,
-  SendMessageType,
-  MessageType
-} from './LiveChatType'
-import ChatOptionsButton from './ChatOptionsButton'
-import LiveChatInput from './LiveChatInput'
-import LoadingImage from '../../ui/LoadingImage'
-import { stringToLength } from '../../../utils/stringToLength'
-import sanitizeDStorageUrl from '../../../utils/lib/sanitizeDStorageUrl'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import Link from 'next/link'
-import { useChatInteractions } from '../../store/useChatInteractions'
-import useSession from '../../../utils/hooks/useSession'
+import { image, MediaImageMimeType, MetadataLicenseType, textOnly } from '@lens-protocol/metadata'
 import { useCreatePost, usePublicClient } from '@lens-protocol/react'
-import { useWalletClient } from 'wagmi'
 import { handleOperationWith } from '@lens-protocol/react/viem'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import CloseIcon from '@mui/icons-material/Close'
+import LoginIcon from '@mui/icons-material/Login'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import { Button, IconButton } from '@mui/material'
+import clsx from 'clsx'
+import Link from 'next/link'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import io from 'socket.io-client'
+import { v4 as uuid } from 'uuid'
+import { useWalletClient } from 'wagmi'
+import { useStreamChatsQuery } from '../../../graphql/generated'
+import { APP_LINK, LIVE_CHAT_WEB_SOCKET_URL } from '../../../utils/config'
+import getUserLocale from '../../../utils/getUserLocale'
+import useIsMobile from '../../../utils/hooks/useIsMobile'
+import useSession from '../../../utils/hooks/useSession'
+import { getIdentityTokenAsync } from '../../../utils/lib/getIdentityTokenAsync'
 import { acl, storageClient } from '../../../utils/lib/lens/storageClient'
+import { getLastStreamPostId } from '../../../utils/lib/lensApi'
+import sanitizeDStorageUrl from '../../../utils/lib/sanitizeDStorageUrl'
+import { stringToLength } from '../../../utils/stringToLength'
+import LiveCount from '../../pages/profile/LiveCount'
+import { useChatInteractions } from '../../store/useChatInteractions'
+import { useMyPreferences } from '../../store/useMyPreferences'
+import LoadingImage from '../../ui/LoadingImage'
+import ModalWrapper from '../../ui/Modal/ModalWrapper'
+import Markup from '../Lexical/Markup'
+import LoginComponent from '../LoginComponent'
+import ChatOptionsButton from './ChatOptionsButton'
 import ClipThumbnail from './ClipThumbnail'
+import LiveChatInput from './LiveChatInput'
+import {
+  type AccountMessage,
+  ContentType,
+  type Message,
+  MessageType,
+  type SendMessageType
+} from './LiveChatType'
 
 export type SendMessageInput = {
   txHash?: string
@@ -92,13 +87,12 @@ const LiveChat = ({
   const [inputMessage, setInputMessage] = useState('')
   const [socket, setSocket] = useState<any>(null)
   // const [isSocketWithAuthToken, setIsSocketWithAuthToken] = useState(false)
-  const { isAuthenticated, isFarcasterAuthenticated, farcasterToken } =
-    useSession()
+  const { isAuthenticated, isFarcasterAuthenticated, farcasterToken } = useSession()
   const [open, setOpen] = React.useState(false)
   const [popedOut, setPopedOut] = React.useState(false)
   const isMobile = useIsMobile()
   const { data: wallet } = useWalletClient()
-  // @ts-ignore
+  // @ts-expect-error
   const { execute } = useCreatePost(handleOperationWith(wallet))
   const [verifiedToSend, setVerifiedToSend] = useState(false)
 
@@ -116,22 +110,18 @@ const LiveChat = ({
     if (
       chats &&
       !preMessages.length &&
-      messages?.filter((m) => m.type === MessageType.Account).length === 0
+      messages?.filter(m => m.type === MessageType.Account).length === 0
     ) {
-      // @ts-ignore
+      // @ts-expect-error
       const chatsFromDB: AccountMessage[] = chats.streamChats
-      setMessages((prev) => {
+      setMessages(prev => {
         return [...chatsFromDB, ...prev]
       })
     }
   }, [chats])
 
-  const liveChatPopUpSound = useMyPreferences(
-    (state) => state.liveChatPopUpSound
-  )
-  const setLiveChatPopUpSound = useMyPreferences(
-    (state) => state.setLiveChatPopUpSound
-  )
+  const liveChatPopUpSound = useMyPreferences(state => state.liveChatPopUpSound)
+  const setLiveChatPopUpSound = useMyPreferences(state => state.setLiveChatPopUpSound)
 
   const liveChatPopUpSoundRef = useRef(liveChatPopUpSound)
   const [uniqueMessages, setUniqueMessages] = useState<Message[]>([])
@@ -143,7 +133,7 @@ const LiveChat = ({
   }, [liveChatPopUpSound])
 
   const scrollToBottom = () => {
-    // @ts-ignore
+    // @ts-expect-error
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -190,12 +180,7 @@ const LiveChat = ({
       }
     })
     socket.emit('joined-chat', idToken)
-  }, [
-    Boolean(socket),
-    isAuthenticated,
-    isFarcasterAuthenticated,
-    farcasterToken
-  ])
+  }, [Boolean(socket), isAuthenticated, isFarcasterAuthenticated, farcasterToken])
 
   useEffect(() => {
     joinChatWithAccount()
@@ -203,7 +188,7 @@ const LiveChat = ({
 
   useEffect(() => {
     const seen = new Set()
-    const filteredArr = messages.filter((el) => {
+    const filteredArr = messages.filter(el => {
       const duplicate = seen.has(el.id)
       seen.add(el.id)
       return !duplicate
@@ -234,7 +219,7 @@ const LiveChat = ({
       //   // if (!isSocketWithAuthToken && authorToken) {
       //   //   setIsSocketWithAuthToken(true)
       //   // }
-      //   // @ts-ignore
+      //   // @ts-expect-error
       //   setSocket(newSocket)
       // }, 1000) // Wait for 1 second before joining the room
     })
@@ -242,7 +227,7 @@ const LiveChat = ({
       newSocket.emit('pong') // Respond with pong
     })
 
-    newSocket.on('message', (receivedData) => {
+    newSocket.on('message', receivedData => {
       const receivedMessage: Message = receivedData
 
       // run pop up sound
@@ -254,8 +239,8 @@ const LiveChat = ({
     })
 
     newSocket.on('remove-messages', (accountAddress: string) => {
-      setMessages((prev) =>
-        prev.filter((msg) => {
+      setMessages(prev =>
+        prev.filter(msg => {
           if (msg.type === 'System') return true
 
           return msg.authorAccountAddress !== accountAddress
@@ -274,7 +259,7 @@ const LiveChat = ({
         setSocket(null)
       }
     }
-    // @ts-ignore
+    // @ts-expect-error
   }, [])
 
   const sendMessage = async (messageInput?: SendMessageInput) => {
@@ -313,11 +298,7 @@ const LiveChat = ({
 
       // Create Lens comment only if user is Lens-authenticated (not Farcaster-only)
       if (isAuthenticated && !isFarcasterAuthenticated) {
-        createComment(
-          inputMessage,
-          imageAttachment?.imageUrl,
-          imageAttachment?.imageMimeType
-        )
+        createComment(inputMessage, imageAttachment?.imageUrl, imageAttachment?.imageMimeType)
       }
       setInputMessage('')
 
@@ -338,9 +319,7 @@ const LiveChat = ({
   )
 
   // Add this effect to register the function with our store
-  const setSendMessagePayload = useChatInteractions(
-    (state) => state.setSendMessagePayload
-  )
+  const setSendMessagePayload = useChatInteractions(state => state.setSendMessagePayload)
 
   useEffect(() => {
     setSendMessagePayload(sendMessagePayload)
@@ -357,10 +336,7 @@ const LiveChat = ({
   ) => {
     try {
       // create a comment under live stream publication
-      const lastStreamPostId = await getLastStreamPostId(
-        accountAddress,
-        currentSession
-      )
+      const lastStreamPostId = await getLastStreamPostId(accountAddress, currentSession)
       if (!lastStreamPostId) return
       const id = uuid()
       const locale = getUserLocale()
@@ -420,7 +396,7 @@ const LiveChat = ({
       '_blank',
       'width=400,height=600,menubar=no,toolbar=no,location=no'
     )
-    // @ts-ignore
+    // @ts-expect-error
     chatWindow.chatData = uniqueMessages
     chatWindow?.focus()
   }
@@ -430,11 +406,7 @@ const LiveChat = ({
       <div className="centered-col h-full w-full gap-y-8 bg-s-bg">
         <div className="text-2xl font-bold">Chat popped out</div>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => setPopedOut(false)}
-        >
+        <Button variant="contained" color="secondary" onClick={() => setPopedOut(false)}>
           Restore
         </Button>
       </div>
@@ -457,16 +429,11 @@ const LiveChat = ({
       <div className="between-row w-full pb-1 px-3 sm:px-4 sm:py-3  border-b border-p-border">
         <div className="centered-row space-x-2">
           <div className="font-semibold">{title}</div>
-          <IconButton
-            onClick={() => setLiveChatPopUpSound(!liveChatPopUpSound)}
-            size="small"
-          >
+          <IconButton onClick={() => setLiveChatPopUpSound(!liveChatPopUpSound)} size="small">
             {liveChatPopUpSound ? <VolumeUpIcon /> : <VolumeOffIcon />}
           </IconButton>
 
-          {showLiveCount && accountAddress && (
-            <LiveCount accountAddress={accountAddress} />
-          )}
+          {showLiveCount && accountAddress && <LiveCount accountAddress={accountAddress} />}
         </div>
         {isMobile && onClose && (
           <IconButton onClick={onClose}>
@@ -484,19 +451,14 @@ const LiveChat = ({
       <div
         style={{ minWidth: 0 }}
         className="h-full flex-grow overflow-y-auto overflow-x-hidden py-1"
-        onTouchStart={(e) => e.stopPropagation()}
+        onTouchStart={e => e.stopPropagation()}
       >
         {uniqueMessages.map((msg, index) => {
           // this mean its a message from the system
           if (msg.type === 'System') {
             return (
-              <div
-                key={index}
-                className="centered-row text-s-text text-xs my-2"
-              >
-                <div className="bg-p-bg  rounded-lg px-4 py-1">
-                  {msg.content}
-                </div>
+              <div key={index} className="centered-row text-s-text text-xs my-2">
+                <div className="bg-p-bg  rounded-lg px-4 py-1">{msg.content}</div>
               </div>
             )
           }
@@ -516,18 +478,12 @@ const LiveChat = ({
                   socket={socket}
                   className="bg-brand text-white"
                 />
-                <img
-                  src={msg.avatarUrl}
-                  alt="avatar"
-                  className="w-7 h-7 rounded-full"
-                />
+                <img src={msg.avatarUrl} alt="avatar" className="w-7 h-7 rounded-full" />
 
                 <div className="text-sm ">
                   <div className="start-center-row gap-x-1.5 mb-1.5">
                     <div
-                      className={clsx(
-                        'font-semibold bg-white text-brand rounded-md px-1.5 py-0.5'
-                      )}
+                      className={clsx('font-semibold bg-white text-brand rounded-md px-1.5 py-0.5')}
                     >
                       {msg.handle}
                     </div>
@@ -553,10 +509,7 @@ const LiveChat = ({
           }
 
           return (
-            <div
-              key={index}
-              className="flex group relative flex-row  w-full px-3 my-1.5"
-            >
+            <div key={index} className="flex group relative flex-row  w-full px-3 my-1.5">
               <ChatOptionsButton
                 chatAccountAddress={accountAddress}
                 accountAddress={msg.authorAccountAddress}
@@ -594,9 +547,7 @@ const LiveChat = ({
                     (msg.contentType !== ContentType.Clip &&
                       msg.contentType !== ContentType.Trade)) && (
                     <span>
-                      <Markup className="break-words whitespace-pre-wrap">
-                        {msg.content}
-                      </Markup>
+                      <Markup className="break-words whitespace-pre-wrap">{msg.content}</Markup>
                     </span>
                   )}
                 </div>
@@ -663,9 +614,7 @@ const LiveChat = ({
                             alt="currency"
                           />
                         )}
-                        <div className="font-semibold text-s-text">
-                          {msg.currencySymbol}
-                        </div>
+                        <div className="font-semibold text-s-text">{msg.currencySymbol}</div>
                       </div>
 
                       {/* Trade content */}

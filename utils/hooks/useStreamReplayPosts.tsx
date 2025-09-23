@@ -1,13 +1,10 @@
+import { type AnyPost, useAccountsBulk, usePosts } from '@lens-protocol/react'
 import { useEffect } from 'react'
-import {
-  StreamReplayPostsQuery,
-  useStreamReplayPostsQuery
-} from '../../graphql/generated'
-import { AnyPost, useAccountsBulk, usePosts } from '@lens-protocol/react'
-import useSession from './useSession'
-import { useStreamersWithAccounts } from '../../components/store/useStreamersWithAccounts'
 import { usePostsStore } from '../../components/store/usePosts'
+import { useStreamersWithAccounts } from '../../components/store/useStreamersWithAccounts'
+import { type StreamReplayPostsQuery, useStreamReplayPostsQuery } from '../../graphql/generated'
 import { getUniqueStringsIgnoreCase } from '../getUniqueElements'
+import useSession from './useSession'
 
 export const useStreamReplayPosts = (): {
   streamReplayPosts?: StreamReplayPostsQuery
@@ -16,9 +13,9 @@ export const useStreamReplayPosts = (): {
 } => {
   const { authenticatedUser } = useSession()
   const setAccountsFromPublicReplays = useStreamersWithAccounts(
-    (state) => state.setAccountsFromPublicReplays
+    state => state.setAccountsFromPublicReplays
   )
-  const { setPosts, setStreamReplayPosts } = usePostsStore((state) => ({
+  const { setPosts, setStreamReplayPosts } = usePostsStore(state => ({
     setPosts: state.setPosts,
     setStreamReplayPosts: state.setStreamReplayPosts
   }))
@@ -28,42 +25,34 @@ export const useStreamReplayPosts = (): {
   const { data: accountsWithoutPosts } = useAccountsBulk({
     addresses: getUniqueStringsIgnoreCase(
       data?.streamReplayPosts?.streamReplayPosts
-        ?.map((p) => {
+        ?.map(p => {
           if (!p?.postId && p?.accountAddress) {
             return p?.accountAddress
           }
           return undefined
         })
-        .filter(
-          (accountAddress): accountAddress is string =>
-            accountAddress !== undefined
-        )
+        .filter((accountAddress): accountAddress is string => accountAddress !== undefined)
     )
   })
   const { data: posts, loading } = usePosts({
     filter: {
-      posts: data?.streamReplayPosts?.streamReplayPosts
-        ?.map((p) => p?.postId)
-        .filter((p) => p)
+      posts: data?.streamReplayPosts?.streamReplayPosts?.map(p => p?.postId).filter(p => p)
     }
   })
 
   // Effect for processing accounts and setting accounts from public replays
   useEffect(() => {
     // get unique accountAddresses from posts
-    const uniqueAccounts = Array.from(
-      new Set(posts?.items?.map((p) => p?.author))
-    ).filter((account) => {
-      return (
-        account?.address !== authenticatedUser?.address &&
-        !accountsWithoutPosts?.map((p) => p?.address).includes(account?.address)
-      )
-    })
+    const uniqueAccounts = Array.from(new Set(posts?.items?.map(p => p?.author))).filter(
+      account => {
+        return (
+          account?.address !== authenticatedUser?.address &&
+          !accountsWithoutPosts?.map(p => p?.address).includes(account?.address)
+        )
+      }
+    )
 
-    setAccountsFromPublicReplays([
-      ...uniqueAccounts,
-      ...(accountsWithoutPosts ?? [])
-    ])
+    setAccountsFromPublicReplays([...uniqueAccounts, ...(accountsWithoutPosts ?? [])])
   }, [posts, authenticatedUser, accountsWithoutPosts])
 
   // Effect for setting stream replay posts in the store
@@ -107,10 +96,7 @@ export const useStreamReplayPostsOfAccount = ({
 
   const { data: posts, loading } = usePosts({
     filter: {
-      posts:
-        data?.streamReplayPosts?.streamReplayPosts
-          ?.map((p) => p?.postId)
-          .filter((p) => p) || []
+      posts: data?.streamReplayPosts?.streamReplayPosts?.map(p => p?.postId).filter(p => p) || []
     }
   })
 

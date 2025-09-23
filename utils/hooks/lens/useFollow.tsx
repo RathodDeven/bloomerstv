@@ -1,20 +1,18 @@
-import { useState } from 'react'
+import { follow } from '@lens-protocol/client/actions'
 import {
-  CreateFollowRequest,
-  FollowResult,
-  ResultAsync,
-  UnauthenticatedError,
-  UnexpectedError,
+  type CreateFollowRequest,
+  type FollowResult,
+  type ResultAsync,
+  type UnauthenticatedError,
+  type UnexpectedError,
   useSessionClient
 } from '@lens-protocol/react'
-import { follow } from '@lens-protocol/client/actions'
+import { useState } from 'react'
 
 interface UseFollowReturn {
   execute: (
     createFollowRequest: CreateFollowRequest
-  ) => Promise<
-    ResultAsync<FollowResult, UnexpectedError | UnauthenticatedError>
-  >
+  ) => Promise<ResultAsync<FollowResult, UnexpectedError | UnauthenticatedError>>
   loading: boolean
   data: FollowResult | null
 }
@@ -26,12 +24,10 @@ const useFollow = (): UseFollowReturn => {
 
   const execute = async (
     createFollowRequest: CreateFollowRequest
-  ): Promise<
-    ResultAsync<FollowResult, UnexpectedError | UnauthenticatedError>
-  > => {
+  ): Promise<ResultAsync<FollowResult, UnexpectedError | UnauthenticatedError>> => {
     setLoading(true)
 
-    // @ts-ignore - Handle potential type issues with sessionClient
+    // @ts-expect-error - Handle potential type issues with sessionClient
     const result = await follow(sessionClient, createFollowRequest)
 
     setData(result?.isOk() ? result.value : null)

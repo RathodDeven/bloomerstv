@@ -1,22 +1,10 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react'
-import {
-  cacheExchange,
-  createClient,
-  fetchExchange,
-  useQuery,
-  Provider
-} from 'urql'
 import { CircularProgress } from '@mui/material'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  Tooltip
-} from 'recharts'
 import { motion } from 'framer-motion'
-import { ZoraCoin } from './types'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { cacheExchange, createClient, fetchExchange, Provider, useQuery } from 'urql'
+import type { ZoraCoin } from './types'
 
 interface PriceChartProps {
   coin: ZoraCoin
@@ -42,10 +30,7 @@ const client = createClient({
   exchanges: [cacheExchange, fetchExchange]
 })
 
-const PriceChartComponent: React.FC<PriceChartProps> = ({
-  coin,
-  className = ''
-}) => {
+const PriceChartComponent: React.FC<PriceChartProps> = ({ coin, className = '' }) => {
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('1D')
   const [isChangingTimeFrame, setIsChangingTimeFrame] = useState(false)
   const hasInitialData = useRef(false)
@@ -172,17 +157,14 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
   const chartData = useMemo(() => {
     if (!data) return []
 
-    const rawData =
-      selectedTimeFrame === '1D' ? data.poolHourDatas : data.poolDayDatas
+    const rawData = selectedTimeFrame === '1D' ? data.poolHourDatas : data.poolDayDatas
 
     if (!rawData || !Array.isArray(rawData)) return []
 
     return rawData
       .map((item: any) => {
         const timestamp =
-          selectedTimeFrame === '1D'
-            ? item.periodStartUnix * 1000
-            : item.date * 1000
+          selectedTimeFrame === '1D' ? item.periodStartUnix * 1000 : item.date * 1000
 
         const price = parseFloat(item.token0Price || '0')
 
@@ -193,7 +175,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
           periodStartUnix: item.periodStartUnix
         }
       })
-      .filter((item) => item.price > 0)
+      .filter(item => item.price > 0)
   }, [data, selectedTimeFrame])
 
   const formatTooltipDate = useCallback(
@@ -234,8 +216,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
   )
 
   const priceChange = useMemo(() => {
-    if (chartData.length < 1)
-      return { percentage: 0, isPositive: true, startPrice: 0, endPrice: 0 }
+    if (chartData.length < 1) return { percentage: 0, isPositive: true, startPrice: 0, endPrice: 0 }
 
     // For single point, show 0% change
     if (chartData.length === 1) {
@@ -250,8 +231,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
 
     const firstPrice = chartData[0].price
     const lastPrice = chartData[chartData.length - 1].price
-    const percentage =
-      firstPrice > 0 ? ((lastPrice - firstPrice) / firstPrice) * 100 : 0
+    const percentage = firstPrice > 0 ? ((lastPrice - firstPrice) / firstPrice) * 100 : 0
 
     return {
       percentage,
@@ -280,29 +260,20 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
 
   // Determine loading states
   const isInitialLoad = !hasInitialData.current && fetching
-  const isRefreshing =
-    hasInitialData.current && (fetching || isChangingTimeFrame)
+  const isRefreshing = hasInitialData.current && (fetching || isChangingTimeFrame)
 
   // Only show early returns for true initial states
   if (!poolAddress) {
     return (
-      <div
-        className={`p-3 bg-s-bg rounded-lg ${className}`}
-        style={{ minHeight: '200px' }}
-      >
-        <p className="text-s-text text-center text-sm">
-          No pool data available
-        </p>
+      <div className={`p-3 bg-s-bg rounded-lg ${className}`} style={{ minHeight: '200px' }}>
+        <p className="text-s-text text-center text-sm">No pool data available</p>
       </div>
     )
   }
 
   if (error && !hasInitialData.current) {
     return (
-      <div
-        className={`p-3 bg-s-bg rounded-lg ${className}`}
-        style={{ minHeight: '200px' }}
-      >
+      <div className={`p-3 bg-s-bg rounded-lg ${className}`} style={{ minHeight: '200px' }}>
         <p className="text-red-400 text-center text-sm">Error loading data</p>
       </div>
     )
@@ -310,10 +281,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
 
   if (isInitialLoad) {
     return (
-      <div
-        className={`p-3 bg-s-bg rounded-lg ${className}`}
-        style={{ minHeight: '200px' }}
-      >
+      <div className={`p-3 bg-s-bg rounded-lg ${className}`} style={{ minHeight: '200px' }}>
         <div className="flex justify-center items-center h-full">
           <CircularProgress size={20} />
         </div>
@@ -338,7 +306,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
 
         {/* Time frame selector */}
         <div className="relative flex bg-s-bg rounded-md p-0.5 gap-1">
-          {timeFrameButtons.map((timeFrame) => (
+          {timeFrameButtons.map(timeFrame => (
             <motion.button
               key={timeFrame}
               className={`relative border-none px-2 py-0.5 rounded-sm text-xs font-medium transition-all duration-200 z-10 ${
@@ -362,10 +330,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
         {/* Loading overlay */}
         {isRefreshing && (
           <div className="absolute inset-0 bg-black bg-opacity-20 backdrop-blur-[1px] flex items-center justify-center z-10 rounded">
-            <CircularProgress
-              size={16}
-              sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
-            />
+            <CircularProgress size={16} sx={{ color: 'rgba(255, 255, 255, 0.8)' }} />
           </div>
         )}
 
@@ -377,16 +342,11 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
         >
           {chartData.length === 0 ? (
             <div className="h-full flex items-center justify-center">
-              <p className="text-s-text text-center text-sm">
-                No data available
-              </p>
+              <p className="text-s-text text-center text-sm">No data available</p>
             </div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={displayData}
-                margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
-              >
+              <LineChart data={displayData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                 <XAxis
                   dataKey="timestamp"
                   type="number"
@@ -401,9 +361,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
                       const data = payload[0].payload as PriceData
                       return (
                         <div className="bg-p-bg border border-p-border rounded px-2 py-1 shadow-lg text-xs">
-                          <p className="text-s-text">
-                            {formatTooltipDate(data.timestamp)}
-                          </p>
+                          <p className="text-s-text">{formatTooltipDate(data.timestamp)}</p>
                           <p className="text-p-text font-medium">
                             {formatEthValue(data.price)} ETH
                           </p>
@@ -451,9 +409,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
             </span>
           </div>
           <div className="flex flex-col text-right">
-            <span>
-              {formatDateRange(chartData[chartData.length - 1].timestamp)}
-            </span>
+            <span>{formatDateRange(chartData[chartData.length - 1].timestamp)}</span>
             <span className="font-medium text-p-text">
               {formatEthValue(priceChange.endPrice)} ETH
             </span>
@@ -464,7 +420,7 @@ const PriceChartComponent: React.FC<PriceChartProps> = ({
   )
 }
 
-const PriceChart: React.FC<PriceChartProps> = (props) => {
+const PriceChart: React.FC<PriceChartProps> = props => {
   return (
     <Provider value={client}>
       <PriceChartComponent {...props} />

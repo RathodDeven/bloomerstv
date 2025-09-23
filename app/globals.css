@@ -142,7 +142,7 @@
   --brand: #1976d2;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   /* background */
   --primary-background: #0e0e10;
   --secondary-background: #1e1e1e;
@@ -157,8 +157,6 @@
 
   --brand: #1976d2;
 }
-
-
 
 @layer base {
   :root {
@@ -215,8 +213,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { motion, HTMLMotionProps } from 'framer-motion'
 import clsx from 'clsx'
+import { type HTMLMotionProps, motion } from 'framer-motion'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { randomNumberBetween } from '../../utils/helpers'
 
 interface LoadingImageProps extends HTMLMotionProps<'img'> {

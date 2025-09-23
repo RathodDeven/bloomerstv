@@ -1,10 +1,10 @@
-import React from 'react'
-import ProfilePage from '../../components/pages/profile/ProfilePage'
-import { getHandle } from '../../utils/lib/getHandle'
-import { Metadata } from 'next'
-import { APP_LINK, NODE_GRAPHQL_URL } from '../../utils/config'
+import type { Metadata } from 'next'
 // import { fetchMetadata } from 'frames.js/next'
 import { headers } from 'next/headers'
+import React from 'react'
+import ProfilePage from '../../components/pages/profile/ProfilePage'
+import { APP_LINK, NODE_GRAPHQL_URL } from '../../utils/config'
+import { getHandle } from '../../utils/lib/getHandle'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -42,7 +42,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         }
       `
         })
-      }).then((res) => res.json())
+      }).then(res => res.json())
 
       thumbnail = data?.data?.thumbnail
     } catch (e) {

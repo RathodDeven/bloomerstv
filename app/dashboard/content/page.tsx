@@ -1,32 +1,29 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import {
-  RecordedSession,
-  useGetMyRecordedStreamSessionsQuery
-} from '../../../graphql/generated'
-import SessionRow from '../../../components/pages/dashboard/content/SessionRow'
+import { Button } from '@mui/material'
+import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button } from '@mui/material'
+import SessionRow from '../../../components/pages/dashboard/content/SessionRow'
+import {
+  type RecordedSession,
+  useGetMyRecordedStreamSessionsQuery
+} from '../../../graphql/generated'
 
 const ContentPage = () => {
   const [sessions, setSessions] = useState<RecordedSession[]>([]) // Change the type to an array of RecordedSession
   const [skips, setSkips] = useState<number>(0)
   const [hasMore, setHasMore] = useState<boolean>(true)
   const { loading, error } = useGetMyRecordedStreamSessionsQuery({
-    onCompleted: (data) => {
-      // @ts-ignore
-      setSessions((prev) => [
-        ...(prev ?? []),
-        ...(data?.getMyRecordedStreamSessions ?? [])
-      ])
+    onCompleted: data => {
+      // @ts-expect-error
+      setSessions(prev => [...(prev ?? []), ...(data?.getMyRecordedStreamSessions ?? [])])
 
       setHasMore(data?.getMyRecordedStreamSessions?.length === 10)
     },
@@ -48,19 +45,14 @@ const ContentPage = () => {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-6 my-4 text-3xl leading-0 font-bold">
-        Channel Content
-      </div>
+      <div className="mx-6 my-4 text-3xl leading-0 font-bold">Channel Content</div>
 
       <div className="mx-6 mb-4">
         {!sessions?.length && !loading && (
           <div className="flex flex-col space-y-4 items-center justify-center">
-            <div className="text-2xl font-bold">
-              You have no recorded streams.
-            </div>
+            <div className="text-2xl font-bold">You have no recorded streams.</div>
             <div className="text-p-text text-lg">
-              Once you start streaming, your streaming sessions will appear
-              here.
+              Once you start streaming, your streaming sessions will appear here.
             </div>
           </div>
         )}

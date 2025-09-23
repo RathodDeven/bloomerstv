@@ -1,56 +1,46 @@
 'use client'
-import React, { memo, useEffect } from 'react'
-import {
-  getLiveStreamUrl,
-  getLiveStreamUrlWebRTC
-} from '../../../../utils/lib/getLiveStreamUrl'
-import ConnectStream from './ConnectStream'
-import toast from 'react-hot-toast'
 import { useApolloClient } from '@apollo/client'
+import { liveStream, MediaVideoMimeType, MetadataAttributeType } from '@lens-protocol/metadata'
 import {
-  MyStream,
+  type Post,
+  type Result,
+  type SigningError,
+  type TransactionIndexingError,
+  type UnauthenticatedError,
+  type UnexpectedError,
+  useAccount,
+  useCreatePost,
+  type ValidationError
+} from '@lens-protocol/react'
+import { handleOperationWith } from '@lens-protocol/react/viem'
+// import { VerifiedOpenActionModules } from '../../../../utils/verified-openaction-modules'
+// import { encodeAbiParameters, type Address } from 'viem'
+import type { Src } from '@livepeer/react'
+import CloseIcon from '@mui/icons-material/Close'
+import { IconButton } from '@mui/material'
+import React, { memo, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
+import { useWalletClient } from 'wagmi'
+import {
+  type MyStream,
   ShouldCreateNewPostDocument,
   useCreateClipMutation,
   useCreateMyLensStreamSessionMutation
 } from '../../../../graphql/generated'
-import formatHandle from '../../../../utils/lib/formatHandle'
-import { APP_LINK, REDIRECTOR_URL } from '../../../../utils/config'
-import { v4 as uuid } from 'uuid'
-import getUserLocale from '../../../../utils/getUserLocale'
-import { useMyStreamInfo } from '../../../store/useMyStreamInfo'
-import {
-  MediaVideoMimeType,
-  MetadataAttributeType,
-  liveStream
-} from '@lens-protocol/metadata'
-import {
-  PlayerStreamingMode,
-  useMyPreferences
-} from '../../../store/useMyPreferences'
-import { IconButton } from '@mui/material'
-import { BroadcastLive } from './Broadcast'
-import Player from '../../../common/Player/Player'
-import CloseIcon from '@mui/icons-material/Close'
 import { getTagsForCategory } from '../../../../utils/categories'
-// import { VerifiedOpenActionModules } from '../../../../utils/verified-openaction-modules'
-// import { encodeAbiParameters, type Address } from 'viem'
-import { Src } from '@livepeer/react'
-import PostClipOnLens from '../../profile/PostClipOnLens'
-import {
-  Post,
-  Result,
-  SigningError,
-  TransactionIndexingError,
-  UnauthenticatedError,
-  UnexpectedError,
-  useAccount,
-  useCreatePost,
-  ValidationError
-} from '@lens-protocol/react'
-import { useWalletClient } from 'wagmi'
-import { handleOperationWith } from '@lens-protocol/react/viem'
+import { APP_LINK, REDIRECTOR_URL } from '../../../../utils/config'
+import getUserLocale from '../../../../utils/getUserLocale'
 import useSession from '../../../../utils/hooks/useSession'
+import formatHandle from '../../../../utils/lib/formatHandle'
+import { getLiveStreamUrl, getLiveStreamUrlWebRTC } from '../../../../utils/lib/getLiveStreamUrl'
 import { acl, storageClient } from '../../../../utils/lib/lens/storageClient'
+import Player from '../../../common/Player/Player'
+import { PlayerStreamingMode, useMyPreferences } from '../../../store/useMyPreferences'
+import { useMyStreamInfo } from '../../../store/useMyStreamInfo'
+import PostClipOnLens from '../../profile/PostClipOnLens'
+import { BroadcastLive } from './Broadcast'
+import ConnectStream from './ConnectStream'
 
 const LiveVideoComponent = ({
   myStream,
@@ -93,15 +83,14 @@ const LiveVideoComponent = ({
     address: myStream?.accountAddress
   })
 
-  const { category, streamReplayViewType, playerStreamingMode } =
-    useMyPreferences((state) => {
-      return {
-        streamReplayViewType: state.streamReplayViewType,
-        category: state.category,
-        playerStreamingMode: state.playerStreamingMode
-      }
-    })
-  const addLiveChatAt = useMyStreamInfo((state) => state.addLiveChatAt)
+  const { category, streamReplayViewType, playerStreamingMode } = useMyPreferences(state => {
+    return {
+      streamReplayViewType: state.streamReplayViewType,
+      category: state.category,
+      playerStreamingMode: state.playerStreamingMode
+    }
+  })
+  const addLiveChatAt = useMyStreamInfo(state => state.addLiveChatAt)
 
   const { isAuthenticated, account } = useSession()
   const client = useApolloClient()
@@ -124,9 +113,7 @@ const LiveVideoComponent = ({
    * @param sessionId the session id to use when creating the post
    * @returns the id of the newly created post, or undefined if an error occurred
    */
-  const createLensPost = async (
-    sessionId: string
-  ): Promise<string | undefined> => {
+  const createLensPost = async (sessionId: string): Promise<string | undefined> => {
     if (!isAuthenticated) {
       // If the user is not logged in, return undefined
       return
@@ -214,10 +201,10 @@ const LiveVideoComponent = ({
     // if (type) {
     //   // If there is a type set, create the actions array
     //   actions = [
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     {
     //       type,
-    //       // @ts-ignore
+    //       // @ts-expect-error
     //       amount,
     //       collectLimit,
     //       endsAt,
@@ -227,11 +214,11 @@ const LiveVideoComponent = ({
     //   ]
 
     //   if (type === OpenActionType.MULTIRECIPIENT_COLLECT) {
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     actions[0]['recipients'] = recipients
     //   }
     //   if (type === OpenActionType.SIMPLE_COLLECT) {
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     actions[0]['recipient'] = recipient
     //   }
     // }
@@ -241,7 +228,7 @@ const LiveVideoComponent = ({
     //   actions?.push({
     //     type: OpenActionType.UNKNOWN_OPEN_ACTION,
     //     address: VerifiedOpenActionModules.Tip,
-    //     // @ts-ignore
+    //     // @ts-expect-error
     //     data: encodeAbiParameters(
     //       [{ name: 'tipReceiver', type: 'address' }],
     //       [session?.profile?.handle?.ownedBy as Address]
@@ -401,11 +388,7 @@ const LiveVideoComponent = ({
     return <ConnectStream handleGoLiveFromBrowser={handleGoLiveFromBrowser} />
   }, [])
 
-  const handleClipClicked = async (
-    playbackId: string,
-    startTime: number,
-    endTime: number
-  ) => {
+  const handleClipClicked = async (playbackId: string, startTime: number, endTime: number) => {
     try {
       // Use `playbackOffsetMsRef.current` instead of `playbackOffsetMs`
       // const offsetMs = playbackOffsetMsRef.current
@@ -472,7 +455,7 @@ const LiveVideoComponent = ({
               ] as Src[])
         }
         streamOfflineErrorComponent={ConnectStreamMemo}
-        onStreamStatusChange={(isLive) => {
+        onStreamStatusChange={isLive => {
           setStartedStreaming(isLive)
         }}
         clipLength={isAuthenticated ? 30 : undefined}
@@ -485,9 +468,9 @@ const LiveVideoComponent = ({
     return (
       <div className="w-full relative">
         <BroadcastLive
-          // @ts-ignore
+          // @ts-expect-error
           streamKey={myStream?.streamKey}
-          onStreamStatusChange={(isLive) => {
+          onStreamStatusChange={isLive => {
             setStartedStreaming(isLive)
           }}
         />

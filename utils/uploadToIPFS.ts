@@ -67,7 +67,7 @@ const uploadToIPFS = async (
     // await client.putObject({ ...params, Body: file, ContentType: file.type })
 
     const task = new Upload({ client, params })
-    task.on('httpUploadProgress', (e) => {
+    task.on('httpUploadProgress', e => {
       const loaded = e.loaded || 0
       const total = e.total || 0
       const progress = (loaded / total) * 100

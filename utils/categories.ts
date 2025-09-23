@@ -42,13 +42,7 @@ export const CATEGORIES = [
   },
   {
     name: 'Coding & Tech',
-    tags: [
-      'developer',
-      'tech',
-      'programming',
-      'coding',
-      'orbcommunitiesDevelopers'
-    ]
+    tags: ['developer', 'tech', 'programming', 'coding', 'orbcommunitiesDevelopers']
   },
   {
     name: 'Travel & Events',
@@ -110,22 +104,22 @@ export const TOKEN_TAGS = [
   }
 ]
 
-export const CATEGORIES_LIST = CATEGORIES.map((category) => category.name)
+export const CATEGORIES_LIST = CATEGORIES.map(category => category.name)
 
 export const getTagsForCategory = (category?: string) => {
   if (!category) return []
-  const categoryObj = CATEGORIES.find((c) => c.name === category)
+  const categoryObj = CATEGORIES.find(c => c.name === category)
   return categoryObj?.tags ?? []
 }
 
 export const getTagsForSymbol = (symbol?: string) => {
   if (!symbol) return []
-  const tokenObj = TOKEN_TAGS.find((c) => c.symbol === symbol)
+  const tokenObj = TOKEN_TAGS.find(c => c.symbol === symbol)
   return tokenObj?.tags ?? []
 }
 
 export const getCategoryForTag = (tag?: string) => {
   if (!tag) return 'None'
-  const categoryObj = CATEGORIES.find((c) => c.tags.includes(tag))
+  const categoryObj = CATEGORIES.find(c => c.tags.includes(tag))
   return categoryObj?.name ?? 'None'
 }

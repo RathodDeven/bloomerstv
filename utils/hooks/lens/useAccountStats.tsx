@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { fetchAccountStats } from '@lens-protocol/client/actions'
 import {
+  type AccountStats,
+  type AccountStatsRequest,
   UnexpectedError,
-  AccountStats,
-  AccountStatsRequest,
   usePublicClient
 } from '@lens-protocol/react'
-import { fetchAccountStats } from '@lens-protocol/client/actions'
+import { useEffect, useState } from 'react'
 import createStableHook from '../createStableHook'
 
 interface UseAccountStatsReturn {
@@ -14,9 +14,7 @@ interface UseAccountStatsReturn {
   error: UnexpectedError | null
 }
 
-const useAccountStats = (
-  request: AccountStatsRequest
-): UseAccountStatsReturn => {
+const useAccountStats = (request: AccountStatsRequest): UseAccountStatsReturn => {
   const { currentSession } = usePublicClient()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<AccountStats | null>(null)
@@ -30,7 +28,7 @@ const useAccountStats = (
 
       setLoading(true)
       try {
-        // @ts-ignore
+        // @ts-expect-error
         const result = await fetchAccountStats(currentSession, request)
 
         if (result?.isOk()) {
@@ -39,11 +37,7 @@ const useAccountStats = (
           setError(result.error)
         }
       } catch (err) {
-        setError(
-          err instanceof UnexpectedError
-            ? err
-            : new UnexpectedError(String(err))
-        )
+        setError(err instanceof UnexpectedError ? err : new UnexpectedError(String(err)))
       } finally {
         setLoading(false)
       }

@@ -6,11 +6,8 @@ interface CombinePatternsOptions {
   nonCapture?: boolean
 }
 
-const combinePatterns = (
-  patterns: RegExp[],
-  options: CombinePatternsOptions = {}
-) => {
-  let regex = patterns.map((pattern) => pattern.source).join(options.join ?? '')
+const combinePatterns = (patterns: RegExp[], options: CombinePatternsOptions = {}) => {
+  let regex = patterns.map(pattern => pattern.source).join(options.join ?? '')
 
   if (options.capture) {
     regex = `(${regex})`
@@ -25,7 +22,7 @@ const combinePatterns = (
   return new RegExp(regex, options.flags ?? '')
 }
 // eslint-disable-next-line
-const VALID_PATH_CHARS = /[\w!$%&'()*+,./;=[\\\]~\u0400-\u04FF\-]*/
+const VALID_PATH_CHARS = /[\w!$%&'()*+,./;=[\\\]~\u0400-\u04FF-]*/
 const URL_SCHEME = combinePatterns([/(https?:\/\/)?/], { capture: true })
 
 const URL_HOST = combinePatterns(

@@ -1,4 +1,3 @@
-import React from 'react'
 import StartLoadingPage from '../components/pages/loading/StartLoadingPage'
 
 const loading = () => {

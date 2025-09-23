@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import React from 'react'
+import type { Account, PostStats } from '@lens-protocol/react'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import formatHandle from '../../utils/lib/formatHandle'
-import { secondsToTime, timeAgo } from '../../utils/helpers'
-import { stringToLength } from '../../utils/stringToLength'
-import Markup from './Lexical/Markup'
-import LoadingImage from '../ui/LoadingImage'
-import { Account, PostStats } from '@lens-protocol/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import type React from 'react'
+import { secondsToTime, timeAgo } from '../../utils/helpers'
+import formatHandle from '../../utils/lib/formatHandle'
+import { stringToLength } from '../../utils/stringToLength'
+import LoadingImage from '../ui/LoadingImage'
+import Markup from './Lexical/Markup'
 
 const RecommendedCardLayout = ({
   postLink,
@@ -35,25 +35,16 @@ const RecommendedCardLayout = ({
   }
 
   return (
-    <Link
-      prefetch
-      className="no-underline text-p-text w-full group shrink-0"
-      href={postLink}
-    >
+    <Link prefetch className="no-underline text-p-text w-full group shrink-0" href={postLink}>
       <div className="w-full flex flex-row gap-x-3 font-semibold">
         <div className="relative h-[99px] w-[176px] rounded-md">
-          <LoadingImage
-            src={coverUrl}
-            className="h-[99px] w-[176px] object-cover rounded-md z-0"
-          />
+          <LoadingImage src={coverUrl} className="h-[99px] w-[176px] object-cover rounded-md z-0" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <PlayArrowIcon className="text-white transform transition-transform group-hover:scale-105 duration-300" />
           </div>
           {duration && (
             <div className="absolute bottom-3 right-2 bg-black bg-opacity-80 px-1.5 rounded">
-              <div className="text-xs text-white">
-                {secondsToTime(duration)}
-              </div>
+              <div className="text-xs text-white">{secondsToTime(duration)}</div>
             </div>
           )}
         </div>

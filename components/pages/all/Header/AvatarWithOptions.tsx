@@ -1,5 +1,9 @@
-import React from 'react'
-import getAvatar from '../../../../utils/lib/getAvatar'
+import { useLogout } from '@lens-protocol/react'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import Logout from '@mui/icons-material/Logout'
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
+import ToggleOffIcon from '@mui/icons-material/ToggleOff'
+import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import {
   Divider,
   IconButton,
@@ -9,23 +13,19 @@ import {
   MenuList,
   SwipeableDrawer
 } from '@mui/material'
-import Logout from '@mui/icons-material/Logout'
-import formatHandle from '../../../../utils/lib/formatHandle'
-import { useTheme } from '../../../wrappers/TailwindThemeProvider'
-import ToggleOffIcon from '@mui/icons-material/ToggleOff'
-import ToggleOnIcon from '@mui/icons-material/ToggleOn'
-import { useDisconnect } from 'wagmi'
 import { useRouter } from 'next/navigation'
-// import CircleIcon from '@mui/icons-material/Circle'
-import useIsMobile from '../../../../utils/hooks/useIsMobile'
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
-import DashboardIcon from '@mui/icons-material/Dashboard'
+import React from 'react'
+import { useDisconnect } from 'wagmi'
 import getStampFyiURL from '../../../../utils/getStampFyiURL'
 import useEns from '../../../../utils/hooks/useEns'
-import LoadingImage from '../../../ui/LoadingImage'
-import AppLinksRow from '../../../common/AppLinksRow'
+// import CircleIcon from '@mui/icons-material/Circle'
+import useIsMobile from '../../../../utils/hooks/useIsMobile'
 import useSession from '../../../../utils/hooks/useSession'
-import { useLogout } from '@lens-protocol/react'
+import formatHandle from '../../../../utils/lib/formatHandle'
+import getAvatar from '../../../../utils/lib/getAvatar'
+import AppLinksRow from '../../../common/AppLinksRow'
+import LoadingImage from '../../../ui/LoadingImage'
+import { useTheme } from '../../../wrappers/TailwindThemeProvider'
 
 const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
   const isMobile = useIsMobile()
@@ -42,13 +42,10 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
     logoutFarcaster
   } = useSession()
   const { ensAvatar } = useEns({
-    address:
-      isAuthenticated && !account?.username && isLensAuthenticated
-        ? account?.owner
-        : null
+    address: isAuthenticated && !account?.username && isLensAuthenticated ? account?.owner : null
   })
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
@@ -108,11 +105,7 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <LoadingImage
-            src={avatar}
-            alt="avatar"
-            className="w-8 h-8 rounded-full"
-          />
+          <LoadingImage src={avatar} alt="avatar" className="w-8 h-8 rounded-full" />
         </IconButton>
 
         <SwipeableDrawer
@@ -146,11 +139,7 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
                   }
                 }}
               >
-                <LoadingImage
-                  src={avatar}
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full mr-3"
-                />
+                <LoadingImage src={avatar} alt="avatar" className="w-8 h-8 rounded-full mr-3" />
                 {handle}
               </MenuItem>
 
@@ -226,11 +215,7 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <LoadingImage
-          src={avatar}
-          alt="avatar"
-          className="w-8 h-8 rounded-full"
-        />
+        <LoadingImage src={avatar} alt="avatar" className="w-8 h-8 rounded-full" />
       </IconButton>
 
       <Menu
@@ -279,11 +264,7 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
               }
             }}
           >
-            <img
-              src={avatar}
-              alt="avatar"
-              className="w-6 h-6 rounded-full mr-3"
-            />
+            <img src={avatar} alt="avatar" className="w-6 h-6 rounded-full mr-3" />
             {handle}
           </MenuItem>
 

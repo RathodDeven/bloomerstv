@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import {
-  Button,
-  IconButton,
-  Typography,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-  Box,
-  Tooltip
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import SendIcon from '@mui/icons-material/Send'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { motion } from 'framer-motion'
-import { useAccount, useWriteContract } from 'wagmi'
-import { getProfileBalances } from '@zoralabs/coins-sdk'
-import toast from 'react-hot-toast'
-import { Address } from 'viem'
-import { base } from 'viem/chains'
-import LoadingButton from '@mui/lab/LoadingButton'
+import { CurrencyExchange } from '@mui/icons-material'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import CloseIcon from '@mui/icons-material/Close'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import SendIcon from '@mui/icons-material/Send'
+import LoadingButton from '@mui/lab/LoadingButton'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Tooltip,
+  Typography
+} from '@mui/material'
+import { getProfileBalances } from '@zoralabs/coins-sdk'
+import { ConnectKitButton } from 'connectkit'
+import { motion } from 'framer-motion'
+import type React from 'react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
+import type { Address } from 'viem'
+import { base } from 'viem/chains'
+import { useAccount, useWriteContract } from 'wagmi'
+import { formatNumber } from '../../../utils/formatters'
 import useHandleWrongNetwork from '../../../utils/hooks/useHandleWrongNetwork'
 import { Erc20TokenABI } from '../../../utils/lib/erc20'
-import { v4 as uuid } from 'uuid'
-import { ContentType, SendMessageTradeType } from '../LiveChat/LiveChatType'
 import { useChatInteractions } from '../../store/useChatInteractions'
-import { CurrencyExchange } from '@mui/icons-material'
-import { formatNumber } from '../../../utils/formatters'
-import { ConnectKitButton } from 'connectkit'
+import { ContentType, type SendMessageTradeType } from '../LiveChat/LiveChatType'
 
 interface TipZoraCoinsProps {
   isOpen: boolean
@@ -53,11 +54,7 @@ interface CoinBalance {
   balance: string
 }
 
-const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
-  isOpen,
-  onClose,
-  liveChatAccountAddress
-}) => {
+const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({ isOpen, onClose, liveChatAccountAddress }) => {
   const [coinBalances, setCoinBalances] = useState<CoinBalance[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCoin, setSelectedCoin] = useState<CoinBalance | null>(null)
@@ -68,7 +65,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
   const { address, isConnected, isConnecting, isReconnecting } = useAccount()
   const handleWrongNetwork = useHandleWrongNetwork(base.id)
   const { writeContractAsync } = useWriteContract()
-  const sendMessage = useChatInteractions((state) => state.sendMessagePayload)
+  const sendMessage = useChatInteractions(state => state.sendMessagePayload)
 
   // Format balance for display
   const formatBalance = (balance: string) => {
@@ -76,14 +73,9 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
     const trimmed = balance.replace(/^0+/, '')
     if (trimmed.length > 18) {
       const intPart = trimmed.slice(0, trimmed.length - 18)
-      const decPart = trimmed.slice(
-        trimmed.length - 18,
-        trimmed.length - 18 + 6
-      )
+      const decPart = trimmed.slice(trimmed.length - 18, trimmed.length - 18 + 6)
       // Format to max 2 decimal places
-      const formattedDecimal = parseFloat(`0.${decPart}`)
-        .toFixed(2)
-        .substring(2)
+      const formattedDecimal = parseFloat(`0.${decPart}`).toFixed(2).substring(2)
       return `${intPart || '0'}.${formattedDecimal}`
     }
     return '0.00'
@@ -94,11 +86,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
     const marketCapValue = parseFloat(marketCap || '0')
     const totalSupplyValue = parseFloat(totalSupply || '1')
 
-    if (
-      isNaN(marketCapValue) ||
-      isNaN(totalSupplyValue) ||
-      totalSupplyValue === 0
-    ) {
+    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 
@@ -111,18 +99,11 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
   }
 
   // Calculate percentage change
-  const calculateMarketCapPercentageChange = (
-    marketCap?: string,
-    marketCapDelta24h?: string
-  ) => {
+  const calculateMarketCapPercentageChange = (marketCap?: string, marketCapDelta24h?: string) => {
     const currentMarketCap = parseFloat(marketCap || '0')
     const deltaValue = parseFloat(marketCapDelta24h || '0')
 
-    if (
-      isNaN(currentMarketCap) ||
-      isNaN(deltaValue) ||
-      currentMarketCap === 0
-    ) {
+    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 
@@ -156,8 +137,8 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
       if (profile?.coinBalances) {
         const edges = profile.coinBalances.edges || []
         const balances = edges
-          .map((edge) => edge.node)
-          .filter((node) => parseFloat(formatBalance(node.balance)) > 0)
+          .map(edge => edge.node)
+          .filter(node => parseFloat(formatBalance(node.balance)) > 0)
         setCoinBalances(balances as CoinBalance[])
       } else {
         setCoinBalances([])
@@ -205,9 +186,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
       await handleWrongNetwork()
 
       // Convert amount to token units (most tokens use 18 decimals)
-      const tipAmountInWei = BigInt(
-        Math.floor(parseFloat(tipAmount) * 10 ** 18)
-      )
+      const tipAmountInWei = BigInt(Math.floor(parseFloat(tipAmount) * 10 ** 18))
 
       // Execute the transfer
       const tx = await writeContractAsync({
@@ -295,9 +274,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
           <IconButton onClick={onClose} className="rounded-full" size="small">
             <CloseIcon />
           </IconButton>
-          <Typography className="font-semibold text-p-text">
-            Tip Zora Coins
-          </Typography>
+          <Typography className="font-semibold text-p-text">Tip Zora Coins</Typography>
         </div>
 
         <Tooltip
@@ -339,16 +316,12 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
       ) : isLoading ? (
         <div className="p-4 flex flex-col items-center">
           <CircularProgress size={32} />
-          <Typography className="text-s-text mt-2">
-            Loading your coins...
-          </Typography>
+          <Typography className="text-s-text mt-2">Loading your coins...</Typography>
         </div>
       ) : coinBalances.length === 0 ? (
         <div className="p-4 flex flex-col items-center">
           <CurrencyExchange fontSize="large" className="text-s-text mb-2" />
-          <Typography className="text-p-text text-center mb-1">
-            No Zora coins found
-          </Typography>
+          <Typography className="text-p-text text-center mb-1">No Zora coins found</Typography>
           <Typography className="text-s-text text-center text-sm">
             You don't have any Zora coins in your wallet
           </Typography>
@@ -371,30 +344,19 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
               )}
             </div>
             <div>
-              <Typography className="font-bold text-p-text">
-                {selectedCoin.coin.symbol}
-              </Typography>
+              <Typography className="font-bold text-p-text">{selectedCoin.coin.symbol}</Typography>
               <Typography className="text-xs text-s-text">
                 {formatBalance(selectedCoin.balance)} · $
-                {calculateTokenPrice(
-                  selectedCoin.coin.marketCap,
-                  selectedCoin.coin.totalSupply
-                )}
+                {calculateTokenPrice(selectedCoin.coin.marketCap, selectedCoin.coin.totalSupply)}
               </Typography>
             </div>
-            <IconButton
-              className="ml-auto"
-              size="small"
-              onClick={() => setSelectedCoin(null)}
-            >
+            <IconButton className="ml-auto" size="small" onClick={() => setSelectedCoin(null)}>
               <CloseIcon fontSize="small" />
             </IconButton>
           </div>
 
           <div className="space-y-2">
-            <Typography className="text-sm text-p-text font-medium">
-              Amount to tip:
-            </Typography>
+            <Typography className="text-sm text-p-text font-medium">Amount to tip:</Typography>
             <div className="flex items-center">
               <TextField
                 fullWidth
@@ -405,35 +367,28 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <span className="text-s-text">
-                        {selectedCoin.coin.symbol}
-                      </span>
+                      <span className="text-s-text">{selectedCoin.coin.symbol}</span>
                     </InputAdornment>
                   ),
                   sx: { borderRadius: '8px' }
                 }}
                 size="small"
               />
-              <Button
-                size="small"
-                onClick={useMaxBalance}
-                sx={{ ml: 1, minWidth: 'auto' }}
-              >
+              <Button size="small" onClick={useMaxBalance} sx={{ ml: 1, minWidth: 'auto' }}>
                 Max
               </Button>
             </div>
             <Typography className="text-xs text-s-text">
-              Available: {formatBalance(selectedCoin.balance)}{' '}
-              {selectedCoin.coin.symbol}
+              Available: {formatBalance(selectedCoin.balance)} {selectedCoin.coin.symbol}
               {tipAmount &&
                 ` · Value: ~$${(
                   parseFloat(tipAmount || '0') *
-                  parseFloat(
-                    calculateTokenPrice(
-                      selectedCoin.coin.marketCap,
-                      selectedCoin.coin.totalSupply
+                    parseFloat(
+                      calculateTokenPrice(
+                        selectedCoin.coin.marketCap,
+                        selectedCoin.coin.totalSupply
+                      )
                     )
-                  )
                 ).toFixed(2)}`}
             </Typography>
           </div>
@@ -458,8 +413,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
               disabled={
                 !tipAmount ||
                 parseFloat(tipAmount) <= 0 ||
-                parseFloat(tipAmount) >
-                  parseFloat(formatBalance(selectedCoin.balance))
+                parseFloat(tipAmount) > parseFloat(formatBalance(selectedCoin.balance))
               }
               startIcon={<SendIcon />}
               fullWidth
@@ -472,12 +426,10 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
       ) : (
         // Coin selection mode
         <div className="space-y-3">
-          <Typography className="text-sm text-s-text">
-            Select a coin to tip:
-          </Typography>
+          <Typography className="text-sm text-s-text">Select a coin to tip:</Typography>
 
           <div className="max-h-[300px] overflow-y-auto space-y-2 pr-1">
-            {coinBalances.map((balance) => {
+            {coinBalances.map(balance => {
               const tokenPrice = calculateTokenPrice(
                 balance.coin.marketCap,
                 balance.coin.totalSupply
@@ -488,8 +440,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({
               )
               const isPositive = parseFloat(percentChange) >= 0
               const balanceValue =
-                parseFloat(formatBalance(balance.balance)) *
-                parseFloat(tokenPrice)
+                parseFloat(formatBalance(balance.balance)) * parseFloat(tokenPrice)
 
               return (
                 <motion.div

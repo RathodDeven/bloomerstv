@@ -1,23 +1,15 @@
 'use client'
+import { MainContentFocus, PageSize, type Post, PostType, usePosts } from '@lens-protocol/react'
 import React, { useEffect, useRef, useState } from 'react'
+import { useIsVerifiedQuery } from '../../../graphql/generated'
 import { APP_ADDRESS } from '../../../utils/config'
 import HomeVideoCard from '../../common/HomeVideoCard'
 import LoadingVideoCard from '../../ui/LoadingVideoCard'
-import { useIsVerifiedQuery } from '../../../graphql/generated'
-import {
-  MainContentFocus,
-  PageSize,
-  Post,
-  PostType,
-  usePosts
-} from '@lens-protocol/react'
 
 const ClipsFeed = ({ handle }: { handle?: string }) => {
   const [cursor, setCursor] = React.useState<string | undefined>()
   const [allPosts, setAllPosts] = useState<Post[]>([])
-  const [allVerifiedMap, setAllVerifiedMap] = useState<Map<string, boolean>>(
-    new Map()
-  )
+  const [allVerifiedMap, setAllVerifiedMap] = useState<Map<string, boolean>>(new Map())
 
   const { data, loading } = usePosts({
     filter: {
@@ -38,11 +30,11 @@ const ClipsFeed = ({ handle }: { handle?: string }) => {
 
   useEffect(() => {
     if (data?.items && data.items.length > 0) {
-      setAllPosts((prevPosts) => {
+      setAllPosts(prevPosts => {
         // Combine previous posts with new posts, avoiding duplicates
         const newPosts = [...prevPosts]
-        data.items.forEach((post) => {
-          if (!newPosts.some((p) => p.id === post.id)) {
+        data.items.forEach(post => {
+          if (!newPosts.some(p => p.id === post.id)) {
             newPosts.push(post as Post)
           }
         })
@@ -55,7 +47,7 @@ const ClipsFeed = ({ handle }: { handle?: string }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         if (entries[0].isIntersecting && data?.pageInfo?.next && !loading) {
           setCursor(data?.pageInfo?.next)
         }
@@ -76,15 +68,15 @@ const ClipsFeed = ({ handle }: { handle?: string }) => {
 
   const { data: isVerified } = useIsVerifiedQuery({
     variables: {
-      accountAddresses: data?.items.map((p) => p.author?.address)
+      accountAddresses: data?.items.map(p => p.author?.address)
     }
   })
 
   useEffect(() => {
     if (isVerified?.isVerified && isVerified?.isVerified?.length > 0) {
-      setAllVerifiedMap((prevMap) => {
+      setAllVerifiedMap(prevMap => {
         const newMap = new Map(prevMap)
-        isVerified?.isVerified?.forEach((v) => {
+        isVerified?.isVerified?.forEach(v => {
           if (v?.accountAddress) {
             newMap.set(v.accountAddress, v?.isVerified ?? false)
           }
@@ -105,7 +97,7 @@ const ClipsFeed = ({ handle }: { handle?: string }) => {
     <div className="w-full">
       {/* @ts-ignore */}
       <div className="flex flex-row flex-wrap w-full gap-y-6">
-        {allPosts.map((post) => {
+        {allPosts.map(post => {
           return (
             <HomeVideoCard
               premium={allVerifiedMap.get(post?.author?.address)}
@@ -116,8 +108,7 @@ const ClipsFeed = ({ handle }: { handle?: string }) => {
         })}
 
         {/* // show loadingVideocard 6 times  */}
-        {loading &&
-          Array.from({ length: 3 }, (_, i) => <LoadingVideoCard key={i} />)}
+        {loading && Array.from({ length: 3 }, (_, i) => <LoadingVideoCard key={i} />)}
       </div>
 
       <div ref={loadMoreRef} className="h-1" />

@@ -1,15 +1,10 @@
-import React from 'react'
-import { SxProps, Tooltip } from '@mui/material'
-import clsx from 'clsx'
 // import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import VerifiedIcon from '@mui/icons-material/Verified'
-const VerifiedBadge = ({
-  className,
-  sx
-}: {
-  className?: string
-  sx?: SxProps
-}) => {
+import { type SxProps, Tooltip } from '@mui/material'
+import clsx from 'clsx'
+import React from 'react'
+
+const VerifiedBadge = ({ className, sx }: { className?: string; sx?: SxProps }) => {
   return (
     <Tooltip title="Super Bloomer" arrow>
       <VerifiedIcon

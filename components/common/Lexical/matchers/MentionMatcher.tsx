@@ -16,7 +16,7 @@ export const Mention = ({ ...props }: any) => {
 
   return (
     <span
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation()
       }}
     >
@@ -52,7 +52,7 @@ export class MentionMatcher extends Matcher {
 
     const matcher = /@lens\/[^.\s]*/
 
-    return this.doMatch(value, matcher, (matches) => {
+    return this.doMatch(value, matcher, matches => {
       return { display: matches[0] }
     })
   }

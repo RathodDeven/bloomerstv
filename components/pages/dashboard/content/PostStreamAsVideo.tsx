@@ -1,51 +1,41 @@
 import {
-  Button,
-  MenuItem,
-  Select,
-  TextField,
-  TextareaAutosize
-} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-
-import {
-  RecordedSession,
-  useCreateClipMutation,
-  useCreateMyLensStreamSessionMutation
-} from '../../../../graphql/generated'
-import { v4 as uuid } from 'uuid'
-import getUserLocale from '../../../../utils/getUserLocale'
-import {
+  liveStream,
   MediaVideoMimeType,
   MetadataAttributeType,
-  liveStream,
   video
 } from '@lens-protocol/metadata'
-import { REDIRECTOR_URL } from '../../../../utils/config'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
-import formatHandle from '../../../../utils/lib/formatHandle'
-import { getThumbnailFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
-import VideoWithEditors from './VideoWithEditors'
-import toast from 'react-hot-toast'
-import { useStreamAsVideo } from '../../../store/useStreamAsVideo'
-// import CollectSettingButton from '../../../common/Collect/CollectSettingButton'
-// import useCollectSettings from '../../../common/Collect/useCollectSettings'
-import {
-  CATEGORIES_LIST,
-  getTagsForCategory
-} from '../../../../utils/categories'
+import { type Post, useCreatePost } from '@lens-protocol/react'
+import { handleOperationWith } from '@lens-protocol/react/viem'
 // import { getThumbnailFromVideoUrl } from '../../../../utils/generateThumbnail'
 // import uploadToIPFS from '../../../../utils/uploadToIPFS'
 // import { VerifiedOpenActionModules } from '../../../../utils/verified-openaction-modules'
 // import { encodeAbiParameters, type Address } from 'viem'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
-import Player from '../../../common/Player/Player'
+import { Button, MenuItem, Select, TextareaAutosize, TextField } from '@mui/material'
 import clsx from 'clsx'
-import { useMyPreferences } from '../../../store/useMyPreferences'
-import { Post, useCreatePost } from '@lens-protocol/react'
-import useSession from '../../../../utils/hooks/useSession'
-import { handleOperationWith } from '@lens-protocol/react/viem'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
 import { useWalletClient } from 'wagmi'
+import {
+  type RecordedSession,
+  useCreateClipMutation,
+  useCreateMyLensStreamSessionMutation
+} from '../../../../graphql/generated'
+// import CollectSettingButton from '../../../common/Collect/CollectSettingButton'
+// import useCollectSettings from '../../../common/Collect/useCollectSettings'
+import { CATEGORIES_LIST, getTagsForCategory } from '../../../../utils/categories'
+import { REDIRECTOR_URL } from '../../../../utils/config'
+import getUserLocale from '../../../../utils/getUserLocale'
+import useSession from '../../../../utils/hooks/useSession'
+import formatHandle from '../../../../utils/lib/formatHandle'
+import { getThumbnailFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
 import { acl, storageClient } from '../../../../utils/lib/lens/storageClient'
+import Player from '../../../common/Player/Player'
+import { useMyPreferences } from '../../../store/useMyPreferences'
+import { useStreamAsVideo } from '../../../store/useStreamAsVideo'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
+import VideoWithEditors from './VideoWithEditors'
 
 const PostStreamAsVideo = ({
   post,
@@ -79,7 +69,7 @@ const PostStreamAsVideo = ({
   const [createMyLensStreamSession] = useCreateMyLensStreamSessionMutation({
     fetchPolicy: 'no-cache'
   })
-  const { category, setCategory } = useMyPreferences((state) => {
+  const { category, setCategory } = useMyPreferences(state => {
     return {
       category: state.category,
       setCategory: state.setCategory
@@ -88,16 +78,16 @@ const PostStreamAsVideo = ({
   const [content, setContent] = React.useState('')
 
   const [title, setTitle] = React.useState(
-    // @ts-ignore
+    // @ts-expect-error
     post?.metadata?.title ?? 'Untitled Video'
   )
 
   useEffect(() => {
     setTitle(
-      // @ts-ignore
+      // @ts-expect-error
       post?.metadata?.title ?? 'Untitled Video'
     )
-    // @ts-ignore
+    // @ts-expect-error
   }, [post?.metadata?.title])
 
   const { account, isAuthenticated } = useSession()
@@ -109,8 +99,8 @@ const PostStreamAsVideo = ({
 
   const [showVideoDescription, setShowVideoDescription] = useState(false)
 
-  const startTime = useStreamAsVideo((state) => state.startTime)
-  const endTime = useStreamAsVideo((state) => state.endTime)
+  const startTime = useStreamAsVideo(state => state.startTime)
+  const endTime = useStreamAsVideo(state => state.endTime)
 
   const [createClip] = useCreateClipMutation()
 
@@ -125,7 +115,7 @@ const PostStreamAsVideo = ({
       toast.error('You need to login a profile to post')
       return
     }
-    // @ts-ignore
+    // @ts-expect-error
     if (!title || title.trim().length === 0) {
       toast.error('Please enter a title')
       return
@@ -305,10 +295,10 @@ const PostStreamAsVideo = ({
 
       // if (type) {
       //   actions = [
-      //     // @ts-ignore
+      //     // @ts-expect-error
       //     {
       //       type,
-      //       // @ts-ignore
+      //       // @ts-expect-error
       //       amount,
       //       collectLimit,
       //       endsAt,
@@ -318,11 +308,11 @@ const PostStreamAsVideo = ({
       //   ]
 
       //   if (type === OpenActionType.MULTIRECIPIENT_COLLECT) {
-      //     // @ts-ignore
+      //     // @ts-expect-error
       //     actions[0]['recipients'] = recipients
       //   }
       //   if (type === OpenActionType.SIMPLE_COLLECT) {
-      //     // @ts-ignore
+      //     // @ts-expect-error
       //     actions[0]['recipient'] = recipient
       //   }
       // }
@@ -354,18 +344,13 @@ const PostStreamAsVideo = ({
           fetchPolicy: 'no-cache'
         })
 
-      if (
-        lensStreamSessionErrors?.[0] &&
-        !lensStreamSessionResult?.createMyLensStreamSession
-      ) {
-        toast.error(
-          lensStreamSessionErrors?.[0]?.message || 'Error attaching post'
-        )
+      if (lensStreamSessionErrors?.[0] && !lensStreamSessionResult?.createMyLensStreamSession) {
+        toast.error(lensStreamSessionErrors?.[0]?.message || 'Error attaching post')
 
         throw new Error('Error attaching post to stream')
       }
     } catch (e) {
-      // @ts-ignore
+      // @ts-expect-error
       toast.error(e?.message || e)
       throw new Error('Error creating post')
     }
@@ -403,10 +388,7 @@ const PostStreamAsVideo = ({
         onOpen={() => setOpen(true)}
         title={modalTitle!}
         Icon={Icon}
-        classname={clsx(
-          'max-h-[80vh]',
-          defaultMode === 'Clip' ? 'w-[80vw]' : 'w-[40vw]'
-        )}
+        classname={clsx('max-h-[80vh]', defaultMode === 'Clip' ? 'w-[80vw]' : 'w-[40vw]')}
         BotttomComponent={
           <div className="flex flex-row justify-end">
             {/* cancle button & save button */}
@@ -431,8 +413,8 @@ const PostStreamAsVideo = ({
               size="small"
               className="w-full"
               onChange={
-                // @ts-ignore
-                (e) => setTitle(e.target.value)
+                // @ts-expect-error
+                e => setTitle(e.target.value)
               }
               value={title}
               inputProps={{
@@ -453,7 +435,7 @@ const PostStreamAsVideo = ({
               }}
               maxRows={10}
               minRows={2}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={e => setContent(e.target.value)}
               value={content}
             />
           ) : (
@@ -478,7 +460,7 @@ const PostStreamAsVideo = ({
               <div className="text-s-text font-bold text-md">Category</div>
               <Select
                 value={category}
-                onChange={(e) => {
+                onChange={e => {
                   if (!e.target.value) return
                   setCategory(e.target.value as string)
                 }}
@@ -488,7 +470,7 @@ const PostStreamAsVideo = ({
                   borderRadius: '100px'
                 }}
               >
-                {CATEGORIES_LIST.map((category) => (
+                {CATEGORIES_LIST.map(category => (
                   <MenuItem value={category} key={category}>
                     {category}
                   </MenuItem>
@@ -502,11 +484,7 @@ const PostStreamAsVideo = ({
               <VideoWithEditors recordingUrl={session?.recordingUrl!} />
             )}
             {open && defaultMode === 'Video' && session?.recordingUrl && (
-              <Player
-                src={session?.recordingUrl}
-                showPipButton={false}
-                autoHide={0}
-              />
+              <Player src={session?.recordingUrl} showPipButton={false} autoHide={0} />
             )}
           </div>
         </div>

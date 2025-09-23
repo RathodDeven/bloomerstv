@@ -1,16 +1,14 @@
-import React from 'react'
-import {
-  RecordedSession,
-  ViewType,
-  useUpdateLensStreamSessionMutation
-} from '../../../../graphql/generated'
 import { Box, FormControl, MenuItem, Select } from '@mui/material'
+import React from 'react'
 import toast from 'react-hot-toast'
+import {
+  type RecordedSession,
+  useUpdateLensStreamSessionMutation,
+  ViewType
+} from '../../../../graphql/generated'
 
 const ContentVisibiltyButton = ({ session }: { session: RecordedSession }) => {
-  const [visibility, setVisibility] = React.useState<ViewType>(
-    session?.viewType ?? ViewType.Public
-  )
+  const [visibility, setVisibility] = React.useState<ViewType>(session?.viewType ?? ViewType.Public)
   const [setViewType] = useUpdateLensStreamSessionMutation()
   const handleVisibilityChange = async (e: any) => {
     setVisibility(e.target.value)

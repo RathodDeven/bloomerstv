@@ -1,21 +1,13 @@
-import React from 'react'
-import { MyStream } from '../../../../graphql/generated'
-import { Button } from '@mui/material'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 import InfoIcon from '@mui/icons-material/Info'
+import { Button } from '@mui/material'
+import React from 'react'
+import type { MyStream } from '../../../../graphql/generated'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 import OBSSetupGuide from './OBSSetupGuide'
 
-const StreamHealth = ({
-  myStream,
-  isActive
-}: {
-  myStream: MyStream
-  isActive: boolean
-}) => {
-  const warningIssues =
-    myStream?.issues?.filter((issue) => issue?.startsWith('Warning: ')) || []
-  const errorIssues =
-    myStream?.issues?.filter((issue) => !issue?.startsWith('Warning: ')) || []
+const StreamHealth = ({ myStream, isActive }: { myStream: MyStream; isActive: boolean }) => {
+  const warningIssues = myStream?.issues?.filter(issue => issue?.startsWith('Warning: ')) || []
+  const errorIssues = myStream?.issues?.filter(issue => !issue?.startsWith('Warning: ')) || []
 
   const [open, setOpen] = React.useState(false)
 
@@ -44,9 +36,7 @@ const StreamHealth = ({
           <div className="">Stream Status : </div>
           {isActive ? (
             <div className="">
-              {myStream?.isHealthy
-                ? '🔵 Stream is healthy'
-                : '🔴 Stream is not healthy'}
+              {myStream?.isHealthy ? '🔵 Stream is healthy' : '🔴 Stream is not healthy'}
             </div>
           ) : (
             <div className="">---</div>
@@ -57,16 +47,12 @@ const StreamHealth = ({
             <div className="start-center-row gap-x-3 text-white text-xs font-semibold">
               {errorIssues?.length > 0 && (
                 <div className="bg-red-400 rounded-full py-0.5 px-2">
-                  {`${errorIssues?.length} Error${
-                    errorIssues?.length > 1 ? 's' : ''
-                  }`}
+                  {`${errorIssues?.length} Error${errorIssues?.length > 1 ? 's' : ''}`}
                 </div>
               )}
               {warningIssues?.length > 0 && (
                 <div className="bg-orange-300 rounded-full  py-0.5 px-2">
-                  {`${warningIssues?.length} Warning${
-                    warningIssues?.length > 1 ? 's' : ''
-                  }`}
+                  {`${warningIssues?.length} Warning${warningIssues?.length > 1 ? 's' : ''}`}
                 </div>
               )}
             </div>

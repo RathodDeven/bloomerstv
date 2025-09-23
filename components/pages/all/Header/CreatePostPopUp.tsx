@@ -1,51 +1,41 @@
 import {
-  Button,
-  IconButton,
-  MenuItem,
-  Select,
-  TextField,
-  TextareaAutosize
-} from '@mui/material'
-import React from 'react'
-import EditNoteIcon from '@mui/icons-material/EditNote'
-import ModalWrapper from '../../../ui/Modal/ModalWrapper'
-import getAvatar from '../../../../utils/lib/getAvatar'
-import formatHandle from '../../../../utils/lib/formatHandle'
-import LoadingButton from '@mui/lab/LoadingButton'
-import ImageIcon from '@mui/icons-material/Image'
-import CloseIcon from '@mui/icons-material/Close'
-import { v4 as uuid } from 'uuid'
-import getUserLocale from '../../../../utils/getUserLocale'
-import {
-  CATEGORIES_LIST,
-  getTagsForCategory
-} from '../../../../utils/categories'
-import uploadToIPFS from '../../../../utils/uploadToIPFS'
-import toast from 'react-hot-toast'
-import useIsMobile from '../../../../utils/hooks/useIsMobile'
-// import CollectSettingButton from '../../../common/Collect/CollectSettingButton'
-// import useCollectSettings from '../../../common/Collect/useCollectSettings'
-import VideocamIcon from '@mui/icons-material/Videocam'
-import { generateVideoThumbnails } from '../../../../utils/generateThumbnail'
-import clsx from 'clsx'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
-import { getVideoDuration } from '../../../../utils/getVideoDuration'
-import { getFileFromDataURL } from '../../../../utils/getImageFileFromDataURL'
-import { stringToLength } from '../../../../utils/stringToLength'
-import EditIcon from '@mui/icons-material/Edit'
-import { useMyPreferences } from '../../../store/useMyPreferences'
-import useSession from '../../../../utils/hooks/useSession'
-import { useCreatePost } from '@lens-protocol/react'
-import { handleOperationWith } from '@lens-protocol/react/viem'
-import { useWalletClient } from 'wagmi'
-import {
   image,
   MediaImageMimeType,
   MediaVideoMimeType,
   textOnly,
   video
 } from '@lens-protocol/metadata'
+import { useCreatePost } from '@lens-protocol/react'
+import { handleOperationWith } from '@lens-protocol/react/viem'
+import CloseIcon from '@mui/icons-material/Close'
+import EditIcon from '@mui/icons-material/Edit'
+import EditNoteIcon from '@mui/icons-material/EditNote'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
+import ImageIcon from '@mui/icons-material/Image'
+// import CollectSettingButton from '../../../common/Collect/CollectSettingButton'
+// import useCollectSettings from '../../../common/Collect/useCollectSettings'
+import VideocamIcon from '@mui/icons-material/Videocam'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Button, IconButton, MenuItem, Select, TextareaAutosize, TextField } from '@mui/material'
+import clsx from 'clsx'
+import React from 'react'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
+import { useWalletClient } from 'wagmi'
+import { CATEGORIES_LIST, getTagsForCategory } from '../../../../utils/categories'
+import { generateVideoThumbnails } from '../../../../utils/generateThumbnail'
+import { getFileFromDataURL } from '../../../../utils/getImageFileFromDataURL'
+import getUserLocale from '../../../../utils/getUserLocale'
+import { getVideoDuration } from '../../../../utils/getVideoDuration'
+import useIsMobile from '../../../../utils/hooks/useIsMobile'
+import useSession from '../../../../utils/hooks/useSession'
+import formatHandle from '../../../../utils/lib/formatHandle'
+import getAvatar from '../../../../utils/lib/getAvatar'
 import { acl, storageClient } from '../../../../utils/lib/lens/storageClient'
+import { stringToLength } from '../../../../utils/stringToLength'
+import uploadToIPFS from '../../../../utils/uploadToIPFS'
+import { useMyPreferences } from '../../../store/useMyPreferences'
+import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 
 interface previewFileType {
   url: string
@@ -70,23 +60,18 @@ const CreatePostPopUp = ({
   const [content, setContent] = React.useState('')
   const imageFileInputRef = React.useRef(null)
   const videoFileInputRef = React.useRef(null)
-  const [previewImageFile, setPreviewImageFile] =
-    React.useState<previewFileType | null>(null)
-  const [previewVideoFile, setPreviewVideoFile] =
-    React.useState<previewFileType | null>(null)
+  const [previewImageFile, setPreviewImageFile] = React.useState<previewFileType | null>(null)
+  const [previewVideoFile, setPreviewVideoFile] = React.useState<previewFileType | null>(null)
   const [videoTitle, setVideoTitle] = React.useState<string>('')
   const [videoProgress, setVideoProgress] = React.useState<number>(0)
 
   const [previewCustomThumbnail, setPreviewCustomThumbnail] =
     React.useState<previewFileType | null>(null)
-  const [generatedThumbnails, setGeneratedThumbnails] = React.useState<
-    string[]
-  >([])
+  const [generatedThumbnails, setGeneratedThumbnails] = React.useState<string[]>([])
   // 0, 1, ... onwards for generated thumbnails & -1 for custom thumbnail
-  const [selectedThumbnailIndex, setSelectedThumbnailIndex] =
-    React.useState<number>(0)
+  const [selectedThumbnailIndex, setSelectedThumbnailIndex] = React.useState<number>(0)
 
-  const { category, setCategory } = useMyPreferences((state) => {
+  const { category, setCategory } = useMyPreferences(state => {
     return {
       category: state.category,
       setCategory: state.setCategory
@@ -109,7 +94,7 @@ const CreatePostPopUp = ({
   //   recipient
   // } = useCollectSettings()
 
-  const handleImageFileChange = async (event) => {
+  const handleImageFileChange = async event => {
     const files = event.target.files
     if (!files?.length) return
 
@@ -141,7 +126,7 @@ const CreatePostPopUp = ({
     })
   }
 
-  const handleVideoFileChange = async (event) => {
+  const handleVideoFileChange = async event => {
     const files = event.target.files
     if (!files?.length) return
 
@@ -210,15 +195,13 @@ const CreatePostPopUp = ({
     const ipfsImage = imageFile ? await uploadToIPFS(imageFile) : null
 
     const ipfsVideo = isVideo
-      ? await uploadToIPFS(previewVideoFile.file, (progress) => {
+      ? await uploadToIPFS(previewVideoFile.file, progress => {
           setVideoProgress(progress)
         })
       : null
 
     const duration = isVideo
-      ? await getVideoDuration(previewVideoFile.url).then((num) =>
-          Math.round(num)
-        )
+      ? await getVideoDuration(previewVideoFile.url).then(num => Math.round(num))
       : 0
 
     const metadata = isVideo
@@ -239,7 +222,7 @@ const CreatePostPopUp = ({
             ...commonMetadata,
             image: {
               item: ipfsImage?.url!,
-              // @ts-ignore
+              // @ts-expect-error
               type: imageMimeType as MediaImageMimeType,
               altTag: videoTitle ? `${videoTitle}\n${content}` : content
             }
@@ -360,22 +343,19 @@ const CreatePostPopUp = ({
                   </h3>
                   <div className="text-yellow-700 space-y-2">
                     <p>
-                      You cannot create posts on BloomersTV yet. You need to
-                      increase your account score to at least{' '}
-                      <strong>8,000</strong> by being active on Lens and
-                      engaging with others.
+                      You cannot create posts on BloomersTV yet. You need to increase your account
+                      score to at least <strong>8,000</strong> by being active on Lens and engaging
+                      with others.
                     </p>
                     <p>
-                      <strong>Your current score:</strong>{' '}
-                      {account?.score?.toLocaleString() || 0}
+                      <strong>Your current score:</strong> {account?.score?.toLocaleString() || 0}
                     </p>
                     <p>
                       <strong>Required score:</strong> 8,000
                     </p>
                     <p className="text-sm mt-3">
-                      Create posts is currently restricted to users with more
-                      than 8,000 account score. Keep engaging on Lens to
-                      increase your score!
+                      Create posts is currently restricted to users with more than 8,000 account
+                      score. Keep engaging on Lens to increase your score!
                     </p>
                   </div>
                 </div>
@@ -385,18 +365,14 @@ const CreatePostPopUp = ({
         ) : (
           <div className="flex flex-col gap-y-3 px-3 sm:px-0">
             <div className="start-center-row gap-x-3">
-              <img
-                src={getAvatar(account)}
-                alt="avatar"
-                className="w-8 h-8 rounded-full"
-              />
+              <img src={getAvatar(account)} alt="avatar" className="w-8 h-8 rounded-full" />
               <div className="font-bold">{formatHandle(account)}</div>
             </div>
             {previewVideoFile && (
               <TextField
                 label="Video Title"
                 variant="outlined"
-                onChange={(e) => setVideoTitle(e.target.value)}
+                onChange={e => setVideoTitle(e.target.value)}
                 value={videoTitle}
                 inputProps={{
                   maxLength: 100
@@ -419,7 +395,7 @@ const CreatePostPopUp = ({
               disabled={loading}
               minRows={1}
               maxRows={5}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={e => setContent(e.target.value)}
               value={content}
             />
 
@@ -433,25 +409,14 @@ const CreatePostPopUp = ({
             {previewImageFile || previewVideoFile ? (
               <div className="relative">
                 {previewImageFile && (
-                  <img
-                    src={previewImageFile.url}
-                    alt="preview"
-                    className="w-full rounded-xl"
-                  />
+                  <img src={previewImageFile.url} alt="preview" className="w-full rounded-xl" />
                 )}
 
                 {previewVideoFile && (
                   <>
-                    <video
-                      src={previewVideoFile.url}
-                      controls
-                      className="w-full rounded-xl"
-                    />
+                    <video src={previewVideoFile.url} controls className="w-full rounded-xl" />
                     <div
-                      className={clsx(
-                        'flex flex-row flex-wrap gap-2 py-2',
-                        loading && 'hidden'
-                      )}
+                      className={clsx('flex flex-row flex-wrap gap-2 py-2', loading && 'hidden')}
                     >
                       {/* upload custom thumbnail */}
                       <div
@@ -459,16 +424,14 @@ const CreatePostPopUp = ({
                         onClick={() => {
                           // Programmatically click the file input when the button is clicked
                           if (!imageFileInputRef.current) return
-                          // @ts-ignore
+                          // @ts-expect-error
                           imageFileInputRef.current.click()
                         }}
                       >
                         <div className="space-y-2">
                           <div className="centered-row gap-x-1  text-xs">
                             <FileUploadIcon fontSize="inherit" />
-                            <div className="text-s-text font-semibold">
-                              Choose Thumbnail
-                            </div>
+                            <div className="text-s-text font-semibold">Choose Thumbnail</div>
                           </div>
                           <div className="text-xs text-s-text">
                             Click to upload a custom thumbnail
@@ -481,9 +444,7 @@ const CreatePostPopUp = ({
                           <img
                             src={previewCustomThumbnail.url}
                             alt="thumbnail"
-                            className={clsx(
-                              'h-[90px] rounded-xl unselectable cursor-pointer'
-                            )}
+                            className={clsx('h-[90px] rounded-xl unselectable cursor-pointer')}
                             onClick={() => setSelectedThumbnailIndex(-1)}
                           />
                           {selectedThumbnailIndex === -1 && (
@@ -501,9 +462,7 @@ const CreatePostPopUp = ({
                           <img
                             src={thumbnail}
                             alt="thumbnail"
-                            className={clsx(
-                              'h-[90px] unselectable rounded-xl cursor-pointer'
-                            )}
+                            className={clsx('h-[90px] unselectable rounded-xl cursor-pointer')}
                             onClick={() => setSelectedThumbnailIndex(index)}
                           />
                           {selectedThumbnailIndex === index && (
@@ -561,7 +520,7 @@ const CreatePostPopUp = ({
                   onClick={() => {
                     // Programmatically click the file input when the button is clicked
                     if (!imageFileInputRef.current) return
-                    // @ts-ignore
+                    // @ts-expect-error
                     imageFileInputRef.current.click()
                   }}
                 >
@@ -587,7 +546,7 @@ const CreatePostPopUp = ({
                   onClick={() => {
                     // Programmatically click the file input when the button is clicked
                     if (!videoFileInputRef.current) return
-                    // @ts-ignore
+                    // @ts-expect-error
                     videoFileInputRef.current.click()
                   }}
                 >
@@ -599,12 +558,9 @@ const CreatePostPopUp = ({
             {quoteOn && quotingTitle && (
               <div className="bg-p-hover text-sm p-2 rounded-lg">
                 <div>
-                  Quoting a post by{' '}
-                  <span className="text-brand">{quotingOnProfileHandle}</span>
+                  Quoting a post by <span className="text-brand">{quotingOnProfileHandle}</span>
                 </div>
-                <div className="font-semibold">
-                  {stringToLength(quotingTitle, 50)}
-                </div>
+                <div className="font-semibold">{stringToLength(quotingTitle, 50)}</div>
               </div>
             )}
 
@@ -617,12 +573,10 @@ const CreatePostPopUp = ({
               </div> */}
 
               <div className="start-col gap-y-1 w-fit">
-                <div className="text-s-text font-semibold text-sm">
-                  Category
-                </div>
+                <div className="text-s-text font-semibold text-sm">Category</div>
                 <Select
                   value={category}
-                  onChange={(e) => {
+                  onChange={e => {
                     if (!e.target.value) return
                     setCategory(e.target.value as string)
                   }}
@@ -633,7 +587,7 @@ const CreatePostPopUp = ({
                   }}
                   disabled={loading}
                 >
-                  {CATEGORIES_LIST.map((category) => (
+                  {CATEGORIES_LIST.map(category => (
                     <MenuItem value={category} key={category}>
                       {category}
                     </MenuItem>

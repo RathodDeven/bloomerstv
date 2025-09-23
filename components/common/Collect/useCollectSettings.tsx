@@ -1,6 +1,7 @@
-import { Erc20Amount, PostActionType } from '@lens-protocol/react'
-import { useCollectPreferences } from '../../store/useCollectPreferences'
+import { type Erc20Amount, PostActionType } from '@lens-protocol/react'
 import useSession from '../../../utils/hooks/useSession'
+import { useCollectPreferences } from '../../store/useCollectPreferences'
+
 type CollectSettingsResponse = {
   type?: PostActionType.SimpleCollectAction
   amount?: Erc20Amount
@@ -22,7 +23,7 @@ const useCollectSettings = (): CollectSettingsResponse => {
     referalFee,
     numberOfDays,
     followerOnly
-  } = useCollectPreferences((state) => state)
+  } = useCollectPreferences(state => state)
 
   if (!isAuthenticated || disableCollect) {
     return {
@@ -41,11 +42,8 @@ const useCollectSettings = (): CollectSettingsResponse => {
     //   : OpenActionType.SIMPLE_COLLECT,
     amount,
     collectLimit,
-    endsAt: numberOfDays
-      ? new Date(Date.now() + numberOfDays * 24 * 60 * 60 * 1000)
-      : undefined,
-    referralFee:
-      referalFee && referalFee > 0 && referalFee < 100 ? referalFee : undefined,
+    endsAt: numberOfDays ? new Date(Date.now() + numberOfDays * 24 * 60 * 60 * 1000) : undefined,
+    referralFee: referalFee && referalFee > 0 && referalFee < 100 ? referalFee : undefined,
     // recipients:
     //   amount && recipients && recipients?.length > 0 ? recipients : undefined,
     followerOnly: followerOnly,

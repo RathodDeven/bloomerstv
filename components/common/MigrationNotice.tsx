@@ -1,20 +1,14 @@
-import React from 'react'
-import { Typography } from '@mui/material'
 import ConstructionIcon from '@mui/icons-material/Construction'
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
-import UpdateIcon from '@mui/icons-material/Update'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import TwitterIcon from '@mui/icons-material/Twitter'
 import DiscordIcon from '@mui/icons-material/Message'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import UpdateIcon from '@mui/icons-material/Update'
+import { Typography } from '@mui/material'
 import Image from 'next/image'
-import {
-  CREATOR_EMAIL,
-  DISCORD_INVITE_URL,
-  GITHUB_URL,
-  HEY_URL,
-  X_URL
-} from '../../utils/config'
+import type React from 'react'
+import { CREATOR_EMAIL, DISCORD_INVITE_URL, GITHUB_URL, HEY_URL, X_URL } from '../../utils/config'
 
 const MigrationNotice: React.FC = () => {
   return (
@@ -28,7 +22,7 @@ const MigrationNotice: React.FC = () => {
               layout="fill"
               objectFit="contain"
               className="rounded-full"
-              onError={(e) => {
+              onError={e => {
                 const target = e.target as HTMLImageElement
                 target.src = '/icon-192x192.png' // Fallback image
               }}
@@ -44,10 +38,7 @@ const MigrationNotice: React.FC = () => {
 
           <div className="flex items-center justify-center gap-2 mb-4">
             <ConstructionIcon className="text-yellow-500" />
-            <Typography
-              variant="subtitle1"
-              className="text-s-text text-sm sm:text-base"
-            >
+            <Typography variant="subtitle1" className="text-s-text text-sm sm:text-base">
               Maintenance in Progress
             </Typography>
           </div>
@@ -57,39 +48,26 @@ const MigrationNotice: React.FC = () => {
           <div className="bg-p-bg/30 p-3 sm:p-4 rounded-lg space-y-4 border border-p-accent/10">
             <div className="flex items-center mb-3">
               <UpdateIcon className="text-blue-400 mr-2 flex-shrink-0" />
-              <Typography
-                variant="body1"
-                className="text-p-text font-medium text-sm sm:text-base"
-              >
+              <Typography variant="body1" className="text-p-text font-medium text-sm sm:text-base">
                 We're Currently Upgrading
               </Typography>
             </div>
-            <Typography
-              variant="body2"
-              className="text-s-text mb-6 pl-7 text-xs sm:text-sm"
-            >
-              Thank you for your patience as we migrate BloomersTV to Lens V3
-              and Lens Chain. This process may take some time, but we're working
-              diligently to bring you an improved experience.
+            <Typography variant="body2" className="text-s-text mb-6 pl-7 text-xs sm:text-sm">
+              Thank you for your patience as we migrate BloomersTV to Lens V3 and Lens Chain. This
+              process may take some time, but we're working diligently to bring you an improved
+              experience.
             </Typography>
 
             <div className="flex items-center mb-3">
               <RocketLaunchIcon className="text-purple-400 mr-2 flex-shrink-0" />
-              <Typography
-                variant="body1"
-                className="text-p-text font-medium text-sm sm:text-base"
-              >
+              <Typography variant="body1" className="text-p-text font-medium text-sm sm:text-base">
                 Coming Back Stronger
               </Typography>
             </div>
-            <Typography
-              variant="body2"
-              className="text-s-text pl-7 text-xs sm:text-sm"
-            >
-              While there was a temporary slowdown in development, BloomersTV
-              will be returning with a bang! We're building exciting new
-              features and improvements that will enhance your experience
-              significantly.
+            <Typography variant="body2" className="text-s-text pl-7 text-xs sm:text-sm">
+              While there was a temporary slowdown in development, BloomersTV will be returning with
+              a bang! We're building exciting new features and improvements that will enhance your
+              experience significantly.
             </Typography>
           </div>
 
@@ -143,10 +121,7 @@ const MigrationNotice: React.FC = () => {
             </div>
 
             <div className="mt-4 flex flex-col items-center">
-              <Typography
-                variant="body2"
-                className="text-s-text text-xs sm:text-sm mb-2"
-              >
+              <Typography variant="body2" className="text-s-text text-xs sm:text-sm mb-2">
                 Contact Creator:
               </Typography>
               <a
@@ -163,10 +138,7 @@ const MigrationNotice: React.FC = () => {
         </div>
       </div>
 
-      <Typography
-        variant="caption"
-        className="mt-6 sm:mt-8 text-s-text/60 text-xs"
-      >
+      <Typography variant="caption" className="mt-6 sm:mt-8 text-s-text/60 text-xs">
         &copy; {new Date().getFullYear()} BloomersTV • All rights reserved
       </Typography>
     </div>

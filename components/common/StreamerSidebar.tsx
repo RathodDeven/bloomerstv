@@ -1,25 +1,21 @@
 'use client'
-import React, { useCallback } from 'react'
-import StreamerBar from './StreamerSidebar/StreamerBar'
-import Link from 'next/link'
-import { DISCORD_INVITE_URL, GITHUB_URL, X_URL } from '../../utils/config'
-
-import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
-import { IconButton } from '@mui/material'
-import XIcon from '@mui/icons-material/X'
+import { type Account, useAccountsBulk } from '@lens-protocol/react'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import { useTheme } from '../wrappers/TailwindThemeProvider'
-import {
-  useIsVerifiedQuery,
-  useOfflineStreamersQuery
-} from '../../graphql/generated'
+import XIcon from '@mui/icons-material/X'
+import { IconButton } from '@mui/material'
+import clsx from 'clsx'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React, { useCallback } from 'react'
+import { useIsVerifiedQuery, useOfflineStreamersQuery } from '../../graphql/generated'
+import { DISCORD_INVITE_URL, GITHUB_URL, X_URL } from '../../utils/config'
 import useIsMobile from '../../utils/hooks/useIsMobile'
-import StreamerBarLoading from './StreamerSidebar/StreamerBarLoading'
-import AppLinksRow from './AppLinksRow'
 import useSession from '../../utils/hooks/useSession'
-import { Account, useAccountsBulk } from '@lens-protocol/react'
 import { useStreamersWithAccounts } from '../store/useStreamersWithAccounts'
+import { useTheme } from '../wrappers/TailwindThemeProvider'
+import AppLinksRow from './AppLinksRow'
+import StreamerBar from './StreamerSidebar/StreamerBar'
+import StreamerBarLoading from './StreamerSidebar/StreamerBarLoading'
 import SubscribeToSuperBloomers from './SubscribeToSuperBloomers'
 
 const StreamerSidebar = () => {
@@ -27,9 +23,7 @@ const StreamerSidebar = () => {
   const pathname = usePathname()
   const { theme } = useTheme()
   const isMobile = useIsMobile()
-  const streamersWithAccounts = useStreamersWithAccounts(
-    (state) => state.streamersWithAccounts
-  )
+  const streamersWithAccounts = useStreamersWithAccounts(state => state.streamersWithAccounts)
 
   const { data: offlineStreamers, loading } = useOfflineStreamersQuery()
 
@@ -48,24 +42,19 @@ const StreamerSidebar = () => {
     // Separate streamers based on nextStreamTime criteria
     const withNextStream =
       offlineStreamers?.offlineStreamers.filter(
-        (streamer) =>
-          streamer?.nextStreamTime && new Date(streamer.nextStreamTime) > now
+        streamer => streamer?.nextStreamTime && new Date(streamer.nextStreamTime) > now
       ) || []
     const others =
       offlineStreamers?.offlineStreamers.filter(
-        (streamer) =>
-          !streamer?.nextStreamTime || new Date(streamer.nextStreamTime) <= now
+        streamer => !streamer?.nextStreamTime || new Date(streamer.nextStreamTime) <= now
       ) || []
 
     // Sort each group
     const sortedWithNextStream = withNextStream.sort(
-      (a, b) =>
-        new Date(b?.nextStreamTime).getTime() -
-        new Date(a?.nextStreamTime).getTime()
+      (a, b) => new Date(b?.nextStreamTime).getTime() - new Date(a?.nextStreamTime).getTime()
     )
     const sortedOthers = others.sort(
-      (a, b) =>
-        new Date(b?.lastSeen).getTime() - new Date(a?.lastSeen).getTime()
+      (a, b) => new Date(b?.lastSeen).getTime() - new Date(a?.lastSeen).getTime()
     )
 
     // Concatenate the sorted groups
@@ -75,7 +64,7 @@ const StreamerSidebar = () => {
   const offlineStreamersMap = React.useMemo(() => {
     if (!sortedOfflineStreamers) return new Map()
     const map = new Map()
-    sortedOfflineStreamers?.forEach((streamer) => {
+    sortedOfflineStreamers?.forEach(streamer => {
       if (!streamer) return
 
       if (map.get(streamer.accountAddress)) return
@@ -89,70 +78,53 @@ const StreamerSidebar = () => {
     return map
   }, [sortedOfflineStreamers])
 
-  const { data: offlineAccounts, loading: offlineAccountsLoading } =
-    useAccountsBulk({
-      addresses:
-        sortedOfflineStreamers?.map((streamer) => streamer?.accountAddress) ??
-        []
-    })
+  const { data: offlineAccounts, loading: offlineAccountsLoading } = useAccountsBulk({
+    addresses: sortedOfflineStreamers?.map(streamer => streamer?.accountAddress) ?? []
+  })
 
-  const followingStreamers = streamersWithAccounts?.filter((streamer) => {
+  const followingStreamers = streamersWithAccounts?.filter(streamer => {
     return streamer?.account?.operations?.isFollowedByMe
   })
 
-  const restOfTheStreamers = streamersWithAccounts?.filter((streamer) => {
+  const restOfTheStreamers = streamersWithAccounts?.filter(streamer => {
     return !streamer?.account?.operations?.isFollowedByMe
   })
 
   const getOfflineFollowingStreamers = useCallback((): Account[] => {
     // get following profiles from public replays
-    const offlineFollowingStreamers = offlineAccounts?.filter(
-      (offlineAccount) => {
-        // Check if this account is already in streamersWithAccounts
-        const alreadyInStreamers = streamersWithAccounts?.some(
-          (streamer) => streamer?.accountAddress === offlineAccount?.address
-        )
+    const offlineFollowingStreamers = offlineAccounts?.filter(offlineAccount => {
+      // Check if this account is already in streamersWithAccounts
+      const alreadyInStreamers = streamersWithAccounts?.some(
+        streamer => streamer?.accountAddress === offlineAccount?.address
+      )
 
-        return (
-          !alreadyInStreamers &&
-          offlineAccount?.operations?.isFollowedByMe &&
-          (!isAuthenticated || offlineAccount?.address !== account?.address)
-        )
-      }
-    )
+      return (
+        !alreadyInStreamers &&
+        offlineAccount?.operations?.isFollowedByMe &&
+        (!isAuthenticated || offlineAccount?.address !== account?.address)
+      )
+    })
 
     return offlineFollowingStreamers || []
-  }, [
-    offlineAccounts,
-    isAuthenticated,
-    account?.address,
-    streamersWithAccounts
-  ])
+  }, [offlineAccounts, isAuthenticated, account?.address, streamersWithAccounts])
 
   const getOfflineRecommendedStreamers = useCallback((): Account[] => {
     // get following profiles from public replays
-    const offlineRecommendedStreamers = offlineAccounts?.filter(
-      (offlineAccount) => {
-        // Check if this account is already in streamersWithAccounts
-        const alreadyInStreamers = streamersWithAccounts?.some(
-          (streamer) => streamer?.accountAddress === offlineAccount?.address
-        )
+    const offlineRecommendedStreamers = offlineAccounts?.filter(offlineAccount => {
+      // Check if this account is already in streamersWithAccounts
+      const alreadyInStreamers = streamersWithAccounts?.some(
+        streamer => streamer?.accountAddress === offlineAccount?.address
+      )
 
-        return (
-          !alreadyInStreamers &&
-          !offlineAccount?.operations?.isFollowedByMe &&
-          (!isAuthenticated || offlineAccount?.address !== account?.address)
-        )
-      }
-    )
+      return (
+        !alreadyInStreamers &&
+        !offlineAccount?.operations?.isFollowedByMe &&
+        (!isAuthenticated || offlineAccount?.address !== account?.address)
+      )
+    })
 
     return offlineRecommendedStreamers || []
-  }, [
-    offlineAccounts,
-    isAuthenticated,
-    account?.address,
-    streamersWithAccounts
-  ])
+  }, [offlineAccounts, isAuthenticated, account?.address, streamersWithAccounts])
 
   const offlineFollowingStreamers = getOfflineFollowingStreamers()
   const offlineRecommendedStreamers = getOfflineRecommendedStreamers()
@@ -176,9 +148,7 @@ const StreamerSidebar = () => {
           )}
           {isAuthenticated && (
             <>
-              {!minimize && (
-                <div className="font-bold px-4 sm:py-2">Following Channels</div>
-              )}
+              {!minimize && <div className="font-bold px-4 sm:py-2">Following Channels</div>}
               {(loading || offlineAccountsLoading) && (
                 <div className="flex flex-col w-full">
                   <StreamerBarLoading />
@@ -189,34 +159,23 @@ const StreamerSidebar = () => {
                   <StreamerBarLoading />
                 </div>
               )}
-              {Boolean(followingStreamers?.length) ||
-              Boolean(offlineFollowingStreamers?.length) ? (
+              {Boolean(followingStreamers?.length) || Boolean(offlineFollowingStreamers?.length) ? (
                 <div className="flex flex-col w-full">
-                  {followingStreamers?.map((streamer) => {
-                    return (
-                      <StreamerBar
-                        key={streamer?.accountAddress}
-                        streamer={streamer}
-                      />
-                    )
+                  {followingStreamers?.map(streamer => {
+                    return <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
                   })}
 
-                  {offlineFollowingStreamers?.slice(0, 10)?.map((account) => {
+                  {offlineFollowingStreamers?.slice(0, 10)?.map(account => {
                     return (
-                      // @ts-ignore
+                      // @ts-expect-error
                       <StreamerBar
                         key={account?.address}
                         streamer={{
                           account,
                           accountAddress: account?.address,
-                          lastSeen: offlineStreamersMap.get(account?.address)
-                            ?.lastSeen,
-                          nextStreamTime: offlineStreamersMap.get(
-                            account?.address
-                          )?.nextStreamTime,
-                          premium:
-                            offlineStreamersMap.get(account?.address)
-                              ?.premium ?? false
+                          lastSeen: offlineStreamersMap.get(account?.address)?.lastSeen,
+                          nextStreamTime: offlineStreamersMap.get(account?.address)?.nextStreamTime,
+                          premium: offlineStreamersMap.get(account?.address)?.premium ?? false
                         }}
                       />
                     )
@@ -252,32 +211,24 @@ const StreamerSidebar = () => {
             {(Boolean(restOfTheStreamers?.length) ||
               Boolean(offlineRecommendedStreamers?.length)) && (
               <div className="flex flex-col w-full">
-                {restOfTheStreamers?.map((streamer) => {
+                {restOfTheStreamers?.map(streamer => {
                   return (
-                    // @ts-ignore
-                    <StreamerBar
-                      key={streamer?.accountAddress}
-                      streamer={streamer}
-                    />
+                    // @ts-expect-error
+                    <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
                   )
                 })}
 
-                {offlineRecommendedStreamers?.slice(0, 10)?.map((account) => {
+                {offlineRecommendedStreamers?.slice(0, 10)?.map(account => {
                   return (
-                    // @ts-ignore
+                    // @ts-expect-error
                     <StreamerBar
                       key={account?.address}
                       streamer={{
                         account: account,
                         accountAddress: account?.address,
-                        lastSeen: offlineStreamersMap.get(account?.address)
-                          ?.lastSeen,
-                        premium:
-                          offlineStreamersMap.get(account?.address)?.premium ??
-                          false,
-                        nextStreamTime: offlineStreamersMap.get(
-                          account?.address
-                        )?.nextStreamTime
+                        lastSeen: offlineStreamersMap.get(account?.address)?.lastSeen,
+                        premium: offlineStreamersMap.get(account?.address)?.premium ?? false,
+                        nextStreamTime: offlineStreamersMap.get(account?.address)?.nextStreamTime
                       }}
                     />
                   )
@@ -289,9 +240,7 @@ const StreamerSidebar = () => {
 
         {/* subscribe to super bloomers */}
 
-        {!isVerified?.isVerified?.[0]?.isVerified && (
-          <SubscribeToSuperBloomers />
-        )}
+        {!isVerified?.isVerified?.[0]?.isVerified && <SubscribeToSuperBloomers />}
 
         {!isMobile && (
           <>
@@ -327,9 +276,7 @@ const StreamerSidebar = () => {
                 >
                   <img
                     src={
-                      theme === 'light'
-                        ? '/icons/discord-icon.svg'
-                        : '/icons/discord-icon-dark.svg'
+                      theme === 'light' ? '/icons/discord-icon.svg' : '/icons/discord-icon-dark.svg'
                     }
                     alt="discord"
                     className="w-6 h-6"

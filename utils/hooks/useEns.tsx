@@ -15,7 +15,7 @@ const useEns = ({
     if (!address) return
     const foo = async () => {
       const ensName = await viemPublicClientEth.getEnsName({
-        // @ts-ignore
+        // @ts-expect-error
         address: address
       })
 

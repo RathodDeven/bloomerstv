@@ -1,6 +1,6 @@
-import React from 'react'
-import StartLoadingPage from '../pages/loading/StartLoadingPage'
 import { usePublicClient } from '@lens-protocol/react'
+import type React from 'react'
+import StartLoadingPage from '../pages/loading/StartLoadingPage'
 
 const ShowLoadingWrapper = ({ children }: { children: React.ReactNode }) => {
   const { currentSession } = usePublicClient()

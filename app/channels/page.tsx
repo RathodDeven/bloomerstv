@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import StreamerSidebar from '../../components/common/StreamerSidebar'
-import useIsMobile from '../../utils/hooks/useIsMobile'
 import MobileTopHeader from '../../components/pages/all/Header/MobileTopHeader'
+import useIsMobile from '../../utils/hooks/useIsMobile'
 
 const page = () => {
   const isMobile = useIsMobile()
