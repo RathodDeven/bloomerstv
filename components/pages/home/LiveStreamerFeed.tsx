@@ -1,4 +1,3 @@
-import React from 'react'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
 import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
 import LoadingVideoCard from '../../ui/LoadingVideoCard'
@@ -26,18 +25,12 @@ const LiveStreamerFeed = () => {
             return <StreamCard key={streamer?.accountAddress} streamer={streamer} />
           })}
         </div>
+      ) : loading ? (
+        <LoadingVideoCard className="2xl:w-1/3" />
       ) : (
-        <>
-          {loading ? (
-            <>
-              <LoadingVideoCard className="2xl:w-1/3" />
-            </>
-          ) : (
-            <div className="text-s-text font-bold text-xl px-2 mb-4 sm:mb-8">
-              No one is live right now
-            </div>
-          )}
-        </>
+        <div className="text-s-text font-bold text-xl px-2 mb-4 sm:mb-8">
+          No one is live right now
+        </div>
       )}
     </div>
   )

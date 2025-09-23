@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import MobileTopHeader from '../../components/pages/all/Header/MobileTopHeader'
 import ClipsFeed from '../../components/pages/home/ClipsFeed'
 import useIsMobile from '../../utils/hooks/useIsMobile'

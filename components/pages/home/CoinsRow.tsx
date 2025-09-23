@@ -1,7 +1,7 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { IconButton } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGetFeaturedCoins } from '../../../utils/hooks/useGetFeaturedCoins'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
 import CoinsRowItem from './CoinsRowItem'

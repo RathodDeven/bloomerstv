@@ -70,7 +70,7 @@ export const getIdentityTokenAsync = async (): Promise<null | string> => {
       data: json?.data?.refresh,
       metadata: {
         ...credJson.metadata,
-        updatedAt: new Date().getTime()
+        updatedAt: Date.now()
       }
     }
 

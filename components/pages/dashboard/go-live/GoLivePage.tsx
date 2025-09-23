@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import useSession from '../../../../utils/hooks/useSession'
 import LiveChat from '../../../common/LiveChat/LiveChat'
 import LiveStreamEditor from './LiveStreamEditor'

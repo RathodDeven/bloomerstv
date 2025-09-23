@@ -1,5 +1,4 @@
 import type { AnyPost } from '@lens-protocol/react'
-import React from 'react'
 import { useIsVerifiedQuery } from '../../../graphql/generated'
 // import CollectButton from '../profile/CollectButton'
 // import toast from 'react-hot-toast'

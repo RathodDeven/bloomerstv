@@ -553,18 +553,14 @@ const LiveChat = ({
                 </div>
 
                 {/* show comment */}
-                {msg?.contentType === ContentType.Comment && (
-                  <>
-                    {msg?.image && (
-                      <div className="px-1.5 py-1">
-                        <LoadingImage
-                          src={msg.image}
-                          className="max-w-full rounded-lg max-h-40 "
-                          alt="image"
-                        />
-                      </div>
-                    )}
-                  </>
+                {msg?.contentType === ContentType.Comment && msg?.image && (
+                  <div className="px-1.5 py-1">
+                    <LoadingImage
+                      src={msg.image}
+                      className="max-w-full rounded-lg max-h-40 "
+                      alt="image"
+                    />
+                  </div>
                 )}
 
                 {/* show clip */}
@@ -593,7 +589,7 @@ const LiveChat = ({
                         <div>
                           <div className="start-center-row">
                             <Markup className="text-xs break-words whitespace-pre-wrap font-semibold text-s-text group-hover:text-p-text leading-tight">
-                              {stringToLength('✂️ ' + msg.content, 100)}
+                              {stringToLength(`✂️ ${msg.content}`, 100)}
                             </Markup>
                           </div>
                         </div>

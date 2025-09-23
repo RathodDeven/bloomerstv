@@ -115,7 +115,6 @@ const PostStreamAsVideo = ({
       toast.error('You need to login a profile to post')
       return
     }
-    // @ts-expect-error
     if (!title || title.trim().length === 0) {
       toast.error('Please enter a title')
       return
@@ -381,115 +380,110 @@ const PostStreamAsVideo = ({
   }
 
   return (
-    <>
-      <ModalWrapper
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        title={modalTitle!}
-        Icon={Icon}
-        classname={clsx('max-h-[80vh]', defaultMode === 'Clip' ? 'w-[80vw]' : 'w-[40vw]')}
-        BotttomComponent={
-          <div className="flex flex-row justify-end">
-            {/* cancle button & save button */}
-            <Button variant="text" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="text"
-              onClick={handleCreatePost}
-              disabled={!title || title.trim().length === 0}
-            >
-              Post
-            </Button>
-          </div>
-        }
-      >
-        <div className="flex flex-col gap-y-2">
-          <div className="flex flex-row items-start gap-x-8">
-            <TextField
-              label="Video Title"
-              variant="outlined"
-              size="small"
-              className="w-full"
-              onChange={
-                // @ts-expect-error
-                e => setTitle(e.target.value)
-              }
-              value={title}
-              inputProps={{
-                maxLength: 100
-              }}
-              helperText={`${100 - title.length} / 100 characters remaining`}
-            />
-          </div>
+    <ModalWrapper
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      title={modalTitle!}
+      Icon={Icon}
+      classname={clsx('max-h-[80vh]', defaultMode === 'Clip' ? 'w-[80vw]' : 'w-[40vw]')}
+      BotttomComponent={
+        <div className="flex flex-row justify-end">
+          {/* cancle button & save button */}
+          <Button variant="text" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="text"
+            onClick={handleCreatePost}
+            disabled={!title || title.trim().length === 0}
+          >
+            Post
+          </Button>
+        </div>
+      }
+    >
+      <div className="flex flex-col gap-y-2">
+        <div className="flex flex-row items-start gap-x-8">
+          <TextField
+            label="Video Title"
+            variant="outlined"
+            size="small"
+            className="w-full"
+            onChange={e => setTitle(e.target.value)}
+            value={title}
+            inputProps={{
+              maxLength: 100
+            }}
+            helperText={`${100 - title.length} / 100 characters remaining`}
+          />
+        </div>
 
-          {showVideoDescription ? (
-            <TextareaAutosize
-              className="text-base text-p-text border-p-border outline-none bg-s-bg w-full font-normal font-sans leading-normal px-3 py-1.5 rounded-md "
-              aria-label="empty textarea"
-              placeholder="Video Description... (optional)"
-              style={{
-                resize: 'none',
-                margin: 0
-              }}
-              maxRows={10}
-              minRows={2}
-              onChange={e => setContent(e.target.value)}
-              value={content}
-            />
-          ) : (
-            <div
-              className="text-xs text-s-text cursor-pointer hover:text-p-text px-1 font-bold"
-              onClick={() => {
-                setShowVideoDescription(true)
-              }}
-            >
-              {`Add a description to your video >`}
-            </div>
-          )}
+        {showVideoDescription ? (
+          <TextareaAutosize
+            className="text-base text-p-text border-p-border outline-none bg-s-bg w-full font-normal font-sans leading-normal px-3 py-1.5 rounded-md "
+            aria-label="empty textarea"
+            placeholder="Video Description... (optional)"
+            style={{
+              resize: 'none',
+              margin: 0
+            }}
+            maxRows={10}
+            minRows={2}
+            onChange={e => setContent(e.target.value)}
+            value={content}
+          />
+        ) : (
+          <div
+            className="text-xs text-s-text cursor-pointer hover:text-p-text px-1 font-bold"
+            onClick={() => {
+              setShowVideoDescription(true)
+            }}
+          >
+            {`Add a description to your video >`}
+          </div>
+        )}
 
-          <div className="start-row gap-x-10 px-1 pb-1">
-            {/* <div className="space-y-1">
+        <div className="start-row gap-x-10 px-1 pb-1">
+          {/* <div className="space-y-1">
               <div className="text-s-text font-bold text-md">
                 Collect Preview
               </div>
               <CollectSettingButton />
             </div> */}
-            <div className="space-y-1">
-              <div className="text-s-text font-bold text-md">Category</div>
-              <Select
-                value={category}
-                onChange={e => {
-                  if (!e.target.value) return
-                  setCategory(e.target.value as string)
-                }}
-                variant="outlined"
-                size="small"
-                sx={{
-                  borderRadius: '100px'
-                }}
-              >
-                {CATEGORIES_LIST.map(category => (
-                  <MenuItem value={category} key={category}>
-                    {category}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-          </div>
-
-          <div className="rounded-md overflow-hidden">
-            {open && defaultMode === 'Clip' && (
-              <VideoWithEditors recordingUrl={session?.recordingUrl!} />
-            )}
-            {open && defaultMode === 'Video' && session?.recordingUrl && (
-              <Player src={session?.recordingUrl} showPipButton={false} autoHide={0} />
-            )}
+          <div className="space-y-1">
+            <div className="text-s-text font-bold text-md">Category</div>
+            <Select
+              value={category}
+              onChange={e => {
+                if (!e.target.value) return
+                setCategory(e.target.value as string)
+              }}
+              variant="outlined"
+              size="small"
+              sx={{
+                borderRadius: '100px'
+              }}
+            >
+              {CATEGORIES_LIST.map(category => (
+                <MenuItem value={category} key={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
           </div>
         </div>
-      </ModalWrapper>
-    </>
+
+        <div className="rounded-md overflow-hidden">
+          {open && defaultMode === 'Clip' && (
+            <VideoWithEditors recordingUrl={session?.recordingUrl!} />
+          )}
+          {open && defaultMode === 'Video' && session?.recordingUrl && (
+            <Player src={session?.recordingUrl} showPipButton={false} autoHide={0} />
+          )}
+        </div>
+      </div>
+    </ModalWrapper>
   )
 }
 

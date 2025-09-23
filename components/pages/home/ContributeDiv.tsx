@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import React from 'react'
 import Countdown from 'react-countdown'
 import { GITCOIN_ROUND_LINK } from '../../../utils/config'
 

@@ -73,7 +73,7 @@ export default function CreateCoin() {
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files?.[0]) {
       const file = event.target.files[0]
       const fileUrl = URL.createObjectURL(file)
 
@@ -324,7 +324,7 @@ export default function CreateCoin() {
                           Total Supply
                         </Typography>
                         <Typography variant="body1" fontWeight="medium">
-                          {parseInt(formData.totalSupply).toLocaleString()}
+                          {parseInt(formData.totalSupply, 10).toLocaleString()}
                         </Typography>
                       </Box>
                       <Box>

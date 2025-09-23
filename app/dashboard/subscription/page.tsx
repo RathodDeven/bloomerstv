@@ -1,6 +1,5 @@
 'use client'
 import DoneIcon from '@mui/icons-material/Done'
-import React from 'react'
 import GoSuperButton from '../../../components/pages/dashboard/go-live/GoSuperButton'
 import useSession from '../../../utils/hooks/useSession'
 

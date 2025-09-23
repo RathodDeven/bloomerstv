@@ -279,19 +279,17 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
           <Divider />
 
           {!isMobile && account && isLensAuthenticated && (
-            <>
-              <MenuItem
-                onClick={() => {
-                  push(`/dashboard/content`)
-                  handleClose()
-                }}
-              >
-                <ListItemIcon>
-                  <DashboardIcon fontSize="small" />
-                </ListItemIcon>
-                Content
-              </MenuItem>
-            </>
+            <MenuItem
+              onClick={() => {
+                push(`/dashboard/content`)
+                handleClose()
+              }}
+            >
+              <ListItemIcon>
+                <DashboardIcon fontSize="small" />
+              </ListItemIcon>
+              Content
+            </MenuItem>
           )}
 
           <MenuItem onClick={toggleTheme}>

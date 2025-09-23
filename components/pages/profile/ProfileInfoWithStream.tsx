@@ -1,5 +1,4 @@
 import type { Account, Post } from '@lens-protocol/react'
-import React from 'react'
 import { type SingleStreamer, useIsVerifiedQuery } from '../../../graphql/generated'
 import ProfileBar from './ProfileBar'
 

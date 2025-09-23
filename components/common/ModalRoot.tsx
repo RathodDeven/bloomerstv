@@ -1,5 +1,4 @@
 import LoginIcon from '@mui/icons-material/Login'
-import React from 'react'
 import ModalWrapper from '../ui/Modal/ModalWrapper'
 import LoginComponent from './LoginComponent'
 import { useModal } from './ModalContext'

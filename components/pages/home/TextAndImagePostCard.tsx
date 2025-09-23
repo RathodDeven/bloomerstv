@@ -82,7 +82,7 @@ const TextAndImagePostCard = ({
                 />
                 <div className="start-col shrink-0 w-full">
                   <div className="font-bold start-center-row text-s-text gap-x-1">
-                    <>{formatHandle(post?.author)}</>
+                    {formatHandle(post?.author)}
                     {premium && <VerifiedBadge />}
                   </div>
                   <div className="text-xs text-s-text shrink-0">{timeAgo(post?.timestamp)}</div>

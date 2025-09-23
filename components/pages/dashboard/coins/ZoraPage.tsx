@@ -1,4 +1,3 @@
-import React from 'react'
 import ZoraCoins from './ZoraCoins'
 
 const ZoraPage = () => {

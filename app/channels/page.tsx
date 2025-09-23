@@ -1,5 +1,4 @@
 'use client'
-import React from 'react'
 import StreamerSidebar from '../../components/common/StreamerSidebar'
 import MobileTopHeader from '../../components/pages/all/Header/MobileTopHeader'
 import useIsMobile from '../../utils/hooks/useIsMobile'

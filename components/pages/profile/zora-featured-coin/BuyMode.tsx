@@ -98,8 +98,7 @@ const BuyMode: React.FC<BuyModeProps> = ({
         txHash = result
       } else if (result && typeof result === 'object') {
         // Extract hash from various possible response formats
-        txHash =
-          result.hash || result.transactionHash || (result.response && result.response.hash) || ''
+        txHash = result.hash || result.transactionHash || result.response?.hash || ''
       }
 
       if (!txHash) {

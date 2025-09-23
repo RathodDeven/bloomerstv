@@ -1,6 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit'
 import { Button, Checkbox, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { type MyStream, useUpdateMyStreamMutation } from '../../../../graphql/generated'
 import { APP_LINK } from '../../../../utils/config'
 import useSession from '../../../../utils/hooks/useSession'

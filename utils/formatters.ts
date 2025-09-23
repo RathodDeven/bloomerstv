@@ -19,7 +19,7 @@ export const truncateAddress = (address: string, startChars = 6, endChars = 4): 
  */
 export const formatCurrency = (value: number | string, decimals = 2): string => {
   const numValue = typeof value === 'string' ? parseFloat(value) : value
-  if (isNaN(numValue)) return '$0.00'
+  if (Number.isNaN(numValue)) return '$0.00'
 
   return `$${numValue.toLocaleString(undefined, {
     minimumFractionDigits: decimals,
@@ -48,7 +48,7 @@ export const formatRawBalance = (balance: string): string => {
 export const formatTimeAgo = (dateInput: string | Date): string => {
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput
 
-  if (isNaN(date.getTime())) {
+  if (Number.isNaN(date.getTime())) {
     return 'Invalid date'
   }
 

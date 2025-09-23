@@ -577,7 +577,7 @@ const LiveChatInput = ({
               size="small"
               value={amountValue}
               marks
-              onChange={(e, value) => {
+              onChange={(_e, value) => {
                 if (!value) return
                 setAmountValue(value as number)
               }}

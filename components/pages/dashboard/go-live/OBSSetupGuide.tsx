@@ -1,4 +1,3 @@
-import React from 'react'
 import Markup from '../../../common/Lexical/Markup'
 
 const OBSSetupGuide = () => {

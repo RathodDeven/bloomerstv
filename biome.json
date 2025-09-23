@@ -28,7 +28,8 @@
         "noAutofocus": "off",
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off",
-        "useAltText": "off"
+        "useAltText": "off",
+        "useIframeTitle": "off"
       }
     }
   },

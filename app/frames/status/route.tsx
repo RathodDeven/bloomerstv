@@ -1,4 +1,3 @@
-// /* eslint-disable react/jsx-key */
 // import { Button } from 'frames.js/next'
 // import { frames } from '../frames'
 // import { NODE_GRAPHQL_URL } from '../../../utils/config'

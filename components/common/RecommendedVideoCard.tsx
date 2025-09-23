@@ -1,5 +1,4 @@
 import type { Post } from '@lens-protocol/react'
-import React from 'react'
 import useIsMobile from '../../utils/hooks/useIsMobile'
 import getPublicationData from '../../utils/lib/getPublicationData'
 import HomeVideoCard from './HomeVideoCard'

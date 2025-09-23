@@ -55,7 +55,7 @@ export const simpleTime = (time: number) => {
 }
 
 export const timeToGo = (futureTime: number): string | null => {
-  const now = new Date().getTime()
+  const now = Date.now()
   const futureTimeDate = new Date(futureTime).getTime()
 
   const timeDifference = futureTimeDate - now
@@ -89,7 +89,7 @@ export const formatDate = (dateString: string): string => {
 
 export const timeAgo = (time?: number | string) => {
   if (!time) return 'just now'
-  const now = new Date().getTime()
+  const now = Date.now()
 
   if (typeof time === 'string') {
     time = new Date(time).getTime()
@@ -116,7 +116,7 @@ export const timeAgo = (time?: number | string) => {
 }
 
 export const timeAgoShort = (time: number | string) => {
-  const now = new Date().getTime()
+  const now = Date.now()
 
   if (typeof time === 'string') {
     time = new Date(time).getTime()

@@ -8,7 +8,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { Button } from '@mui/material'
 import clsx from 'clsx'
-import React from 'react'
 import Countdown from 'react-countdown'
 import toast from 'react-hot-toast'
 import {
@@ -154,35 +153,33 @@ const StreamerOffline = ({
                     className="pl-2 -ml-2"
                   />
                 )}
-                {isAuthenticated && sessionAccount?.address !== account?.address && (
-                  <>
-                    {isSubscribed?.isSubscribedNotificationForStreamer ? (
-                      <div className="flex flex-row gap-x-1 py-1.5 -ml-0.5 text-s-text">
-                        <NotificationsIcon fontSize="medium" />
-                        <div className="text-left">
-                          You will be notified when {formatHandle(account)} goes live.
-                        </div>
+                {isAuthenticated &&
+                  sessionAccount?.address !== account?.address &&
+                  (isSubscribed?.isSubscribedNotificationForStreamer ? (
+                    <div className="flex flex-row gap-x-1 py-1.5 -ml-0.5 text-s-text">
+                      <NotificationsIcon fontSize="medium" />
+                      <div className="text-left">
+                        You will be notified when {formatHandle(account)} goes live.
                       </div>
-                    ) : (
-                      <div className="-ml-1">
-                        <Button
-                          onClick={async () => {
-                            await addSubscriber()
-                          }}
-                          color="primary"
-                          variant="text"
-                          startIcon={<NotificationsNoneIcon />}
-                          sx={{
-                            textTransform: 'none',
-                            borderRadius: '20px'
-                          }}
-                        >
-                          <div className="text-base -ml-1">Turn on notifications</div>
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                )}
+                    </div>
+                  ) : (
+                    <div className="-ml-1">
+                      <Button
+                        onClick={async () => {
+                          await addSubscriber()
+                        }}
+                        color="primary"
+                        variant="text"
+                        startIcon={<NotificationsNoneIcon />}
+                        sx={{
+                          textTransform: 'none',
+                          borderRadius: '20px'
+                        }}
+                      >
+                        <div className="text-base -ml-1">Turn on notifications</div>
+                      </Button>
+                    </div>
+                  ))}
               </div>
             )}
           </div>

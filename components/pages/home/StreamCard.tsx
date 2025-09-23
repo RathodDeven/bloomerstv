@@ -1,7 +1,6 @@
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import Link from 'next/link'
-import React from 'react'
 import formatHandle from '../../../utils/lib/formatHandle'
 import getAvatar from '../../../utils/lib/getAvatar'
 import Markup from '../../common/Lexical/Markup'

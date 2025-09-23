@@ -1,5 +1,4 @@
 import type { Account } from '@lens-protocol/react'
-import React from 'react'
 import formatHandle from '../../../utils/lib/formatHandle'
 import getAvatar from '../../../utils/lib/getAvatar'
 

@@ -2,7 +2,6 @@
 import VerifiedIcon from '@mui/icons-material/Verified'
 import { type SxProps, Tooltip } from '@mui/material'
 import clsx from 'clsx'
-import React from 'react'
 
 const VerifiedBadge = ({ className, sx }: { className?: string; sx?: SxProps }) => {
   return (

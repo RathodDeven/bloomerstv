@@ -144,17 +144,15 @@ const PlayerWithControls = ({
           {streamOfflineErrorComponent ? (
             streamOfflineErrorComponent
           ) : (
-            <>
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-1">
-                  <div className="text-lg sm:text-2xl font-bold">Stream is offline</div>
-                  <div className="text-xs sm:text-sm text-gray-100">
-                    Playback will start automatically once the stream has started
-                  </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-1">
+                <div className="text-lg sm:text-2xl font-bold">Stream is offline</div>
+                <div className="text-xs sm:text-sm text-gray-100">
+                  Playback will start automatically once the stream has started
                 </div>
-                <LoadingIcon className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin text-[#7a7a81]" />
               </div>
-            </>
+              <LoadingIcon className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin text-[#7a7a81]" />
+            </div>
           )}
         </Player.ErrorIndicator>
 

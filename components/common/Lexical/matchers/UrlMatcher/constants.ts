@@ -21,7 +21,7 @@ const combinePatterns = (patterns: RegExp[], options: CombinePatternsOptions = {
 
   return new RegExp(regex, options.flags ?? '')
 }
-// eslint-disable-next-line
+
 const VALID_PATH_CHARS = /[\w!$%&'()*+,./;=[\\\]~\u0400-\u04FF-]*/
 const URL_SCHEME = combinePatterns([/(https?:\/\/)?/], { capture: true })
 

@@ -1,5 +1,4 @@
 import { MainContentFocus, type Post, PostType, usePosts } from '@lens-protocol/react'
-import React from 'react'
 import { APP_ADDRESS } from '../../../utils/config'
 import HomeVideoCard from '../../common/HomeVideoCard'
 import LoadingVideoCard from '../../ui/LoadingVideoCard'
@@ -27,7 +26,7 @@ const VideosFeed = () => {
           })}
         </div>
       ) : (
-        <>{loading && <LoadingVideoCard />}</>
+        loading && <LoadingVideoCard />
       )}
     </div>
   )

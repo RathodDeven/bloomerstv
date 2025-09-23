@@ -1,4 +1,3 @@
-import React from 'react'
 import type { MyStream } from '../../../../graphql/generated'
 import { LIVE_PEER_RTMP_URL } from '../../../../utils/config'
 import { getLiveStreamUrl, getLiveStreamUrlWebRTC } from '../../../../utils/lib/getLiveStreamUrl'

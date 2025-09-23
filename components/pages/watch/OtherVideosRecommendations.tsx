@@ -8,7 +8,7 @@ import {
 } from '@lens-protocol/react'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { APP_ADDRESS, hideAccountAddresses } from '../../../utils/config'
 import useIsMobile from '../../../utils/hooks/useIsMobile'
 import HomeVideoCard from '../../common/HomeVideoCard'

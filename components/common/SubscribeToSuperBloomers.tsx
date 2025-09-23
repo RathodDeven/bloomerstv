@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { SuperFluidInfo } from '../../utils/config'
 import useIsMobile from '../../utils/hooks/useIsMobile'
 import VerifiedBadge from '../ui/VerifiedBadge'

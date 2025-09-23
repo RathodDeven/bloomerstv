@@ -181,75 +181,73 @@ const PostClipOnLens = ({
   }
 
   return (
-    <>
-      <ModalWrapper
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        title="Post Clip on Lens"
-        Icon={<EditIcon />}
-        keepOpenOnBgClick
-        classname="w-[600px]"
-        BotttomComponent={
-          <div className="flex flex-row justify-end">
-            {/* cancle button & save button */}
-            <Button variant="text" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button variant="text" onClick={handleCreatePost} disabled={title.trim().length === 0}>
-              Post
-            </Button>
-          </div>
-        }
-      >
-        <div className="flex flex-col gap-y-4 px-3 sm:px-0">
-          <TextField
-            label="Clip Title"
-            variant="outlined"
-            onChange={
-              // @ts-expect-error
-              e => setTitle(e.target.value)
-            }
-            value={title}
-            inputProps={{
-              maxLength: 100
-            }}
-            helperText={`${100 - title.length} / 100 characters remaining`}
-          />
+    <ModalWrapper
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      title="Post Clip on Lens"
+      Icon={<EditIcon />}
+      keepOpenOnBgClick
+      classname="w-[600px]"
+      BotttomComponent={
+        <div className="flex flex-row justify-end">
+          {/* cancle button & save button */}
+          <Button variant="text" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="text" onClick={handleCreatePost} disabled={title.trim().length === 0}>
+            Post
+          </Button>
+        </div>
+      }
+    >
+      <div className="flex flex-col gap-y-4 px-3 sm:px-0">
+        <TextField
+          label="Clip Title"
+          variant="outlined"
+          onChange={
+            // @ts-expect-error
+            e => setTitle(e.target.value)
+          }
+          value={title}
+          inputProps={{
+            maxLength: 100
+          }}
+          helperText={`${100 - title.length} / 100 characters remaining`}
+        />
 
-          {/* <div className="space-y-1">
+        {/* <div className="space-y-1">
             <div className="text-sm font-semibold text-s-text">
               Collect Settings
             </div>
             <CollectSettingButton />
           </div> */}
 
-          <div className="space-y-1">
-            <div className="text-s-text font-bold text-md">Category</div>
-            <Select
-              value={category}
-              onChange={e => {
-                if (!e.target.value) return
-                setCategory(e.target.value as string)
-              }}
-              variant="outlined"
-              size="small"
-              sx={{
-                borderRadius: '100px'
-              }}
-            >
-              {CATEGORIES_LIST.map(category => (
-                <MenuItem value={category} key={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-
-          <video controls src={url} className="w-full rounded-xl" autoPlay muted />
+        <div className="space-y-1">
+          <div className="text-s-text font-bold text-md">Category</div>
+          <Select
+            value={category}
+            onChange={e => {
+              if (!e.target.value) return
+              setCategory(e.target.value as string)
+            }}
+            variant="outlined"
+            size="small"
+            sx={{
+              borderRadius: '100px'
+            }}
+          >
+            {CATEGORIES_LIST.map(category => (
+              <MenuItem value={category} key={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
         </div>
-      </ModalWrapper>
-    </>
+
+        <video controls src={url} className="w-full rounded-xl" autoPlay muted />
+      </div>
+    </ModalWrapper>
   )
 }
 

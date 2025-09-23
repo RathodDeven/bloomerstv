@@ -1,7 +1,7 @@
 import InfoIcon from '@mui/icons-material/Info'
 import VideocamIcon from '@mui/icons-material/Videocam'
 import { Button, CircularProgress } from '@mui/material'
-import React, { memo, useState } from 'react'
+import { memo, useState } from 'react'
 import ModalWrapper from '../../../ui/Modal/ModalWrapper'
 import OBSSetupGuide from './OBSSetupGuide'
 

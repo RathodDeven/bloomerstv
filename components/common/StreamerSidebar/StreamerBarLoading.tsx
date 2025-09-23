@@ -1,5 +1,3 @@
-import React from 'react'
-
 const StreamerBarLoading = () => {
   return (
     <div className="between-row hover:bg-p-hover cursor-pointer w-full p-2 2xl:px-4">

@@ -269,7 +269,7 @@ const LiveVideoComponent = ({
           if (retries === MAX_RETRIES) {
             if (result.isErr()) {
               // If the maximum number of retries is reached, show an error
-              toast.error('Error from Lens API' + result.error.message)
+              toast.error(`Error from Lens API${result.error.message}`)
             }
             // If the maximum number of retries has been reached, throw an error
             // toast.error(result.error.message)

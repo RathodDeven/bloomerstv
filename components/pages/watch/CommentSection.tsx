@@ -6,7 +6,7 @@ import {
   usePostReferences
 } from '@lens-protocol/react'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import CommentRow from './CommentRow'
 import CreateCommentRow from './CreateCommentRow'
 

@@ -193,27 +193,25 @@ const FollowingButton = ({
           <div className="font-semibold text-sm">Following</div>
         </Button>
       ) : (
-        <>
-          <Tooltip title="Follow this streamer" arrow>
-            <LoadingButton
-              loading={followLoading}
-              onClick={handleFollow}
-              variant="contained"
-              autoCapitalize="none"
-              size="small"
-              color="primary"
-              disabled={followLoading}
-              sx={{
-                borderRadius: '20px',
-                boxShadow: 'none',
-                padding: '8px 20px',
-                textTransform: 'none'
-              }}
-            >
-              <div className="font-semibold text-sm">{isFollowing ? 'Following' : 'Follow'}</div>
-            </LoadingButton>
-          </Tooltip>
-        </>
+        <Tooltip title="Follow this streamer" arrow>
+          <LoadingButton
+            loading={followLoading}
+            onClick={handleFollow}
+            variant="contained"
+            autoCapitalize="none"
+            size="small"
+            color="primary"
+            disabled={followLoading}
+            sx={{
+              borderRadius: '20px',
+              boxShadow: 'none',
+              padding: '8px 20px',
+              textTransform: 'none'
+            }}
+          >
+            <div className="font-semibold text-sm">{isFollowing ? 'Following' : 'Follow'}</div>
+          </LoadingButton>
+        </Tooltip>
       )}
     </div>
   )

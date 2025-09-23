@@ -1,5 +1,5 @@
 'use client'
-import React, { use } from 'react'
+import { use } from 'react'
 import LiveChat from '../../../components/common/LiveChat/LiveChat'
 
 const page = (props: {

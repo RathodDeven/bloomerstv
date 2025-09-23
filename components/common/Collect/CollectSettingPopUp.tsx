@@ -414,7 +414,7 @@ const CollectSettingPopUp = () => {
                   value={numberOfDays || 7}
                   aria-label="Time Limit in Days"
                   valueLabelDisplay="auto"
-                  onChange={(e, value) => {
+                  onChange={(_e, value) => {
                     if (!value) return
                     setNumberOfDays(value as number)
                   }}

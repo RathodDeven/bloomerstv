@@ -3,7 +3,6 @@ import { Tooltip } from '@mui/material'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
 import Countdown from 'react-countdown'
 import { humanReadableDateTime, humanReadableNumber, timeAgoShort } from '../../../utils/helpers'
 import useAccountStats from '../../../utils/hooks/lens/useAccountStats'
@@ -82,25 +81,22 @@ const StreamerBar = ({ streamer }: { streamer: StreamerWithAccount }) => {
       </div>
 
       {/* red dot */}
-      {!minimize && (
-        <>
-          {streamer?.isActive ? (
-            <div className="centered-row gap-x-1 text-xl text-brand ">
-              <PermIdentityIcon fontSize="inherit" />
-              <div className="text-base font-semibold">{streamer?.liveCount}</div>
+      {!minimize &&
+        (streamer?.isActive ? (
+          <div className="centered-row gap-x-1 text-xl text-brand ">
+            <PermIdentityIcon fontSize="inherit" />
+            <div className="text-base font-semibold">{streamer?.liveCount}</div>
+          </div>
+        ) : (
+          <Tooltip
+            title={streamer?.lastSeen ? humanReadableDateTime(streamer?.lastSeen) : 'Offline'}
+            arrow
+          >
+            <div className="text-s-text text-xs">
+              {streamer?.lastSeen ? `${timeAgoShort(streamer?.lastSeen)} ago` : 'Offline'}
             </div>
-          ) : (
-            <Tooltip
-              title={streamer?.lastSeen ? humanReadableDateTime(streamer?.lastSeen) : 'Offline'}
-              arrow
-            >
-              <div className="text-s-text text-xs">
-                {streamer?.lastSeen ? `${timeAgoShort(streamer?.lastSeen)} ago` : 'Offline'}
-              </div>
-            </Tooltip>
-          )}
-        </>
-      )}
+          </Tooltip>
+        ))}
     </Link>
   )
 }

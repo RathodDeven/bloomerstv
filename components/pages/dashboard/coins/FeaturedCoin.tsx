@@ -23,7 +23,6 @@ import {
   Tooltip,
   Typography
 } from '@mui/material'
-import React from 'react'
 import toast from 'react-hot-toast'
 import { formatNumber, formatTimeAgo, truncateAddress } from '../../../../utils/formatters'
 import type { CoinBalance } from '../../../../utils/types/zora'
@@ -51,7 +50,7 @@ export default function FeaturedCoin({
     const currentMarketCap = parseFloat(coin.marketCap)
     const deltaValue = parseFloat(coin.marketCapDelta24h)
 
-    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
+    if (Number.isNaN(currentMarketCap) || Number.isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 
@@ -94,7 +93,7 @@ export default function FeaturedCoin({
     const marketCapValue = parseFloat(coin.marketCap)
     const totalSupplyValue = parseFloat(coin.totalSupply)
 
-    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
+    if (Number.isNaN(marketCapValue) || Number.isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 

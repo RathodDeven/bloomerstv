@@ -1,6 +1,6 @@
 import { type MediaScopedProps, useMediaContext, useStore } from '@livepeer/react/player'
 import clsx from 'clsx'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import Draggable from 'react-draggable'
 import { getListOfThumbnailsFromRecordingUrl } from '../../../../utils/lib/getThumbnailFromRecordingUrl'
 import { useStreamAsVideo } from '../../../store/useStreamAsVideo'
@@ -175,7 +175,7 @@ const VideoClipper = ({ url, __scopeMedia }: MediaScopedProps<{ url: string }>) 
           axis="x"
           bounds="parent"
           position={{ x: timeToLocation(progress), y: 0 }}
-          onDrag={(e, data) => {
+          onDrag={(_e, data) => {
             if (!containerRef?.current?.offsetWidth) return
             const newProgress = data.x / containerRef.current.offsetWidth
             __controlsFunctions.requestSeek(newProgress * duration)
@@ -199,7 +199,7 @@ const VideoClipper = ({ url, __scopeMedia }: MediaScopedProps<{ url: string }>) 
           axis="x"
           bounds="parent"
           position={{ x: startPosition, y: 0 }}
-          onDrag={(e, data) => {
+          onDrag={(_e, data) => {
             if (!containerRef?.current?.offsetWidth) return
             const newTimeDistance = ((endPosition - data.x) / totalWidth) * duration
 
@@ -230,7 +230,7 @@ const VideoClipper = ({ url, __scopeMedia }: MediaScopedProps<{ url: string }>) 
           axis="x"
           bounds="parent"
           position={{ x: endPosition, y: 0 }}
-          onDrag={(e, data) => {
+          onDrag={(_e, data) => {
             if (!containerRef?.current?.offsetWidth) return
             const newTimeDistance = ((data.x - startPosition) / totalWidth) * duration
             if (data.x + 8 > startPosition) {

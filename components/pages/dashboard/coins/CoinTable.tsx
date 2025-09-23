@@ -68,9 +68,9 @@ export default function CoinTable({
       const totalSupplyValue = parseFloat(totalSupply)
 
       if (
-        isNaN(balanceValue) ||
-        isNaN(marketCapValue) ||
-        isNaN(totalSupplyValue) ||
+        Number.isNaN(balanceValue) ||
+        Number.isNaN(marketCapValue) ||
+        Number.isNaN(totalSupplyValue) ||
         totalSupplyValue === 0
       ) {
         return '0.00'
@@ -89,7 +89,7 @@ export default function CoinTable({
     const marketCapValue = parseFloat(marketCap)
     const totalSupplyValue = parseFloat(totalSupply)
 
-    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
+    if (Number.isNaN(marketCapValue) || Number.isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 
@@ -189,7 +189,11 @@ export default function CoinTable({
                 const currentMarketCap = parseFloat(node.coin.marketCap)
                 const deltaValue = parseFloat(node.coin.marketCapDelta24h)
 
-                if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
+                if (
+                  Number.isNaN(currentMarketCap) ||
+                  Number.isNaN(deltaValue) ||
+                  currentMarketCap === 0
+                ) {
                   return '0.00'
                 }
 

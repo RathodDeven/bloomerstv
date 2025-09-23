@@ -43,7 +43,7 @@ const CoinsRowItem: React.FC<CoinsRowItemProps> = ({ accountAddress, coinAddress
       try {
         const response = await getCoin({
           address: coinAddress,
-          chain: parseInt(chainId) || base.id
+          chain: parseInt(chainId, 10) || base.id
         })
 
         const data = response.data?.zora20Token
@@ -67,7 +67,7 @@ const CoinsRowItem: React.FC<CoinsRowItemProps> = ({ accountAddress, coinAddress
     const currentMarketCap = parseFloat(coinData.marketCap)
     const deltaValue = parseFloat(coinData.marketCapDelta24h)
 
-    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
+    if (Number.isNaN(currentMarketCap) || Number.isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 

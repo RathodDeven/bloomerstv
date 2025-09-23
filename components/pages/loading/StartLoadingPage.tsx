@@ -1,4 +1,3 @@
-import React from 'react'
 import { APP_NAME } from '../../../utils/config'
 
 const StartLoadingPage = () => {

@@ -101,7 +101,7 @@ const VideoPage = ({ post, sessionId }: { post?: Post; sessionId?: string }) => 
             )}
           </>
         ) : (
-          <>{asset?.uri && memoizedAsset}</>
+          asset?.uri && memoizedAsset
         )}
       </div>
       <ProfileInfoWithStream

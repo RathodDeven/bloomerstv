@@ -1,6 +1,5 @@
 'use client'
 import { useAccountsBulk } from '@lens-protocol/react'
-import React from 'react'
 import { useOfflineStreamersQuery } from '../../../graphql/generated'
 import useSession from '../../../utils/hooks/useSession'
 import { useStreamersWithAccounts } from '../../store/useStreamersWithAccounts'
@@ -15,8 +14,7 @@ const StreamerHorizontalDiv = () => {
   }))
   const { data: offlineStreamers, loading: offlineStreamersLoading } = useOfflineStreamersQuery()
   const sortedOfflineStreamers = offlineStreamers?.offlineStreamers
-    ? // eslint-disable-next-line no-unsafe-optional-chaining
-      [...offlineStreamers?.offlineStreamers]?.sort((a, b) => b?.lastSeen - a?.lastSeen)
+    ? [...offlineStreamers?.offlineStreamers!]?.sort((a, b) => b?.lastSeen - a?.lastSeen)
     : []
 
   const { data: offlineAccounts, loading: offlineAccountsLoading } = useAccountsBulk({

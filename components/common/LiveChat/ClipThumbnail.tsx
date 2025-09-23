@@ -1,6 +1,5 @@
 import { usePost } from '@lens-protocol/react'
 import clsx from 'clsx'
-import React from 'react'
 import LoadingImage from '../../ui/LoadingImage'
 
 const ClipPostThumbnail = ({

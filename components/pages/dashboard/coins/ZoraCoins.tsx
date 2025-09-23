@@ -1,7 +1,7 @@
 import { AddCircleOutline, MonetizationOn } from '@mui/icons-material'
 import { Box, Button, Card, CardContent, Container, Grid, Typography } from '@mui/material'
 import { getProfileBalances } from '@zoralabs/coins-sdk'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { base } from 'viem/chains'
 import { useMyStreamQuery, useUpdateMyStreamMutation } from '../../../../graphql/generated'

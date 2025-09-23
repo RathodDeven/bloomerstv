@@ -182,112 +182,106 @@ const StreamerSidebar = () => {
                   })}
                 </div>
               ) : (
-                <>
-                  {!minimize && !(loading || offlineAccountsLoading) && (
-                    <div className="px-4 py-2 text-sm text-s-text font-semibold">
-                      No one from your followings has been streaming recently.
-                    </div>
-                  )}
-                </>
+                !minimize &&
+                !(loading || offlineAccountsLoading) && (
+                  <div className="px-4 py-2 text-sm text-s-text font-semibold">
+                    No one from your followings has been streaming recently.
+                  </div>
+                )
               )}
             </>
           )}
 
-          <>
-            {!minimize &&
-              (loading ||
-                offlineAccountsLoading ||
-                restOfTheStreamers?.length > 0 ||
-                offlineRecommendedStreamers.length > 0) && (
-                <div className="font-bold px-4 py-2">Recommended Channels</div>
-              )}
-            {(loading || offlineAccountsLoading) && (
-              <div className="flex flex-col w-full">
-                <StreamerBarLoading />
-                <StreamerBarLoading />
-                <StreamerBarLoading />
-              </div>
+          {!minimize &&
+            (loading ||
+              offlineAccountsLoading ||
+              restOfTheStreamers?.length > 0 ||
+              offlineRecommendedStreamers.length > 0) && (
+              <div className="font-bold px-4 py-2">Recommended Channels</div>
             )}
-            {(Boolean(restOfTheStreamers?.length) ||
-              Boolean(offlineRecommendedStreamers?.length)) && (
-              <div className="flex flex-col w-full">
-                {restOfTheStreamers?.map(streamer => {
-                  return (
-                    // @ts-expect-error
-                    <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
-                  )
-                })}
+          {(loading || offlineAccountsLoading) && (
+            <div className="flex flex-col w-full">
+              <StreamerBarLoading />
+              <StreamerBarLoading />
+              <StreamerBarLoading />
+            </div>
+          )}
+          {(Boolean(restOfTheStreamers?.length) ||
+            Boolean(offlineRecommendedStreamers?.length)) && (
+            <div className="flex flex-col w-full">
+              {restOfTheStreamers?.map(streamer => {
+                return (
+                  // @ts-expect-error
+                  <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
+                )
+              })}
 
-                {offlineRecommendedStreamers?.slice(0, 10)?.map(account => {
-                  return (
-                    // @ts-expect-error
-                    <StreamerBar
-                      key={account?.address}
-                      streamer={{
-                        account: account,
-                        accountAddress: account?.address,
-                        lastSeen: offlineStreamersMap.get(account?.address)?.lastSeen,
-                        premium: offlineStreamersMap.get(account?.address)?.premium ?? false,
-                        nextStreamTime: offlineStreamersMap.get(account?.address)?.nextStreamTime
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            )}
-          </>
+              {offlineRecommendedStreamers?.slice(0, 10)?.map(account => {
+                return (
+                  // @ts-expect-error
+                  <StreamerBar
+                    key={account?.address}
+                    streamer={{
+                      account: account,
+                      accountAddress: account?.address,
+                      lastSeen: offlineStreamersMap.get(account?.address)?.lastSeen,
+                      premium: offlineStreamersMap.get(account?.address)?.premium ?? false,
+                      nextStreamTime: offlineStreamersMap.get(account?.address)?.nextStreamTime
+                    }}
+                  />
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* subscribe to super bloomers */}
 
         {!isVerified?.isVerified?.[0]?.isVerified && <SubscribeToSuperBloomers />}
 
-        {!isMobile && (
-          <>
-            {minimize ? (
-              <div className="flex flex-col w-full ">
-                <IconButton
-                  sx={{
-                    borderRadius: '0px'
-                  }}
-                  LinkComponent={Link}
-                  href={X_URL}
-                  target="_blank"
-                >
-                  <XIcon fontSize="medium" />
-                </IconButton>
-                <IconButton
-                  LinkComponent={Link}
-                  href={GITHUB_URL}
-                  target="_blank"
-                  sx={{
-                    borderRadius: '0px'
-                  }}
-                >
-                  <GitHubIcon fontSize="medium" />
-                </IconButton>
-                <IconButton
-                  LinkComponent={Link}
-                  href={DISCORD_INVITE_URL}
-                  target="_blank"
-                  sx={{
-                    borderRadius: '0px'
-                  }}
-                >
-                  <img
-                    src={
-                      theme === 'light' ? '/icons/discord-icon.svg' : '/icons/discord-icon-dark.svg'
-                    }
-                    alt="discord"
-                    className="w-6 h-6"
-                  />
-                </IconButton>
-              </div>
-            ) : (
-              <AppLinksRow />
-            )}
-          </>
-        )}
+        {!isMobile &&
+          (minimize ? (
+            <div className="flex flex-col w-full ">
+              <IconButton
+                sx={{
+                  borderRadius: '0px'
+                }}
+                LinkComponent={Link}
+                href={X_URL}
+                target="_blank"
+              >
+                <XIcon fontSize="medium" />
+              </IconButton>
+              <IconButton
+                LinkComponent={Link}
+                href={GITHUB_URL}
+                target="_blank"
+                sx={{
+                  borderRadius: '0px'
+                }}
+              >
+                <GitHubIcon fontSize="medium" />
+              </IconButton>
+              <IconButton
+                LinkComponent={Link}
+                href={DISCORD_INVITE_URL}
+                target="_blank"
+                sx={{
+                  borderRadius: '0px'
+                }}
+              >
+                <img
+                  src={
+                    theme === 'light' ? '/icons/discord-icon.svg' : '/icons/discord-icon-dark.svg'
+                  }
+                  alt="discord"
+                  className="w-6 h-6"
+                />
+              </IconButton>
+            </div>
+          ) : (
+            <AppLinksRow />
+          ))}
       </div>
     </div>
   )

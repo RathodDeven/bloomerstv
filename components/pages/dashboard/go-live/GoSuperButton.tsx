@@ -1,7 +1,6 @@
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import { Button } from '@mui/material'
 import Link from 'next/link'
-import React from 'react'
 import { useMyStreamQuery } from '../../../../graphql/generated'
 import { SuperFluidInfo } from '../../../../utils/config'
 import useSession from '../../../../utils/hooks/useSession'

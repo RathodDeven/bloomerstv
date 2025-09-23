@@ -1,5 +1,3 @@
-import React from 'react'
-
 const WorkingOnIt = ({ subtitle }: { subtitle?: string }) => {
   return (
     <div className="centered-col h-full w-full bg-p-bg">

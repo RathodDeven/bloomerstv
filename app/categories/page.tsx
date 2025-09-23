@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import WorkingOnIt from '../../components/common/WorkingOnIt'
 
 const CategoriesPage = () => {

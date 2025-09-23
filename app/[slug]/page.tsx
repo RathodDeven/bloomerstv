@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 // import { fetchMetadata } from 'frames.js/next'
 import { headers } from 'next/headers'
-import React from 'react'
 import ProfilePage from '../../components/pages/profile/ProfilePage'
 import { APP_LINK, NODE_GRAPHQL_URL } from '../../utils/config'
 import { getHandle } from '../../utils/lib/getHandle'
@@ -22,7 +21,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   // Extract domain from the Referer or Origin header
   const referer = requestHeaders.get('referer') // Full URL of the referring page
 
-  const isFromFrontend = referer && referer.startsWith(APP_LINK)
+  const isFromFrontend = referer?.startsWith(APP_LINK)
 
   if (!isFromFrontend) {
     try {

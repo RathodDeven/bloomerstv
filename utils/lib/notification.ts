@@ -20,7 +20,7 @@ export const getRegistration = async (): Promise<ServiceWorkerRegistration | nul
   let registration: ServiceWorkerRegistration | null = null
 
   for (const reg of registrations) {
-    if (reg.active && reg.active.scriptURL.endsWith('/service-worker.js')) {
+    if (reg.active?.scriptURL.endsWith('/service-worker.js')) {
       registration = reg
       break
     }

@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import React from 'react'
 import {
   DISCORD_INVITE_URL,
   DONATE_LINK,

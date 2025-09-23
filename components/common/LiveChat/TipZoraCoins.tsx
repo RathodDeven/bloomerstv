@@ -86,7 +86,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({ isOpen, onClose, liveChatAc
     const marketCapValue = parseFloat(marketCap || '0')
     const totalSupplyValue = parseFloat(totalSupply || '1')
 
-    if (isNaN(marketCapValue) || isNaN(totalSupplyValue) || totalSupplyValue === 0) {
+    if (Number.isNaN(marketCapValue) || Number.isNaN(totalSupplyValue) || totalSupplyValue === 0) {
       return '0.0000'
     }
 
@@ -103,7 +103,7 @@ const TipZoraCoins: React.FC<TipZoraCoinsProps> = ({ isOpen, onClose, liveChatAc
     const currentMarketCap = parseFloat(marketCap || '0')
     const deltaValue = parseFloat(marketCapDelta24h || '0')
 
-    if (isNaN(currentMarketCap) || isNaN(deltaValue) || currentMarketCap === 0) {
+    if (Number.isNaN(currentMarketCap) || Number.isNaN(deltaValue) || currentMarketCap === 0) {
       return '0.00'
     }
 
