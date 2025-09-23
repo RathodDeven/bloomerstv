@@ -1,6 +1,7 @@
 import MasterWrappers from '../components/wrappers/MasterWrappers'
 import './globals.css'
 import type { Metadata } from 'next'
+import Script from 'next/script'
 
 declare global {
   interface Navigator {
@@ -38,18 +39,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W57EMMVS2J"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-W57EMMVS2J');
-    `
-          }}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-W57EMMVS2J"
+          strategy="afterInteractive"
         />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-W57EMMVS2J');
+          `}
+        </Script>
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
         {/* <link

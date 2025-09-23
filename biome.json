@@ -5,7 +5,8 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        "noUselessConstructor": "off"
+        "noUselessConstructor": "off",
+        "noUselessFragments": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
@@ -19,7 +20,8 @@
       "correctness": {
         "useExhaustiveDependencies": "off",
         "noUnusedVariables": "warn",
-        "noUnusedImports": "warn"
+        "noUnusedImports": "warn",
+        "useUniqueElementIds": "off"
       },
       "a11y": {
         "useButtonType": "off",
@@ -29,7 +31,11 @@
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off",
         "useAltText": "off",
-        "useIframeTitle": "off"
+        "useIframeTitle": "off",
+        "useMediaCaption": "off"
+      },
+      "performance": {
+        "noImgElement": "off"
       }
     }
   },
@@ -62,7 +68,11 @@
       "!**/node_modules",
       "!**/dist",
       "!**/build",
-      "!**/out"
+      "!**/out",
+      "!**/public/sw.js",
+      "!**/public/swe-worker-*.js",
+      "!**/public/workbox-*.js",
+      "!**/public/service-worker.js"
     ],
     "ignoreUnknown": true,
     "maxSize": 2097152

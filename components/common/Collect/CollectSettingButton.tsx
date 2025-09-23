@@ -56,9 +56,7 @@ const CollectSettingButton = ({
 
             {!disableCollect ? (
               <div className="start-center-row space-x-2">
-                {/* @ts-ignore */}
                 {amount?.value && amount?.asset?.symbol && (
-                  // @ts-expect-error
                   <span>{`${amount?.value} ${amount.asset.symbol}`}</span>
                 )}
 
