@@ -190,7 +190,6 @@ const ProfileBar = ({
       }
     } catch (e) {
       console.log(e)
-      // @ts-expect-error
       toast.error(String(e))
     }
   }
@@ -395,7 +394,6 @@ const ProfileBar = ({
               <QuoteButton
                 quoteOn={publication.id}
                 quotingOnProfileHandle={formatHandle(publication?.author)}
-                // @ts-expect-error
                 quotingTitle={
                   streamer?.streamName
                     ? streamer?.streamName
@@ -451,7 +449,6 @@ const ProfileBar = ({
               <QuoteButton
                 quoteOn={publication.id}
                 quotingOnProfileHandle={formatHandle(publication?.author)}
-                // @ts-expect-error
                 quotingTitle={
                   streamer?.streamName
                     ? streamer?.streamName

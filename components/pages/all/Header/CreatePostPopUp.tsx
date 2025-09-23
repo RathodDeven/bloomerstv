@@ -222,7 +222,6 @@ const CreatePostPopUp = ({
             ...commonMetadata,
             image: {
               item: ipfsImage?.url!,
-              // @ts-expect-error
               type: imageMimeType as MediaImageMimeType,
               altTag: videoTitle ? `${videoTitle}\n${content}` : content
             }

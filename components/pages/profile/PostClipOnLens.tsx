@@ -47,7 +47,6 @@ const PostClipOnLens = ({
   const sendMessagePayload = useChatInteractions(state => state.sendMessagePayload)
 
   const createLensPost = async () => {
-    // @ts-expect-error
     if (title.trim().length === 0) {
       toast.error('Please enter a title')
       return
@@ -206,7 +205,6 @@ const PostClipOnLens = ({
           label="Clip Title"
           variant="outlined"
           onChange={
-            // @ts-expect-error
             e => setTitle(e.target.value)
           }
           value={title}

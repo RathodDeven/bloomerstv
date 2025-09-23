@@ -114,7 +114,6 @@ const CollectSettingPopUp = () => {
 
     if (amount) {
       setIsPaid(true)
-      // @ts-expect-error
       setAmountValue(amount?.value)
       setAmountCurrency(amount?.asset?.symbol)
     }

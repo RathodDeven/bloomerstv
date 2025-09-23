@@ -125,7 +125,6 @@ const ZoraFeaturedCoin: React.FC<ZoraFeaturedCoinProps> = ({ coinAddress, classN
         const coinData = response.data?.zora20Token
 
         if (coinData) {
-          // @ts-expect-error
           setCoin(coinData)
 
           // Fetch user balance when coin data is available

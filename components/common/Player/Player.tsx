@@ -260,7 +260,6 @@ const ContextComponent = ({ onStreamStatusChange, __scopeMedia }: Player.MediaSc
 
   const { progress } = Player.useStore(
     context.store,
-    // @ts-expect-error
     ({ progress }) => ({ progress: Boolean(progress) })
   )
 

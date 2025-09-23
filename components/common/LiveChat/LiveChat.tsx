@@ -259,7 +259,6 @@ const LiveChat = ({
         setSocket(null)
       }
     }
-    // @ts-expect-error
   }, [])
 
   const sendMessage = async (messageInput?: SendMessageInput) => {

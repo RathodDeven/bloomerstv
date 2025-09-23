@@ -51,7 +51,6 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const metaThemeColor = document.querySelector('meta[name=theme-color]')
     if (metaThemeColor) {
-      // @ts-expect-error
       metaThemeColor.setAttribute('content', theme === 'dark' ? '#1e1e1e' : '#ffffff')
     }
   }, [theme])

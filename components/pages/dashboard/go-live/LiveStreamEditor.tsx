@@ -179,19 +179,14 @@ const LiveStreamEditor = () => {
                 <div className="">
                   <DateTimePicker
                     label="Next Stream Date & Time"
-                    // @ts-expect-error
                     value={selectedDate ?? null}
                     onChange={async newValue => {
-                      // @ts-expect-error
-                      if (newValue < new Date() && myStream?.nextStreamTime) {
-                        // @ts-expect-error
+                      if (newValue && newValue.toDate() < new Date() && myStream?.nextStreamTime) {
                         toast.error('Next stream time removed. Select a future time to update.')
                       }
 
-                      // @ts-expect-error
                       setSelectedDate(newValue)
-                      // @ts-expect-error
-                      const epochTime = new Date(newValue).getTime()
+                      const epochTime = newValue ? new Date(newValue.toDate()).getTime() : 0
 
                       try {
                         const { data } = await updateMyStream({
@@ -203,7 +198,6 @@ const LiveStreamEditor = () => {
                         })
 
                         if (data?.updateMyStream) {
-                          // @ts-expect-error
                           toast.success('Next stream time updated')
                         }
                       } catch (error) {

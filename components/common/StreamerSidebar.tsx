@@ -167,7 +167,6 @@ const StreamerSidebar = () => {
 
                   {offlineFollowingStreamers?.slice(0, 10)?.map(account => {
                     return (
-                      // @ts-expect-error
                       <StreamerBar
                         key={account?.address}
                         streamer={{
@@ -211,14 +210,12 @@ const StreamerSidebar = () => {
             <div className="flex flex-col w-full">
               {restOfTheStreamers?.map(streamer => {
                 return (
-                  // @ts-expect-error
                   <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
                 )
               })}
 
               {offlineRecommendedStreamers?.slice(0, 10)?.map(account => {
                 return (
-                  // @ts-expect-error
                   <StreamerBar
                     key={account?.address}
                     streamer={{

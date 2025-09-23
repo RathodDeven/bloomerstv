@@ -186,13 +186,10 @@ const StreamerOffline = ({
           {streamReplayRecording?.recordingUrl && (
             <div className="sm:rounded-xl rounded-md overflow-hidden w-full">
               <Player
-                // @ts-expect-error
                 src={streamReplayRecording?.recordingUrl}
                 poster={getThumbnailFromRecordingUrl(streamReplayRecording?.recordingUrl)}
-                // @ts-expect-error
                 title={
-                  // @ts-expect-error
-                  data?.metadata?.title ?? 'Untitled'
+                  (data as any)?.metadata?.title ?? 'Untitled'
                 }
               />
             </div>

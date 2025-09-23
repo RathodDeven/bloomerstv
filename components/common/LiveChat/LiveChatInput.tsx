@@ -214,7 +214,6 @@ const LiveChatInput = ({
       })
     } catch (error) {
       console.log('error', error)
-      // @ts-expect-error
       toast.error(String(error))
     } finally {
       setEnablingAllowance(false)
@@ -261,7 +260,6 @@ const LiveChatInput = ({
       setTipped(true)
     } catch (error) {
       console.error(error)
-      // @ts-expect-error
       toast.error(String(error))
     } finally {
       setIsTipping(false)
@@ -755,7 +753,6 @@ const LiveChatInput = ({
             )}
 
             {!imageAttachment?.imagePreviewUrl &&
-              //  @ts-expect-error
               inputMessage.trim().length === 0 && (
                 <motion.div
                   key="add"

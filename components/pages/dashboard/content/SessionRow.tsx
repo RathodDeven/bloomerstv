@@ -279,7 +279,6 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                   <IconButton
                     size="large"
                     onClick={() => {
-                      // @ts-expect-error
                       window.open(`${HEY_APP_LINK}/posts/${data?.slug}`, '_blank')
                     }}
                   >
@@ -292,7 +291,6 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                 <IconButton
                   size="large"
                   onClick={() => {
-                    // @ts-expect-error
                     window.open(
                       data?.id ? `/watch/${data?.slug}` : `/watch/session/${session?.sessionId}`,
                       '_blank'
@@ -310,7 +308,6 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                     onClick={() => {
                       // Programmatically click the file input when the button is clicked
                       if (!imageFileInputRef.current) return
-                      // @ts-expect-error
                       imageFileInputRef.current.click()
                     }}
                   >
@@ -346,7 +343,6 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                   <IconButton
                     size="large"
                     onClick={() => {
-                      // @ts-expect-error
                       setPostAsVideoProps(prev => ({
                         ...prev,
                         open: true,
@@ -365,7 +361,6 @@ const SessionRow = ({ session }: { session: RecordedSession }) => {
                 <IconButton
                   size="large"
                   onClick={() => {
-                    // @ts-expect-error
                     setPostAsVideoProps(prev => ({
                       ...prev,
                       open: true,

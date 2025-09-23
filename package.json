@@ -10,7 +10,8 @@
     "lint:fix": "biome check --write .",
     "lint:fix:unsafe": "biome check --write --unsafe .",
     "format": "biome format --write .",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.4",
