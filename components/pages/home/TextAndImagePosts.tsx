@@ -1,11 +1,11 @@
-import React, { useRef } from 'react'
-import { APP_ADDRESS } from '../../../utils/config'
-import { useIsVerifiedQuery } from '../../../graphql/generated'
+import { MainContentFocus, PostType, usePosts } from '@lens-protocol/react'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { IconButton } from '@mui/material'
+import { useRef } from 'react'
+import { useIsVerifiedQuery } from '../../../graphql/generated'
+import { APP_ADDRESS } from '../../../utils/config'
 import TextAndImagePostCard from './TextAndImagePostCard'
-import { MainContentFocus, PostType, usePosts } from '@lens-protocol/react'
 
 const TextAndImagePosts = () => {
   const { data, loading } = usePosts({
@@ -20,21 +20,18 @@ const TextAndImagePosts = () => {
 
   const { data: isVerified } = useIsVerifiedQuery({
     variables: {
-      accountAddresses: data?.items.map((p) => p.author?.address)
+      accountAddresses: data?.items.map(p => p.author?.address)
     }
   })
 
   const verifiedMap = new Map(
-    isVerified?.isVerified?.map((v) => [
-      v?.accountAddress,
-      v?.isVerified ?? false
-    ])
+    isVerified?.isVerified?.map(v => [v?.accountAddress, v?.isVerified ?? false])
   )
 
   const scrollContainerRef = useRef(null)
 
-  const scroll = (scrollOffset) => {
-    // @ts-ignore
+  const scroll = scrollOffset => {
+    // @ts-expect-error
     scrollContainerRef.current.scrollBy({
       left: scrollOffset,
       behavior: 'smooth'
@@ -63,13 +60,10 @@ const TextAndImagePosts = () => {
         className="start-row gap-x-3 w-full sm:w-[calc(100vw-300px)] overflow-x-auto no-scrollbar pb-3"
         style={{ scrollBehavior: 'smooth' }} // Added inline style for smooth scrolling
       >
-        {data?.items.map((post) => {
+        {data?.items.map(post => {
           return (
             <div key={post?.id}>
-              <TextAndImagePostCard
-                post={post}
-                premium={verifiedMap.get(post?.author?.address)}
-              />
+              <TextAndImagePostCard post={post} premium={verifiedMap.get(post?.author?.address)} />
             </div>
           )
         })}
