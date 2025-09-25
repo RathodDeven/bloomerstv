@@ -3,7 +3,6 @@ import { useCreatePost, usePublicClient } from '@lens-protocol/react'
 import { handleOperationWith } from '@lens-protocol/react/viem'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import CloseIcon from '@mui/icons-material/Close'
-import LoginIcon from '@mui/icons-material/Login'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
@@ -29,9 +28,8 @@ import LiveCount from '../../pages/profile/LiveCount'
 import { useChatInteractions } from '../../store/useChatInteractions'
 import { useMyPreferences } from '../../store/useMyPreferences'
 import LoadingImage from '../../ui/LoadingImage'
-import ModalWrapper from '../../ui/Modal/ModalWrapper'
+import { useLoginModal } from '../../../contexts/LoginModalContext'
 import Markup from '../Lexical/Markup'
-import LoginComponent from '../LoginComponent'
 import ChatOptionsButton from './ChatOptionsButton'
 import ClipThumbnail from './ClipThumbnail'
 import LiveChatInput from './LiveChatInput'
@@ -88,7 +86,7 @@ const LiveChat = ({
   const [socket, setSocket] = useState<any>(null)
   // const [isSocketWithAuthToken, setIsSocketWithAuthToken] = useState(false)
   const { isAuthenticated, isFarcasterAuthenticated, farcasterToken } = useSession()
-  const [open, setOpen] = React.useState(false)
+  const { openLoginModal } = useLoginModal()
   const [popedOut, setPopedOut] = React.useState(false)
   const isMobile = useIsMobile()
   const { data: wallet } = useWalletClient()
@@ -137,11 +135,6 @@ const LiveChat = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      setOpen(false)
-    }
-  }, [isAuthenticated])
 
   const joinChatWithAccount = useCallback(async () => {
     if (!isAuthenticated || !socket) return
@@ -414,15 +407,6 @@ const LiveChat = ({
 
   return (
     <div className="h-full w-full flex flex-col bg-s-bg">
-      <ModalWrapper
-        open={open}
-        title="login"
-        Icon={<LoginIcon fontSize="small" />}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-      >
-        <LoginComponent onClose={() => setOpen(false)} />
-      </ModalWrapper>
 
       {/* title section */}
       <div className="between-row w-full pb-1 px-3 sm:px-4 sm:py-3  border-b border-p-border">
@@ -648,7 +632,7 @@ const LiveChat = ({
         {!isAuthenticated || !socket ? (
           <Button
             variant="contained"
-            onClick={() => setOpen(true)}
+            onClick={openLoginModal}
             className="w-full "
             sx={{
               borderRadius: '2rem'

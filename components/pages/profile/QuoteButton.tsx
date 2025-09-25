@@ -3,6 +3,7 @@ import { Button, Tooltip } from '@mui/material'
 import clsx from 'clsx'
 import React, { useEffect } from 'react'
 import { AnimatedCounter } from 'react-animated-counter'
+import { useLoginModal } from '../../../contexts/LoginModalContext'
 import { useTheme } from '../../wrappers/TailwindThemeProvider'
 import CreatePostPopUp from '../all/Header/CreatePostPopUp'
 
@@ -20,6 +21,7 @@ const QuoteButton = ({
   hasQuoted: boolean
 }) => {
   const { theme } = useTheme()
+  const { requireAuth } = useLoginModal()
   const [open, setOpen] = React.useState(false)
   const [quoteCount, setQuoteCount] = React.useState(numberOfQuotes)
 
@@ -33,7 +35,11 @@ const QuoteButton = ({
           size="small"
           color="secondary"
           variant="contained"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            if (requireAuth('Login required to create quote posts')) {
+              setOpen(true)
+            }
+          }}
           startIcon={<FormatQuoteIcon className={clsx(hasQuoted && 'text-brand')} />}
           sx={{
             boxShadow: 'none',

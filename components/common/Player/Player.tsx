@@ -258,10 +258,9 @@ export default memo(PlayerWithControls)
 const ContextComponent = ({ onStreamStatusChange, __scopeMedia }: Player.MediaScopedProps<any>) => {
   const context = Player.useMediaContext('CurrentSource', __scopeMedia)
 
-  const { progress } = Player.useStore(
-    context.store,
-    ({ progress }) => ({ progress: Boolean(progress) })
-  )
+  const { progress } = Player.useStore(context.store, ({ progress }) => ({
+    progress: Boolean(progress)
+  }))
 
   React.useEffect(() => {
     onStreamStatusChange?.(Boolean(progress))

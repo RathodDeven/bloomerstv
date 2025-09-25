@@ -188,9 +188,7 @@ const StreamerOffline = ({
               <Player
                 src={streamReplayRecording?.recordingUrl}
                 poster={getThumbnailFromRecordingUrl(streamReplayRecording?.recordingUrl)}
-                title={
-                  (data as any)?.metadata?.title ?? 'Untitled'
-                }
+                title={(data as any)?.metadata?.title ?? 'Untitled'}
               />
             </div>
           )}

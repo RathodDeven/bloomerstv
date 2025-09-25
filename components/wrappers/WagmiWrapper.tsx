@@ -3,7 +3,7 @@ import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector'
 import { LensProvider, mainnet, PublicClient, testnet } from '@lens-protocol/react'
 import { MiniAppProvider } from '@neynar/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ConnectKitProvider, getDefaultConfig } from 'connectkit'
+import { ConnectKitProvider, getDefaultConfig, getDefaultConnectors } from 'connectkit'
 import React from 'react'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { base, lens, lensTestnet } from 'wagmi/chains'
@@ -27,6 +27,16 @@ const config = createConfig(
     transports: defaultTransports,
     // Include both default connectors (for QR code) and farcasterMiniApp (for in-app)
     connectors: [
+      ...getDefaultConnectors({
+        app: {
+          name: APP_NAME,
+          description: APP_DESCRIPTION,
+          url: APP_LINK,
+          icon: APP_ICON_LINK
+        },
+        enableFamily: true,
+        walletConnectProjectId: process.env.NEXT_PUBLIC_RAINBOW_KIT_PROJECT_ID!
+      }),
       farcasterMiniApp()
       // Default connectors will be added automatically by getDefaultConfig
     ],

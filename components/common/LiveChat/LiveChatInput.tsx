@@ -752,32 +752,31 @@ const LiveChatInput = ({
               </motion.div>
             )}
 
-            {!imageAttachment?.imagePreviewUrl &&
-              inputMessage.trim().length === 0 && (
-                <motion.div
-                  key="add"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={endIconVariants}
-                  className="pb-0.5 -ml-1"
-                >
-                  <IconButton
-                    onClick={() => {
-                      // Programmatically click the file input when the button is clicked
-                      if (!imageFileInputRef.current) return
+            {!imageAttachment?.imagePreviewUrl && inputMessage.trim().length === 0 && (
+              <motion.div
+                key="add"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={endIconVariants}
+                className="pb-0.5 -ml-1"
+              >
+                <IconButton
+                  onClick={() => {
+                    // Programmatically click the file input when the button is clicked
+                    if (!imageFileInputRef.current) return
 
-                      setSelectGif(false)
-                      // @ts-expect-error
-                      imageFileInputRef.current.click()
-                    }}
-                    className="text-s-text rounded-full"
-                    size="small"
-                  >
-                    <AddPhotoAlternateIcon />
-                  </IconButton>
-                </motion.div>
-              )}
+                    setSelectGif(false)
+                    // @ts-expect-error
+                    imageFileInputRef.current.click()
+                  }}
+                  className="text-s-text rounded-full"
+                  size="small"
+                >
+                  <AddPhotoAlternateIcon />
+                </IconButton>
+              </motion.div>
+            )}
 
             {/* {inputMessage.trim().length === 0 && !selectGif && (
               <motion.div

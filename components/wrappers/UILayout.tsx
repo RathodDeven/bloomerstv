@@ -8,7 +8,6 @@ import useIsMobile from '../../utils/hooks/useIsMobile'
 import useLiveStreamerProfiles from '../../utils/hooks/useLiveStreamerProfiles'
 import useNotifictionSubscriptions from '../../utils/hooks/useNotifictionSubscriptions'
 import { useStreamReplayPosts } from '../../utils/hooks/useStreamReplayPosts'
-import { ModalRoot } from '../common/ModalRoot'
 import StreamerSidebar from '../common/StreamerSidebar'
 import MobileBottomNavbar from '../pages/all/MobileBottom/MobileBottomNavbar'
 import DashboardSidebar from '../pages/dashboard/DashboardSidebar'
@@ -67,7 +66,6 @@ const GlobalHooks = () => {
 const UILayout: React.FC<Props> = props => {
   return (
     <>
-      <ModalRoot />
       <GlobalHooks />
       <UILayoutPage>{props.children}</UILayoutPage>
     </>

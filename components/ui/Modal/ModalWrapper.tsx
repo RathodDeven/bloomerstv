@@ -23,7 +23,8 @@ const ModalWrapper = ({
   classname,
   BotttomComponent,
   hideBackdrop = false,
-  keepOpenOnBgClick = false
+  keepOpenOnBgClick = false,
+  zIndex
 }: {
   children: React.ReactNode
   title?: string
@@ -35,6 +36,7 @@ const ModalWrapper = ({
   BotttomComponent?: React.ReactNode
   hideBackdrop?: boolean
   keepOpenOnBgClick?: boolean
+  zIndex?: number
 }) => {
   const isMobile = useIsMobile()
   const { theme } = useTheme()
@@ -52,11 +54,13 @@ const ModalWrapper = ({
         onOpen={onOpen}
         disableSwipeToOpen
         sx={{
+          zIndex: zIndex || 'auto',
           '.MuiDrawer-paper': {
             borderTopLeftRadius: '16px',
             borderTopRightRadius: '16px',
             background: theme === 'light' ? '#FFFFFF' : '#1E1E1E',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
+            zIndex: zIndex || 'auto'
           }
         }}
       >
@@ -85,7 +89,7 @@ const ModalWrapper = ({
           timeout: 500
         }
       }}
-      sx={{}}
+      sx={{ zIndex: zIndex || 'auto' }}
       hideBackdrop={hideBackdrop}
     >
       <Fade in={open}>

@@ -209,9 +209,7 @@ const StreamerSidebar = () => {
             Boolean(offlineRecommendedStreamers?.length)) && (
             <div className="flex flex-col w-full">
               {restOfTheStreamers?.map(streamer => {
-                return (
-                  <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
-                )
+                return <StreamerBar key={streamer?.accountAddress} streamer={streamer} />
               })}
 
               {offlineRecommendedStreamers?.slice(0, 10)?.map(account => {

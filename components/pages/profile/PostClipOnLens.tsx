@@ -204,9 +204,7 @@ const PostClipOnLens = ({
         <TextField
           label="Clip Title"
           variant="outlined"
-          onChange={
-            e => setTitle(e.target.value)
-          }
+          onChange={e => setTitle(e.target.value)}
           value={title}
           inputProps={{
             maxLength: 100

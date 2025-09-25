@@ -1,6 +1,6 @@
 'use client'
 import type React from 'react'
-import { ModalProvider } from '../common/ModalContext'
+import { LoginModalProvider } from '../../contexts/LoginModalContext'
 import ApolloWrapper from './ApolloWrapper'
 import { AuthProvider } from './AuthContext'
 import MuiThemeWrapper from './MuiThemeWrapper'
@@ -19,13 +19,13 @@ const MasterWrappers = ({ children }: { children: React.ReactNode }) => {
           <WaitForMount>
             <ApolloWrapper>
               <AuthProvider>
-                <ShowLoadingWrapper>
-                  <ModalProvider>
+                <LoginModalProvider>
+                  <ShowLoadingWrapper>
                     <ToastWrapper>
                       <UILayout>{children}</UILayout>
                     </ToastWrapper>
-                  </ModalProvider>
-                </ShowLoadingWrapper>
+                  </ShowLoadingWrapper>
+                </LoginModalProvider>
               </AuthProvider>
             </ApolloWrapper>
           </WaitForMount>

@@ -2,6 +2,7 @@ import { account as accountMetadata } from '@lens-protocol/metadata'
 import { Role, useAccount as useFetchAccount, useLogin } from '@lens-protocol/react'
 import { signMessageWith } from '@lens-protocol/react/viem'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { TextField } from '@mui/material'
 import { ConnectKitButton } from 'connectkit'
@@ -14,7 +15,6 @@ import useCreateAccount from '../../utils/hooks/lens/useCreateAccount'
 import useSession from '../../utils/hooks/useSession'
 import { acl, storageClient } from '../../utils/lib/lens/storageClient'
 import { stringToLength } from '../../utils/stringToLength'
-import { useTheme } from '../wrappers/TailwindThemeProvider'
 
 const SignupComponent = ({
   setOpen,
@@ -36,8 +36,6 @@ const SignupComponent = ({
   const { data: walletClient } = useWalletClient()
 
   const { execute: createAccount, loading: creating } = useCreateAccount()
-
-  const { theme } = useTheme()
 
   const onHandleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value) return
@@ -81,7 +79,7 @@ const SignupComponent = ({
     <div className="sm:px-0 px-3 py-2">
       <div className="text-2xl font-bold">Create your account</div>
       <div className="text-s-text font-semibold text-xs mt-0.5 mb-4">
-        Streaming & Live Chat on BloomersTV requires a Lens Account
+        Streaming & Live Chat on BloomersTV requires an Account
       </div>
 
       {address && (
@@ -129,12 +127,7 @@ const SignupComponent = ({
               padding: '12px 0'
             }}
             disabled={loading || creating || !localName || data?.address}
-            startIcon={
-              <img
-                src={`/Lens-Icon-T-${theme === 'dark' ? 'Black' : 'White'}.svg`}
-                className="sm:w-7 sm:h-7 w-6 h-6 rounded-full"
-              />
-            }
+            startIcon={<PersonAddIcon />}
           >
             {creating ? 'Creating...' : 'Create'}
           </LoadingButton>
@@ -167,12 +160,7 @@ const SignupComponent = ({
               padding: '12px 0'
             }}
             disabled={loginLoading}
-            startIcon={
-              <img
-                src={`/Lens-Icon-T-${theme === 'dark' ? 'Black' : 'White'}.svg`}
-                className="sm:w-7 sm:h-7 w-6 h-6 rounded-full"
-              />
-            }
+            startIcon={<PersonAddIcon />}
           >
             {'Sign with wallet'}
           </LoadingButton>

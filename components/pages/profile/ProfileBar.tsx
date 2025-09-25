@@ -15,8 +15,8 @@ import useIsMobile from '../../../utils/hooks/useIsMobile'
 import useSession from '../../../utils/hooks/useSession'
 import formatHandle from '../../../utils/lib/formatHandle'
 import getAvatar from '../../../utils/lib/getAvatar'
+import { useLoginModal } from '../../../contexts/LoginModalContext'
 import Markup from '../../common/Lexical/Markup'
-import { useModal } from '../../common/ModalContext'
 // import { createClient } from 'graphql-ws'
 import Timer from '../../common/Timer'
 import VerifiedBadge from '../../ui/VerifiedBadge'
@@ -92,7 +92,7 @@ const ProfileBar = ({
   const [publication, setPublication] = useState<Post | null | undefined>(post)
 
   const isMobile = useIsMobile()
-  const { openModal } = useModal()
+  const { requireAuth } = useLoginModal()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
@@ -195,12 +195,7 @@ const ProfileBar = ({
   }
 
   const mustLogin = (infoMsg: string = 'Must Login'): boolean => {
-    if (!isAuthenticated) {
-      openModal('login')
-      toast.error(infoMsg)
-      return false
-    }
-    return true
+    return requireAuth(infoMsg)
   }
 
   const handleShare = () => {
