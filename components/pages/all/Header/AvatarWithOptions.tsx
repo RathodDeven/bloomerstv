@@ -15,11 +15,9 @@ import {
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useDisconnect } from 'wagmi'
 import { useLoginModal } from '../../../../contexts/LoginModalContext'
 import getStampFyiURL from '../../../../utils/getStampFyiURL'
 import useEns from '../../../../utils/hooks/useEns'
-// import CircleIcon from '@mui/icons-material/Circle'
 import useIsMobile from '../../../../utils/hooks/useIsMobile'
 import useSession from '../../../../utils/hooks/useSession'
 import formatHandle from '../../../../utils/lib/formatHandle'
@@ -55,7 +53,6 @@ const AvatarWithOptions = () => {
   }
   const { theme, toggleTheme } = useTheme()
 
-  const { disconnectAsync } = useDisconnect()
   const { execute } = useLogout()
 
   const handleLogout = async () => {
@@ -63,8 +60,6 @@ const AvatarWithOptions = () => {
       // Logout from Farcaster
       logoutFarcaster()
     } else {
-      // Logout from Lens
-      await disconnectAsync()
       await execute()
     }
     handleClose()

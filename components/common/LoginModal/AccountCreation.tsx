@@ -4,9 +4,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { Avatar, Button, CircularProgress, IconButton, TextField } from '@mui/material'
+import { Avatar, Button, CircularProgress, TextField } from '@mui/material'
 import React from 'react'
 import toast from 'react-hot-toast'
+import { APP_LINK } from '../../../utils/config'
 import useCreateAccount from '../../../utils/hooks/lens/useCreateAccount'
 import useSession from '../../../utils/hooks/useSession'
 import { acl, storageClient } from '../../../utils/lib/lens/storageClient'
@@ -198,6 +199,13 @@ const AccountCreation: React.FC<AccountCreationProps> = ({
     setUsernameError('')
   }
 
+  console.log('username', usernameError)
+  const helperText: string = usernameError
+    ? usernameError
+    : localName
+      ? `${APP_LINK}/${localName}`
+      : ''
+
   return (
     <div className={isFullPage ? 'w-full max-w-md mx-auto' : 'w-full'}>
       <div className={isFullPage ? 'font-bold text-4xl mb-8' : 'text-2xl font-bold mb-4'}>
@@ -209,41 +217,42 @@ const AccountCreation: React.FC<AccountCreationProps> = ({
 
       <div className="space-y-4">
         {/* Profile Picture Upload */}
-        <div className="flex justify-center mb-4">
+        <div
+          className="flex justify-center mb-4 cursor-pointer"
+          onClick={() => fileInputRef.current?.click()}
+        >
           <div className="relative">
             <Avatar
               src={profilePictureUrl}
               sx={{ width: 100, height: 100 }}
               className="border-4 border-p-border"
             />
-            <IconButton
-              className="absolute bottom-0 right-0 bg-brand hover:bg-brand-hover"
-              size="small"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={creating}
-            >
-              <PhotoCameraIcon fontSize="small" className="text-white" />
-            </IconButton>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              className="hidden"
-            />
+            {/* Camera overlay */}
+            <div className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center hover:bg-black/60 transition-colors">
+              <PhotoCameraIcon className="text-white mb-1" fontSize="medium" />
+              <span className="text-white text-xs font-medium">Upload</span>
+            </div>
           </div>
         </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleProfilePictureChange}
+          className="hidden"
+        />
 
         {/* Username Field */}
         <TextField
           className="w-full"
-          label="Username (required)"
+          label="Username"
           variant="outlined"
           value={localName}
           onChange={handleUsernameChange}
           disabled={creating}
           error={Boolean(usernameError)}
-          helperText={usernameError}
+          helperText={helperText}
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: '12px'
@@ -274,7 +283,7 @@ const AccountCreation: React.FC<AccountCreationProps> = ({
         {/* Display Name Field */}
         <TextField
           className="w-full"
-          label="Display Name (optional)"
+          label="Display Name"
           variant="outlined"
           value={displayName}
           onChange={e => setDisplayName(e.target.value)}
@@ -284,13 +293,16 @@ const AccountCreation: React.FC<AccountCreationProps> = ({
               borderRadius: '12px'
             }
           }}
+          style={{
+            marginTop: '8px'
+          }}
           size="medium"
         />
 
         {/* Bio Field */}
         <TextField
           className="w-full"
-          label="Bio (optional)"
+          label="Bio"
           variant="outlined"
           value={bio}
           onChange={e => setBio(e.target.value)}
