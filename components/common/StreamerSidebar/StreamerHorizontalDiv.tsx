@@ -54,6 +54,8 @@ const StreamerHorizontalDiv = () => {
 
       {offlineAccounts?.map(account => {
         if (isAuthenticated && account?.address === authenticatedUser?.address) return null
+        if (streamersWithAccounts?.find(streamer => streamer?.accountAddress === account?.address))
+          return null
         return (
           <SingleHorizontalStreamerDiv
             key={account?.address}
