@@ -12,9 +12,11 @@ interface LoginModalContextType {
   requireAuth: (message?: string) => boolean
   openLoginModal: () => void
   openSignupModal: () => void
+  openProfileSwitcher: () => void
   closeLoginModal: () => void
   isLoginModalOpen: boolean
   startWithSignup: boolean
+  isProfileSwitching: boolean
 }
 
 const LoginModalContext = createContext<LoginModalContextType | undefined>(undefined)
@@ -32,6 +34,7 @@ export const LoginModalProvider = ({ children }: { children: React.ReactNode }) 
   const { isConnected } = useAccount()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [startWithSignup, setStartWithSignup] = useState(false)
+  const [isProfileSwitching, setIsProfileSwitching] = useState(false)
   const [loginIntended, setLoginIntended] = useState(false)
   const connectButtonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -58,6 +61,7 @@ export const LoginModalProvider = ({ children }: { children: React.ReactNode }) 
 
   const openSignupModal = () => {
     setStartWithSignup(true)
+    setIsProfileSwitching(false)
     if (!isConnected) {
       // Trigger ConnectKit instead
       setLoginIntended(true)
@@ -69,10 +73,17 @@ export const LoginModalProvider = ({ children }: { children: React.ReactNode }) 
     }
   }
 
+  const openProfileSwitcher = () => {
+    setIsProfileSwitching(true)
+    setStartWithSignup(false)
+    setIsLoginModalOpen(true)
+  }
+
   const closeLoginModal = () => {
     setIsLoginModalOpen(false)
     setLoginIntended(false)
     setStartWithSignup(false)
+    setIsProfileSwitching(false)
   }
 
   const requireAuth = (message: string = 'Login required'): boolean => {
@@ -91,9 +102,11 @@ export const LoginModalProvider = ({ children }: { children: React.ReactNode }) 
         requireAuth,
         openLoginModal,
         openSignupModal,
+        openProfileSwitcher,
         closeLoginModal,
         isLoginModalOpen,
-        startWithSignup
+        startWithSignup,
+        isProfileSwitching
       }}
     >
       {children}
@@ -110,14 +123,18 @@ export const LoginModalProvider = ({ children }: { children: React.ReactNode }) 
       {/* Global Login Modal - High z-index to stay above all other modals */}
       <ModalWrapper
         open={isLoginModalOpen}
-        title="Login"
+        title={isProfileSwitching ? "Switch Profile" : "Login"}
         Icon={<PersonIcon fontSize="small" />}
         onClose={closeLoginModal}
         onOpen={openLoginModal}
         classname="w-[450px]"
         zIndex={9999}
       >
-        <LoginComponent onClose={closeLoginModal} startWithSignup={startWithSignup} />
+        <LoginComponent
+          onClose={closeLoginModal}
+          startWithSignup={startWithSignup}
+          isProfileSwitching={isProfileSwitching}
+        />
       </ModalWrapper>
     </LoginModalContext.Provider>
   )

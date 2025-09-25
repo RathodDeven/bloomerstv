@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useDisconnect } from 'wagmi'
+import { useLoginModal } from '../../../../contexts/LoginModalContext'
 import getStampFyiURL from '../../../../utils/getStampFyiURL'
 import useEns from '../../../../utils/hooks/useEns'
 // import CircleIcon from '@mui/icons-material/Circle'
@@ -27,7 +28,7 @@ import AppLinksRow from '../../../common/AppLinksRow'
 import LoadingImage from '../../../ui/LoadingImage'
 import { useTheme } from '../../../wrappers/TailwindThemeProvider'
 
-const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
+const AvatarWithOptions = () => {
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -44,6 +45,7 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
   const { ensAvatar } = useEns({
     address: isAuthenticated && !account?.username && isLensAuthenticated ? account?.owner : null
   })
+  const { openProfileSwitcher } = useLoginModal()
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
@@ -68,10 +70,12 @@ const AvatarWithOptions = ({ handleOpen }: { handleOpen: () => void }) => {
     handleClose()
   }
 
-  const handleSwitchProfile = async () => {
-    await execute()
-    handleOpen()
+  const handleSwitchProfile = () => {
+    openProfileSwitcher()
     handleClose()
+    if (drawerOpen) {
+      setDrawerOpen(false)
+    }
   }
 
   const { push } = useRouter()

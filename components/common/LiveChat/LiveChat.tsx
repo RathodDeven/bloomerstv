@@ -14,6 +14,7 @@ import toast from 'react-hot-toast'
 import io from 'socket.io-client'
 import { v4 as uuid } from 'uuid'
 import { useWalletClient } from 'wagmi'
+import { useLoginModal } from '../../../contexts/LoginModalContext'
 import { useStreamChatsQuery } from '../../../graphql/generated'
 import { APP_LINK, LIVE_CHAT_WEB_SOCKET_URL } from '../../../utils/config'
 import getUserLocale from '../../../utils/getUserLocale'
@@ -28,7 +29,6 @@ import LiveCount from '../../pages/profile/LiveCount'
 import { useChatInteractions } from '../../store/useChatInteractions'
 import { useMyPreferences } from '../../store/useMyPreferences'
 import LoadingImage from '../../ui/LoadingImage'
-import { useLoginModal } from '../../../contexts/LoginModalContext'
 import Markup from '../Lexical/Markup'
 import ChatOptionsButton from './ChatOptionsButton'
 import ClipThumbnail from './ClipThumbnail'
@@ -134,7 +134,6 @@ const LiveChat = ({
     // @ts-expect-error
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
-
 
   const joinChatWithAccount = useCallback(async () => {
     if (!isAuthenticated || !socket) return
@@ -407,7 +406,6 @@ const LiveChat = ({
 
   return (
     <div className="h-full w-full flex flex-col bg-s-bg">
-
       {/* title section */}
       <div className="between-row w-full pb-1 px-3 sm:px-4 sm:py-3  border-b border-p-border">
         <div className="centered-row space-x-2">

@@ -36,7 +36,7 @@ const LoginButton = () => {
           </Button>
         </>
       )}
-      <AvatarWithOptions handleOpen={openLoginModal} />
+      <AvatarWithOptions />
     </div>
   )
 }
