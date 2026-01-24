@@ -17,6 +17,7 @@ const withPWA = nextPWA({
 })
 
 const nextConfig = {
+  turbopack: {},
   images: {
     domains: ['images.unsplash.com', 'cdn.stamp.fyi']
   },
